@@ -4,8 +4,7 @@
 
 void Element_Init(Element *This){
 	This->Clear = Element_Clear;
-	This->id=AVIONDECHASSE;
-
+	This->type=VOID;
 }
 
 Element Element_Create(){

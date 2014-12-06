@@ -1,0 +1,21 @@
+#include "case.h"
+
+#ifndef GRILLE_H
+#define GRILLE_H
+
+typedef struct Grille
+{
+	Case **tab;
+	void (*Free)(struct Grille *This);
+	void (*Clear)(struct Grille *This);
+	void (*Print)(struct Grille *This);
+} Grille;
+
+
+Grille Grille_Create();
+void Grille_Init(Grille *This);
+void Grille_Clear(struct Grille *This);
+void Grille_Free(struct Grille *This);
+void Grille_Print(struct Grille *This);
+
+#endif // GRILLE_H

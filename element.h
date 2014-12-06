@@ -5,16 +5,16 @@
 extern "C" {
 #endif
 
+typedef enum Type {
+	VOID, PLANCTON, CORAIL, BAR, THON, POLLUTION, PYRANHA, REQUIN, ORQUE, BALEINE, PECHEUR, PONT
+}Type;
+
 typedef struct Element
 {
-		int id;
+		Type type;
 		void (*Free)(struct Element *This);
 		void (*Clear)(struct Element *This);
 } Element;
-
-typedef enum Type {
-	ELEMENTVIDE, AVIONDECHASSE
-}Type;
 
 //Constructeurs
 Element Element_Create();

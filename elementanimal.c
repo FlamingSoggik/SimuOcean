@@ -24,23 +24,29 @@ ElementAnimal* New_ElementAnimal_v12(int v12)
 	   if(!This) return NULL;
 	   ElementAnimal_Init(This);
 	   This->Free = (void*)Element_New_Free;
-	   This->vaut12 = v12;
+	   This->dernierRepas = v12;
 	   return This;
 }
 
 void ElementAnimal_Init(ElementAnimal* This){
-	This->vaut12 = 12;
-	This->Getvaut12 = ElementAnimal_getvaut12;
-	This->Setvaut12 = ElementAnimal_setvaut12;
+	This->dernierRepas = 0;
+	This->GetDernierRepas = ElementAnimal_getDernierRepas;
+	This->SetDernierRepas = ElementAnimal_setDernierRepas;
+	This->sasiete = 0;
+	This->GetSasiete = ElementAnimal_getSasiete;
+	This->SetSasiete = ElementAnimal_setSasiete;
+	This->derniereReproduction = 0;
+	This->GetDerniereReproduction = ElementAnimal_getderniereReproduction;
+	This->SetDerniereReproduction = ElementAnimal_setderniereReproduction;
 	This->Clear = (void*)Element_Clear;
 }
 
-int ElementAnimal_getvaut12(struct ElementAnimal *This){
-	return This->vaut12;
+int ElementAnimal_getDernierRepas(struct ElementAnimal *This){
+	return This->dernierRepas;
 }
 
-void ElementAnimal_setvaut12(struct ElementAnimal *This, int toset){
-	This->vaut12=toset;
+void ElementAnimal_setDernierRepas(struct ElementAnimal *This, int toset){
+	This->dernierRepas=toset;
 }
 
 void ElementAnimal_New_Free(struct ElementAnimal *This){
@@ -54,3 +60,20 @@ void ElementAnimal_Free(struct ElementAnimal *This){
 	free(This);
 	puts("Destruction de l'Animal statique.\n");
 }
+
+int ElementAnimal_getSasiete(struct ElementAnimal *This){
+	return This->sasiete;
+}
+
+void ElementAnimal_setSasiete(struct ElementAnimal *This, int toset){
+	This->sasiete=toset;
+}
+
+int ElementAnimal_getderniereReproduction(struct ElementAnimal *This){
+	return This->derniereReproduction;
+}
+
+void ElementAnimal_setderniereReproduction(struct ElementAnimal *This, int toset){
+	This->derniereReproduction=toset;
+}
+

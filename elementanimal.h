@@ -9,13 +9,21 @@ extern "C" {
 
 typedef struct ElementAnimal
 {
-		int id;
+		Type id;
 		void (*Free)(struct Element *This);
 		void (*Clear)(struct Element *This);
 
-		int (*Getvaut12)(struct ElementAnimal*);
-		void (*Setvaut12)(struct ElementAnimal* , int);
-		int vaut12;
+		int dernierRepas;
+		int (*GetDernierRepas)(struct ElementAnimal*);
+		void (*SetDernierRepas)(struct ElementAnimal* , int);
+
+		int sasiete;
+		int (*GetSasiete)(struct ElementAnimal*);
+		void (*SetSasiete)(struct ElementAnimal* , int);
+
+		int derniereReproduction;
+		int (*GetDerniereReproduction)(struct ElementAnimal*);
+		void (*SetDerniereReproduction)(struct ElementAnimal* , int);
 } ElementAnimal;
 
 //Constructeurs
@@ -31,8 +39,12 @@ void ElementAnimal_Free(struct ElementAnimal *This);
 void ElementAnimal_New_Free(struct ElementAnimal *This);
 
 //Others
-int ElementAnimal_getvaut12(struct ElementAnimal *This);
-void ElementAnimal_setvaut12(struct ElementAnimal *This, int toset);
+int ElementAnimal_getDernierRepas(struct ElementAnimal *This);
+void ElementAnimal_setDernierRepas(struct ElementAnimal *This, int toset);
+int ElementAnimal_getSasiete(struct ElementAnimal *This);
+void ElementAnimal_setSasiete(struct ElementAnimal *This, int toset);
+int ElementAnimal_getderniereReproduction(struct ElementAnimal *This);
+void ElementAnimal_setderniereReproduction(struct ElementAnimal *This, int toset);
 
 
 #ifdef __cplusplus
