@@ -43,7 +43,7 @@ void Grille_Clear(struct Grille *This){
 void Grille_Print(struct Grille *This){
 	int i, j;
 	for(i=0;i<10;++i)
-		printf(PECHEUR "=====" NORMAL);
+        printf("=====" NORMAL);
 	printf("=\n");
 	for(i=0;i<10;++i){
 		printf("|");
