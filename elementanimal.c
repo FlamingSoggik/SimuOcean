@@ -18,15 +18,15 @@ ElementAnimal ElementAnimalCreate(){
 	return This;
 }
 
-ElementAnimal* New_ElementAnimal_v12(int v12)
-{
-	   ElementAnimal *This = malloc(sizeof(ElementAnimal));
-	   if(!This) return NULL;
-	   ElementAnimal_Init(This);
-	   This->Free = (void*)Element_New_Free;
-	   This->dernierRepas = v12;
-	   return This;
-}
+//ElementAnimal* New_ElementAnimal_v12(int v12)
+//{
+//	   ElementAnimal *This = malloc(sizeof(ElementAnimal));
+//	   if(!This) return NULL;
+//	   ElementAnimal_Init(This);
+//	   This->Free = (void*)Element_New_Free;
+//	   This->dernierRepas = v12;
+//	   return This;
+//}
 
 void ElementAnimal_Init(ElementAnimal* This){
 	This->dernierRepas = 0;
@@ -41,11 +41,11 @@ void ElementAnimal_Init(ElementAnimal* This){
 	This->Clear = (void*)Element_Clear;
 }
 
-int ElementAnimal_getDernierRepas(struct ElementAnimal *This){
+unsigned int ElementAnimal_getDernierRepas(struct ElementAnimal *This){
 	return This->dernierRepas;
 }
 
-void ElementAnimal_setDernierRepas(struct ElementAnimal *This, int toset){
+void ElementAnimal_setDernierRepas(struct ElementAnimal *This, unsigned int toset){
 	This->dernierRepas=toset;
 }
 
@@ -69,11 +69,10 @@ void ElementAnimal_setSasiete(struct ElementAnimal *This, int toset){
 	This->sasiete=toset;
 }
 
-int ElementAnimal_getderniereReproduction(struct ElementAnimal *This){
+unsigned int ElementAnimal_getderniereReproduction(struct ElementAnimal *This){
 	return This->derniereReproduction;
 }
 
-void ElementAnimal_setderniereReproduction(struct ElementAnimal *This, int toset){
+void ElementAnimal_setderniereReproduction(struct ElementAnimal *This, unsigned int toset){
 	This->derniereReproduction=toset;
 }
-
