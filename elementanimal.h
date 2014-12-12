@@ -11,7 +11,9 @@ extern "C" {
 
 typedef struct ElementAnimal
 {
-		Type id;
+
+        struct Case* caseParent;
+        Type type;
 		void (*Free)(struct Element *This);
 		void (*Clear)(struct Element *This);
 
@@ -23,7 +25,7 @@ typedef struct ElementAnimal
 		int (*GetSasiete)(struct ElementAnimal*);
 		void (*SetSasiete)(struct ElementAnimal* , int);
 
-		unsigned int derniereReproduction;
+        unsigned int derniereReproduction;
 		unsigned int (*GetDerniereReproduction)(struct ElementAnimal*);
 		void (*SetDerniereReproduction)(struct ElementAnimal* , unsigned int);
 
@@ -35,16 +37,19 @@ typedef struct ElementAnimal
 		int gestation;
 		int frequenceReproduction;
 
+        void (*tour)(struct ElementAnimal*);
+        Bool (*survie)(struct ElementAnimal *, unsigned int);
+
 } ElementAnimal;
 
 //Constructeurs
-ElementAnimal* New_ElementAnimal(Type t);
+ElementAnimal* New_ElementAnimal(Case *c, Type t);
 //ElementAnimal ElementAnimalCreate(Type t);
 
 //ElementAnimal* New_ElementAnimal_v12(int v12);
 
 //Initialisateur
-char ElementAnimal_Init(ElementAnimal* This, Type t);
+char ElementAnimal_Init(Case *c, ElementAnimal* This, Type t);
 void ElementAnimal_setType(ElementAnimal *This, Type t);
 
 //Destructeurs
@@ -59,8 +64,9 @@ void ElementAnimal_setSasiete(struct ElementAnimal *This, int toset);
 unsigned int ElementAnimal_getderniereReproduction(struct ElementAnimal *This);
 void ElementAnimal_setderniereReproduction(struct ElementAnimal *This, unsigned int toset);
 
-Bool survie(struct ElementAnimal *This);
-void tour(ElementAnimal *This);
+Bool ElementAnimal_survie(struct ElementAnimal *This, unsigned int tourCourrant);
+void ElementAnimal_tour(struct ElementAnimal *This);
+void ElementAnimal_predation(struct ElementAnimal *This);
 
 #ifdef __cplusplus
 }

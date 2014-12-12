@@ -1,6 +1,8 @@
 #ifndef ELEMENT_H
 #define ELEMENT_H
 
+#include "case.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -11,17 +13,18 @@ typedef enum Type {
 
 typedef struct Element
 {
-		Type type;
+        struct Case* caseParent;
+        Type type;
 		void (*Free)(struct Element *This);
 		void (*Clear)(struct Element *This);
 } Element;
 
 //Constructeurs
-Element Element_Create();
-Element* New_Element();
+//Element Element_Create();
+Element* New_Element(struct Case *c);
 
 //Initialisateur
-void Element_Init(Element *This);
+void Element_Init(struct Case *c, Element *This);
 
 //Destructructeurs
 void Element_New_Free(Element* This);

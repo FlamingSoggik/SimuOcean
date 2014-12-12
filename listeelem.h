@@ -10,7 +10,7 @@
 
 
 typedef struct ItemListeElem{
-		Element* e;
+        struct Element* e;
 		struct ItemListeElem* next;
 }ItemListeElem;
 
@@ -30,8 +30,8 @@ typedef struct ListeElem {
 int ListeElem_Taille(ListeElem* This);
 void ListeElem_Clear(ListeElem *This);
 void ListeElem_New_Free(ListeElem *This);
-int ListeElem_Push(ListeElem* This, Element *e);
-Element* ListeElem_Pop(ListeElem* This);
+int ListeElem_Push(ListeElem* This, struct Element *e);
+struct Element* ListeElem_Pop(ListeElem* This);
 ListeElem* New_ListeElem();
 void ListeElem_Init(ListeElem* This);
 char ListeElem_hasAPecheur(ListeElem* This);

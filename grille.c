@@ -20,13 +20,13 @@ void Grille_Init(Grille *This){
 	This->Clear = Grille_Clear;
 	This->Print = Grille_Print;
 	This->tab=malloc(sizeof(Case*)*10);
-	int i,j;
+    unsigned int i,j;
 	for (i=0;i<10;++i){
 		This->tab[i]=malloc(sizeof(Case)*10);
 	}
 	for(i=0;i<10;++i){
 		for(j=0; j<10; ++j){
-			This->tab[i][j]= Case_Create();
+            This->tab[i][j]= Case_Create(This, i, j);
 		}
 	}
 }
@@ -73,7 +73,18 @@ void Grille_Print(struct Grille *This){
 	}
 
 }
+
 void Grille_Free(struct Grille *This){
 	This->Clear(This);
 	puts("Grille detruite\n");
+}
+
+
+ListeCase *getListVoisins(struct Grille *This, Case *c)
+{
+    ListeCase *l = malloc(sizeof(ListeElem));
+    if ((double)c->posX-1 >= 0 && (double)c->posY-1 >= 0){
+        l->Push(l, &This->tab[c->posX-1][c->posY-1]);
+    }
+    return l;
 }

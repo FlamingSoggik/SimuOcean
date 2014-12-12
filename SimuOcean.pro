@@ -9,7 +9,8 @@ SOURCES += main.c \
     case.c \
     listeelem.c \
     listetype.c \
-    grille.c
+    grille.c \
+    listecase.c
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -21,5 +22,6 @@ HEADERS += \
     listeelem.h \
     listetype.h \
     grille.h \
-    Bool.h
+    Bool.h \
+    listecase.h
 

@@ -1,10 +1,12 @@
-#include "case.h"
 #include <stdio.h>
+#include "case.h"
 
-
-Case Case_Create()
+Case Case_Create(Grille * g, unsigned int posX, unsigned int posY)
 {
 	Case This;
+    This.g = g;
+    This.posX=posX;
+    This.posY=posY;
 	This.Free=Case_Free;
 	This.Print=Case_Print;
 	This.liste = New_ListeElem();

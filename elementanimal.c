@@ -4,10 +4,12 @@
 #include "elementanimal.h"
 #include "math.h"
 
-ElementAnimal* New_ElementAnimal(Type t){
+#define max(a,b) (a>=b?a:b)
+
+ElementAnimal* New_ElementAnimal(Case *c, Type t){
 	ElementAnimal* This = malloc(sizeof(ElementAnimal));
 	if (!This) return NULL;
-    if (ElementAnimal_Init(This, t) < 0){
+    if (ElementAnimal_Init(c, This, t) < 0){
         free(This);
         return NULL;
     }
@@ -38,76 +40,76 @@ char defineConstant(ElementAnimal* This, Type t)
 {
     switch (t){
     case PLANCTON:
-        This->dureeSurvie;
-        This->taille;
-        This->tailleDuBide;
-        This->sautMax;
-        This->metabolisme;
-        This->gestation;
-        This->frequenceReproduction;
+        This->dureeSurvie=1;
+        This->taille=1;
+        This->tailleDuBide=1;
+        This->sautMax=1;
+        This->metabolisme=1;
+        This->gestation=1;
+        This->frequenceReproduction=1;
         break;
     case CORAIL:
-        This->dureeSurvie;
-        This->taille;
-        This->tailleDuBide;
-        This->sautMax;
-        This->metabolisme;
-        This->gestation;
-        This->frequenceReproduction;
+        This->dureeSurvie=1;
+        This->taille=1;
+        This->tailleDuBide=1;
+        This->sautMax=1;
+        This->metabolisme=1;
+        This->gestation=1;
+        This->frequenceReproduction=1;
         break;
     case BAR:
-        This->dureeSurvie;
-        This->taille;
-        This->tailleDuBide;
-        This->sautMax;
-        This->metabolisme;
-        This->gestation;
-        This->frequenceReproduction;
+        This->dureeSurvie=1;
+        This->taille=1;
+        This->tailleDuBide=1;
+        This->sautMax=1;
+        This->metabolisme=1;
+        This->gestation=1;
+        This->frequenceReproduction=1;
         break;
     case THON:
-        This->dureeSurvie;
-        This->taille;
-        This->tailleDuBide;
-        This->sautMax;
-        This->metabolisme;
-        This->gestation;
-        This->frequenceReproduction;
+        This->dureeSurvie=1;
+        This->taille=1;
+        This->tailleDuBide=1;
+        This->sautMax=1;
+        This->metabolisme=1;
+        This->gestation=1;
+        This->frequenceReproduction=1;
         break;
     case PYRANHA:
-        This->dureeSurvie;
-        This->taille;
-        This->tailleDuBide;
-        This->sautMax;
-        This->metabolisme;
-        This->gestation;
-        This->frequenceReproduction;
+        This->dureeSurvie=1;
+        This->taille=1;
+        This->tailleDuBide=1;
+        This->sautMax=1;
+        This->metabolisme=1;
+        This->gestation=1;
+        This->frequenceReproduction=1;
         break;
     case REQUIN:
-        This->dureeSurvie;
-        This->taille;
-        This->tailleDuBide;
-        This->sautMax;
-        This->metabolisme;
-        This->gestation;
-        This->frequenceReproduction;
+        This->dureeSurvie=1;
+        This->taille=1;
+        This->tailleDuBide=1;
+        This->sautMax=1;
+        This->metabolisme=1;
+        This->gestation=1;
+        This->frequenceReproduction=1;
         break;
     case ORQUE:
-        This->dureeSurvie;
-        This->taille;
-        This->tailleDuBide;
-        This->sautMax;
-        This->metabolisme;
-        This->gestation;
-        This->frequenceReproduction;
+        This->dureeSurvie=1;
+        This->taille=1;
+        This->tailleDuBide=1;
+        This->sautMax=1;
+        This->metabolisme=1;
+        This->gestation=1;
+        This->frequenceReproduction=1;
         break;
     case BALEINE:
-        This->dureeSurvie;
-        This->taille;
-        This->tailleDuBide;
-        This->sautMax;
-        This->metabolisme;
-        This->gestation;
-        This->frequenceReproduction;
+        This->dureeSurvie=1;
+        This->taille=1;
+        This->tailleDuBide=1;
+        This->sautMax=1;
+        This->metabolisme=1;
+        This->gestation=1;
+        This->frequenceReproduction=1;
         break;
     default :
         return ERR_TYPE_NOT_ANIMAL;
@@ -116,7 +118,8 @@ char defineConstant(ElementAnimal* This, Type t)
     return 0;
 }
 
-char ElementAnimal_Init(ElementAnimal* This, Type t){
+char ElementAnimal_Init(Case *c, ElementAnimal* This, Type t){
+    This->caseParent=c;
 	This->dernierRepas = 0;
 	This->GetDernierRepas = ElementAnimal_getDernierRepas;
 	This->SetDernierRepas = ElementAnimal_setDernierRepas;
@@ -126,7 +129,9 @@ char ElementAnimal_Init(ElementAnimal* This, Type t){
 	This->derniereReproduction = 0;
 	This->GetDerniereReproduction = ElementAnimal_getderniereReproduction;
 	This->SetDerniereReproduction = ElementAnimal_setderniereReproduction;
-	This->Clear = (void*)Element_Clear;
+    This->Clear = (void*)Element_Clear;
+    This->survie=ElementAnimal_survie;
+    This->tour=ElementAnimal_tour;
     if (defineConstant(This, t) < 0){
         return ERR_TYPE_NOT_ANIMAL;
     }
@@ -169,12 +174,22 @@ void ElementAnimal_setderniereReproduction(struct ElementAnimal *This, unsigned 
 	This->derniereReproduction=toset;
 }
 
-Bool survie(struct ElementAnimal *This){
-    if (This->sasiete == 0 && This->dernierRepas > This->dureeSurvie)
+Bool ElementAnimal_survie(struct ElementAnimal *This, unsigned int tourCourrant){
+    if (This->sasiete == 0 && tourCourrant-This->dernierRepas > This->dureeSurvie)
         return False;
-    else return True;
+    return True;
 }
 
-void tour(ElementAnimal *This){
+void ElementAnimal_tour(struct ElementAnimal *This){
     This->sasiete=max(This->sasiete-This->metabolisme, 0);
+}
+
+
+void ElementAnimal_predation(ElementAnimal *This)
+{
+    This->caseParent->g->getListVoisins(This->caseParent);
+
+//    Si X a dans son voisinnage immédiat (8 cases) un élément Y et satiete(X)+ taille(Y)<
+//    taille_du_bide(X), Alors il se déplace sur la case de Y et dernier_repas(X)< tour_courant et
+//    satiete(X)< satiete(X)+ taille(Y). L’animal Y meurt et disparait.
 }
