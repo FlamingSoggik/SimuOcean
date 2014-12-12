@@ -3,6 +3,7 @@
 
 #include "element.h"
 
+#define ERR_TYPE_NOT_ANIMAL -1
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -38,13 +39,13 @@ typedef struct ElementAnimal
 } ElementAnimal;
 
 //Constructeurs
-ElementAnimal* New_ElementAnimal();
-ElementAnimal ElementAnimalCreate();
+ElementAnimal* New_ElementAnimal(Type t);
+ElementAnimal ElementAnimalCreate(Type t);
 
 //ElementAnimal* New_ElementAnimal_v12(int v12);
 
 //Initialisateur
-void ElementAnimal_Init(ElementAnimal* This);
+char ElementAnimal_Init(ElementAnimal* This, Type t);
 void ElementAnimal_setType(ElementAnimal *This, Type t);
 
 //Destructeurs

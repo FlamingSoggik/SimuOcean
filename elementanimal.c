@@ -3,20 +3,25 @@
 
 #include "elementanimal.h"
 
-ElementAnimal* New_ElementAnimal(){
+ElementAnimal* New_ElementAnimal(Type t){
 	ElementAnimal* This = malloc(sizeof(ElementAnimal));
 	if (!This) return NULL;
-	ElementAnimal_Init(This);
+    if (ElementAnimal_Init(This, t) < 0){
+        free(This);
+        return NULL;
+    }
 	This->Free = (void*)Element_New_Free;
 	return This;
 }
 
-ElementAnimal ElementAnimalCreate(){
-	ElementAnimal This;
-	ElementAnimal_Init(&This);
-	This.Free = (void*)Element_Free;
-	return This;
-}
+//ElementAnimal ElementAnimalCreate(Type t){
+//	ElementAnimal This;
+//    if (ElementAnimal_Init(&This, t) < 0){
+//        return;
+//    }
+//	This.Free = (void*)Element_Free;
+//	return This;
+//}
 
 //ElementAnimal* New_ElementAnimal_v12(int v12)
 //{
@@ -28,7 +33,89 @@ ElementAnimal ElementAnimalCreate(){
 //	   return This;
 //}
 
-void ElementAnimal_Init(ElementAnimal* This){
+char defineConstant(ElementAnimal* This, Type t)
+{
+    switch (t){
+    case PLANCTON:
+        This->dureeSurvie;
+        This->taille;
+        This->tailleDuBide;
+        This->sautMax;
+        This->metabolisme;
+        This->gestation;
+        This->frequenceReproduction;
+        break;
+    case CORAIL:
+        This->dureeSurvie;
+        This->taille;
+        This->tailleDuBide;
+        This->sautMax;
+        This->metabolisme;
+        This->gestation;
+        This->frequenceReproduction;
+        break;
+    case BAR:
+        This->dureeSurvie;
+        This->taille;
+        This->tailleDuBide;
+        This->sautMax;
+        This->metabolisme;
+        This->gestation;
+        This->frequenceReproduction;
+        break;
+    case THON:
+        This->dureeSurvie;
+        This->taille;
+        This->tailleDuBide;
+        This->sautMax;
+        This->metabolisme;
+        This->gestation;
+        This->frequenceReproduction;
+        break;
+    case PYRANHA:
+        This->dureeSurvie;
+        This->taille;
+        This->tailleDuBide;
+        This->sautMax;
+        This->metabolisme;
+        This->gestation;
+        This->frequenceReproduction;
+        break;
+    case REQUIN:
+        This->dureeSurvie;
+        This->taille;
+        This->tailleDuBide;
+        This->sautMax;
+        This->metabolisme;
+        This->gestation;
+        This->frequenceReproduction;
+        break;
+    case ORQUE:
+        This->dureeSurvie;
+        This->taille;
+        This->tailleDuBide;
+        This->sautMax;
+        This->metabolisme;
+        This->gestation;
+        This->frequenceReproduction;
+        break;
+    case BALEINE:
+        This->dureeSurvie;
+        This->taille;
+        This->tailleDuBide;
+        This->sautMax;
+        This->metabolisme;
+        This->gestation;
+        This->frequenceReproduction;
+        break;
+    default :
+        return ERR_TYPE_NOT_ANIMAL;
+    }
+
+    return 0;
+}
+
+char ElementAnimal_Init(ElementAnimal* This, Type t){
 	This->dernierRepas = 0;
 	This->GetDernierRepas = ElementAnimal_getDernierRepas;
 	This->SetDernierRepas = ElementAnimal_setDernierRepas;
@@ -39,6 +126,10 @@ void ElementAnimal_Init(ElementAnimal* This){
 	This->GetDerniereReproduction = ElementAnimal_getderniereReproduction;
 	This->SetDerniereReproduction = ElementAnimal_setderniereReproduction;
 	This->Clear = (void*)Element_Clear;
+    if (defineConstant(This, t) < 0){
+        return ERR_TYPE_NOT_ANIMAL;
+    }
+    return 0;
 }
 
 unsigned int ElementAnimal_getDernierRepas(struct ElementAnimal *This){
