@@ -2,6 +2,7 @@
 #include<stdio.h>
 
 #include "elementanimal.h"
+#include "math.h"
 
 ElementAnimal* New_ElementAnimal(Type t){
 	ElementAnimal* This = malloc(sizeof(ElementAnimal));
@@ -166,4 +167,14 @@ unsigned int ElementAnimal_getderniereReproduction(struct ElementAnimal *This){
 
 void ElementAnimal_setderniereReproduction(struct ElementAnimal *This, unsigned int toset){
 	This->derniereReproduction=toset;
+}
+
+Bool survie(struct ElementAnimal *This){
+    if (This->sasiete == 0 && This->dernierRepas > This->dureeSurvie)
+        return False;
+    else return True;
+}
+
+void tour(ElementAnimal *This){
+    This->sasiete=max(This->sasiete-This->metabolisme, 0);
 }

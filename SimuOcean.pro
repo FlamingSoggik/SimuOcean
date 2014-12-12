@@ -20,5 +20,6 @@ HEADERS += \
     case.h \
     listeelem.h \
     listetype.h \
-    grille.h
+    grille.h \
+    Bool.h
 

@@ -2,6 +2,7 @@
 #define ELEMENTANIMAL_H
 
 #include "element.h"
+#include "Bool.h"
 
 #define ERR_TYPE_NOT_ANIMAL -1
 #ifdef __cplusplus
@@ -34,13 +35,11 @@ typedef struct ElementAnimal
 		int gestation;
 		int frequenceReproduction;
 
-
-
 } ElementAnimal;
 
 //Constructeurs
 ElementAnimal* New_ElementAnimal(Type t);
-ElementAnimal ElementAnimalCreate(Type t);
+//ElementAnimal ElementAnimalCreate(Type t);
 
 //ElementAnimal* New_ElementAnimal_v12(int v12);
 
@@ -60,6 +59,8 @@ void ElementAnimal_setSasiete(struct ElementAnimal *This, int toset);
 unsigned int ElementAnimal_getderniereReproduction(struct ElementAnimal *This);
 void ElementAnimal_setderniereReproduction(struct ElementAnimal *This, unsigned int toset);
 
+Bool survie(struct ElementAnimal *This);
+void tour(ElementAnimal *This);
 
 #ifdef __cplusplus
 }
