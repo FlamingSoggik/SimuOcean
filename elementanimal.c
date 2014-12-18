@@ -153,8 +153,7 @@ void ElementAnimal_New_Free(struct ElementAnimal *This){
 }
 
 void ElementAnimal_Free(struct ElementAnimal *This){
-	Element_Clear((Element*)This);
-	free(This);
+    Element_Clear((Element*)This);
 	puts("Destruction de l'Animal statique.\n");
 }
 
