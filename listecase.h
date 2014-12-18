@@ -9,14 +9,14 @@
 #define ERROR_ONE_PONT_MAX -4
 
 
-typedef struct ItemListeCase{
+typedef struct MaillonListeCase{
         struct Case* c;
-        struct ItemListeCase* next;
-}ItemListeCase;
+        struct MaillonListeCase* next;
+}MaillonListeCase;
 
 typedef struct ListeCase {
     int taille;
-    struct ItemListeCase *Top;
+    struct MaillonListeCase *Top;
     void(*Free)();
     int(*Push)(struct ListeCase*, struct Case*);
     void(*Pop)(struct ListeCase*);

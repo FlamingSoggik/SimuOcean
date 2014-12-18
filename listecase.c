@@ -22,7 +22,7 @@ void ListeCase_New_Free(ListeCase *This){
 }
 
 void ListeCase_Clear(ListeCase *This){
-    ItemListeCase *tmp;
+    MaillonListeCase *tmp;
     while(This->Top)
     {
         tmp = This->Top->next;
@@ -33,7 +33,7 @@ void ListeCase_Clear(ListeCase *This){
 }
 
 int ListeCase_Push(ListeCase* This, Case *c){
-    ItemListeCase *il = malloc(sizeof(ItemListeCase));
+    MaillonListeCase *il = malloc(sizeof(MaillonListeCase));
     if (!il) return ERROR_MALLOC_ITEM;
     il->next=This->Top;
     il->c=c;
@@ -45,7 +45,7 @@ int ListeCase_Push(ListeCase* This, Case *c){
 Case* ListeCase_Pop(ListeCase* This){
     if (This->taille == 0)
         return NULL;
-    ItemListeCase *tmp = This->Top->next;
+    MaillonListeCase *tmp = This->Top->next;
     Case *c = This->Top->c;
     free(This->Top);
     This->Top=tmp;

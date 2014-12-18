@@ -6,14 +6,14 @@
 #define ERROR_MALLOC_ITEM -1
 #define ERROR_LISTE_VIDE -2
 
-typedef struct ItemListe{
+typedef struct MaillonListeType{
 		Type t;
-		struct ItemListe* next;
-}ItemListe;
+        struct MaillonListeType* next;
+}MaillonListeType;
 
 typedef struct ListeType {
 	int taille;
-	struct ItemListe *Top;
+    struct MaillonListeType *Top;
 	void(*Free)();
 	int(*Push)(struct ListeType*, Type t);
 	void(*Pop)(struct ListeType*);

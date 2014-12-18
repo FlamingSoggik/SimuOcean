@@ -9,14 +9,14 @@
 #define ERROR_ONE_PONT_MAX -4
 
 
-typedef struct ItemListeElem{
+typedef struct MaillonListeElem{
         struct Element* e;
-		struct ItemListeElem* next;
-}ItemListeElem;
+        struct MaillonListeElem* next;
+}MaillonListeElem;
 
 typedef struct ListeElem {
 	int taille;
-	struct ItemListeElem *Top;
+    struct MaillonListeElem *Top;
 	void(*Free)();
 	int(*Push)(struct ListeElem*, struct Element*);
 	void(*Pop)(struct ListeElem*);

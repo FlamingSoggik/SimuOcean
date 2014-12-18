@@ -21,7 +21,7 @@ void ListeType_New_Free(ListeType *This){
 }
 
 void ListeType_Clear(ListeType *This){
-	ItemListe *tmp;
+	MaillonListeType *tmp;
 	while(This->Top)
 	{
 		tmp = This->Top->next;
@@ -32,7 +32,7 @@ void ListeType_Clear(ListeType *This){
 }
 
 int ListeType_Push(ListeType* This, Type t){
-	ItemListe *il = malloc(sizeof(ItemListe));
+	MaillonListeType *il = malloc(sizeof(MaillonListeType));
 	if (!il) return ERROR_MALLOC_ITEM;
 	il->next=This->Top;
 	il->t=t;
@@ -44,7 +44,7 @@ int ListeType_Push(ListeType* This, Type t){
 Type ListeType_Pop(ListeType* This){
 	if (This->taille == 0)
 		return VOID;
-	ItemListe *tmp = This->Top->next;
+	MaillonListeType *tmp = This->Top->next;
 	Type t = This->Top->t;
 	free(This->Top);
 	This->Top=tmp;
