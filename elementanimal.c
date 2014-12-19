@@ -186,7 +186,8 @@ void ElementAnimal_tour(struct ElementAnimal *This){
 
 void ElementAnimal_predation(ElementAnimal *This)
 {
-    This->caseParent->g->getListVoisins(This->caseParent);
+	Case* **MatriceAccessiblePredation;
+	MatriceAccessiblePredation=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX, This->caseParent->posY, 1);
 
 //    Si X a dans son voisinnage immédiat (8 cases) un élément Y et satiete(X)+ taille(Y)<
 //    taille_du_bide(X), Alors il se déplace sur la case de Y et dernier_repas(X)< tour_courant et

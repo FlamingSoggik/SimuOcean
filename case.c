@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "case.h"
 
-Case Case_Create(Grille * g, unsigned int posX, unsigned int posY)
+Case Case_Create(Grille *g, unsigned int posX, unsigned int posY)
 {
 	Case This;
     This.g = g;

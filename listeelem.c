@@ -24,7 +24,7 @@ void ListeElem_New_Free(ListeElem *This){
 }
 
 void ListeElem_Clear(ListeElem *This){
-	ItemListeElem *tmp;
+	MaillonListeElem *tmp;
 	while(This->Top)
 	{
 		tmp = This->Top->next;
@@ -40,7 +40,7 @@ int ListeElem_Push(ListeElem* This, Element *e){
 	if (e->type == PONT && This->HasAPont(This)){
 		return ERROR_ONE_PONT_MAX;
 	}
-	ItemListeElem *il = malloc(sizeof(ItemListeElem));
+	MaillonListeElem *il = malloc(sizeof(MaillonListeElem));
 	if (!il) return ERROR_MALLOC_ITEM;
 	il->next=This->Top;
 	il->e=e;
@@ -52,7 +52,7 @@ int ListeElem_Push(ListeElem* This, Element *e){
 Element* ListeElem_Pop(ListeElem* This){
 	if (This->taille == 0)
 		return NULL;
-	ItemListeElem *tmp = This->Top->next;
+	MaillonListeElem *tmp = This->Top->next;
 	Element *e = This->Top->e;
 	free(This->Top);
 	This->Top=tmp;
@@ -66,7 +66,7 @@ int ListeElem_Taille(ListeElem* This){
 
 
 char ListeElem_hasAPecheur(ListeElem* This){
-	ItemListeElem *tmp = This->Top;
+	MaillonListeElem *tmp = This->Top;
 	while(tmp != NULL){
 		if (tmp->e->type == PECHEUR)
 			return 1;
@@ -76,7 +76,7 @@ char ListeElem_hasAPecheur(ListeElem* This){
 }
 
 char ListeElem_hasAPont(ListeElem* This){
-	ItemListeElem *tmp = This->Top;
+	MaillonListeElem *tmp = This->Top;
 	while(tmp != NULL){
 		if (tmp->e->type == PONT)
 			return 1;
@@ -86,7 +86,7 @@ char ListeElem_hasAPont(ListeElem* This){
 }
 
 char ListeElem_hasAnAnimal(ListeElem* This){
-	ItemListeElem *tmp = This->Top;
+	MaillonListeElem *tmp = This->Top;
 	while(tmp != NULL){
 		if (tmp->e->type != PECHEUR && tmp->e->type != PONT)
 			return 1;

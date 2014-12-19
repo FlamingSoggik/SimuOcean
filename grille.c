@@ -9,20 +9,21 @@
 #define NORMAL "\033[00m"
 #define GRAS "\033[01m"
 
-Grille Grille_Create(){
+Grille Grille_Create(int Taille){
 	Grille g;
-	Grille_Init(&g);
+	Grille_Init(&g, Taille);
 	g.Free=Grille_Free;
 	return g;
 }
 
-void Grille_Init(Grille *This){
+void Grille_Init(Grille *This, int Taille){
 	This->Clear = Grille_Clear;
 	This->Print = Grille_Print;
-	This->tab=malloc(sizeof(Case*)*10);
+	This->Taille=Taille;
+	This->tab=malloc(sizeof(Case*)*Taille);
     unsigned int i,j;
 	for (i=0;i<10;++i){
-		This->tab[i]=malloc(sizeof(Case)*10);
+		This->tab[i]=malloc(sizeof(Case)*Taille);
 	}
 	for(i=0;i<10;++i){
 		for(j=0; j<10; ++j){
@@ -79,12 +80,41 @@ void Grille_Free(struct Grille *This){
 	puts("Grille detruite\n");
 }
 
-
-ListeCase *getListVoisins(struct Grille *This, Case *c)
+Case*** Grille_getMatriceVoisins(Grille *This, unsigned int posX, unsigned int posY, unsigned int nbSauts)
 {
-    ListeCase *l = malloc(sizeof(ListeElem));
-    if ((double)c->posX-1 >= 0 && (double)c->posY-1 >= 0){
-        l->Push(l, &This->tab[c->posX-1][c->posY-1]);
-    }
-    return l;
+printf("Taille de la grille : %d\n", This->Taille);
+	unsigned int taille=2*nbSauts+1;
+printf("Taille du nouveau tableau : %d\n", taille);
+	//Coordonnées de la case du milieu du nouveau tableau
+	unsigned int cMNT = nbSauts;
+printf("Centre de la Matrice à renvoyer : %d\n", cMNT);
+	Case* **tableau = malloc(sizeof(Case*)*taille);
+	unsigned int i;
+	for(i=0;i<taille;++i){
+		tableau[i] = malloc(sizeof(Case*)*taille);
+	}
+	tableau[cMNT][cMNT]=NULL;
+	int j, k;
+	for(i=nbSauts;i>0;--i){
+printf("Nous somme dans la boucle pour le saut de 1 cases\n");
+		for(j=posX-i,k=0;j<(double)posX+i+1;++j,++k){
+printf("J, qui correspond à la valeur de x qui varie afin de completer la première ligne vaut %d\n", j);
+			if (j < 0 || (double)posY-i < 0){
+printf("La position (ligne superieure) évaluée est en dehors de la Grille, la valeur null est placée dans la case [%d][%d]\n", cMNT-i+k, cMNT-i);
+				tableau[cMNT-i+k][cMNT-i]= NULL;
+			} else {
+printf("La position (ligne superieure) évaluée est dans la Grille, l'adresse de la case correspondante ([%d][%d]) est placée dans la case [%d][%d]\n", j, posY-i, cMNT-i+k, cMNT-i);
+				tableau[cMNT-i+k][cMNT-i]=&This->tab[j][posY-i];
+			}
+			printf("\n\n");
+			if (j > (double)This->Taille || (double)posY+i > This->Taille){
+printf("La position (ligne inferieure) évaluée est en dehors de la Grille, la valeur null est placée dans la case [%d][%d]", cMNT-i+k, cMNT+i);
+				tableau[cMNT-i+k][cMNT+i]= NULL;
+			} else {
+printf("La position (ligne inferieure) évaluée est dans la Grille, l'adresse de la case correspondante ([%d][%d]) est placée dans la case [%d][%d]\n\n\n\n", j, posY+i, cMNT-i+k, cMNT+i);
+				tableau[cMNT-i+k][cMNT+i]=&This->tab[j][posY+i];
+			}
+		}
+	}
+	return tableau;
 }
