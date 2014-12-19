@@ -9,7 +9,7 @@ int main(void)
 	//Constructction d'un tableau d'élément
 	Grille g = Grille_Create(10);
 	g.Print(&g);
-	Grille_getMatriceVoisins(&g, 2,2,2);
+	Grille_getMatriceVoisins(&g, 1,1,2);
 	g.Free(&g);
 
 //	Element *tabElement[10][10];

@@ -98,23 +98,46 @@ printf("Centre de la Matrice à renvoyer : %d\n", cMNT);
 	for(i=nbSauts;i>0;--i){
 printf("Nous somme dans la boucle pour le saut de 1 cases\n");
 		for(j=posX-i,k=0;j<(double)posX+i+1;++j,++k){
-printf("J, qui correspond à la valeur de x qui varie afin de completer la première ligne vaut %d\n", j);
-			if (j < 0 || (double)posY-i < 0){
-printf("La position (ligne superieure) évaluée est en dehors de la Grille, la valeur null est placée dans la case [%d][%d]\n", cMNT-i+k, cMNT-i);
+//printf("J, qui correspond à la valeur de x qui varie afin de completer la première et dernière ligne vaut %d\n", j);
+			if (j < 0 || j > (double)This->Taille-1 || (double)posY-i < 0 || (double)posY-i > This->Taille-1){
+//printf("La position (ligne superieure) évaluée est en dehors de la Grille ([%d][%d]), la valeur null est placée dans la case [%d][%d]\n", j, posY-i, cMNT-i+k, cMNT-i);
 				tableau[cMNT-i+k][cMNT-i]= NULL;
 			} else {
-printf("La position (ligne superieure) évaluée est dans la Grille, l'adresse de la case correspondante ([%d][%d]) est placée dans la case [%d][%d]\n", j, posY-i, cMNT-i+k, cMNT-i);
+//printf("La position (ligne superieure) évaluée est dans la Grille, l'adresse de la case correspondante ([%d][%d]) est placée dans la case [%d][%d]\n", j, posY-i, cMNT-i+k, cMNT-i);
 				tableau[cMNT-i+k][cMNT-i]=&This->tab[j][posY-i];
 			}
-			printf("\n\n");
-			if (j > (double)This->Taille || (double)posY+i > This->Taille){
-printf("La position (ligne inferieure) évaluée est en dehors de la Grille, la valeur null est placée dans la case [%d][%d]", cMNT-i+k, cMNT+i);
+//printf("\n\n");
+			if (j < 0 || j > (double)This->Taille-1 || (double)posY+i < 0 || (double)posY+i > This->Taille-1){
+//printf("La position (ligne inferieure) évaluée est en dehors de la Grille ([%d][%d]), la valeur null est placée dans la case [%d][%d]\n", j, posY+i, cMNT-i+k, cMNT+i);
 				tableau[cMNT-i+k][cMNT+i]= NULL;
 			} else {
-printf("La position (ligne inferieure) évaluée est dans la Grille, l'adresse de la case correspondante ([%d][%d]) est placée dans la case [%d][%d]\n\n\n\n", j, posY+i, cMNT-i+k, cMNT+i);
+//printf("La position (ligne inferieure) évaluée est dans la Grille, l'adresse de la case correspondante ([%d][%d]) est placée dans la case [%d][%d]\n\n\n\n", j, posY+i, cMNT-i+k, cMNT+i);
 				tableau[cMNT-i+k][cMNT+i]=&This->tab[j][posY+i];
 			}
 		}
+
+
+
+		for(j=posY-i+1,k=1;j<(double)posX+i-1+1;++j,++k){
+//printf("J, qui correspond à la valeur de y qui varie afin de completer la première et dernière colonne vaut %d\n", j);
+			if (j < 0 || j > (double)This->Taille-1 || (double)posX-i < 0 || (double)posX-i > This->Taille-1){
+//printf("La position (ligne superieure) évaluée est en dehors de la Grille ([%d][%d]), la valeur null est placée dans la case [%d][%d]\n", posX-i, j, cMNT-i, cMNT-i+k);
+				tableau[cMNT-i][cMNT-i+k]= NULL;
+			} else {
+//printf("La position (ligne superieure) évaluée est dans la Grille, l'adresse de la case correspondante ([%d][%d]) est placée dans la case [%d][%d]\n", posX-i, j, cMNT-i, cMNT-i+k);
+				tableau[cMNT-i][cMNT-i+k]=&This->tab[posX-i][j];
+			}
+//printf("\n\n");
+			if (j < 0 || j > (double)This->Taille-1 || (double)posX+i < 0 || (double)posX+i > This->Taille-1){
+//printf("La position (ligne inferieure) évaluée est en dehors de la Grille ([%d][%d]), la valeur null est placée dans la case [%d][%d]\n", posX+i, j, cMNT+i, cMNT-i+k);
+				tableau[cMNT+i][cMNT-i+k]= NULL;
+			} else {
+//printf("La position (ligne inferieure) évaluée est dans la Grille, l'adresse de la case correspondante ([%d][%d]) est placée dans la case [%d][%d]\n\n\n\n", posX+i, j, cMNT+i, cMNT-i+k);
+				tableau[cMNT+i][cMNT-i+k]=&This->tab[posX+i][j];
+			}
+		}
+
+
 	}
 	return tableau;
 }
