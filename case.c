@@ -24,3 +24,4 @@ void Case_Clear(Case *This){
 void Case_Print(Case *This){
 	printf("Rien à afficher pour le moment\n");
 }
+

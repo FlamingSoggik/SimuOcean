@@ -3,6 +3,7 @@
 
 #include "element.h"
 #include "Bool.h"
+#include "listetype.h"
 
 #define ERR_TYPE_NOT_ANIMAL -1
 #ifdef __cplusplus
@@ -29,6 +30,9 @@ typedef struct ElementAnimal
 		unsigned int (*GetDerniereReproduction)(struct ElementAnimal*);
 		void (*SetDerniereReproduction)(struct ElementAnimal* , unsigned int);
 
+		struct ListeType* listePredation;
+
+		/* "Constantes" */
 		unsigned int dureeSurvie;
 		unsigned int taille;
 		unsigned int tailleDuBide;
@@ -39,6 +43,7 @@ typedef struct ElementAnimal
 
         void (*tour)(struct ElementAnimal*);
         Bool (*survie)(struct ElementAnimal *, unsigned int);
+		Bool (*peutManger)(struct ElementAnimal*, Type t);
 
 } ElementAnimal;
 
@@ -67,6 +72,7 @@ void ElementAnimal_setderniereReproduction(struct ElementAnimal *This, unsigned 
 Bool ElementAnimal_survie(struct ElementAnimal *This, unsigned int tourCourrant);
 void ElementAnimal_tour(struct ElementAnimal *This);
 void ElementAnimal_predation(struct ElementAnimal *This);
+Bool ElementAnimal_peutManger(struct ElementAnimal* This, Type t);
 
 #ifdef __cplusplus
 }

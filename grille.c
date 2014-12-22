@@ -20,6 +20,9 @@ void Grille_Init(Grille *This, int Taille){
 	This->Clear = Grille_Clear;
 	This->Print = Grille_Print;
 	This->Taille=Taille;
+	This->TailleMaxSousPont=10;
+	This->TourCourant = 0;
+	This->moveFromTo=Grille_moveFromTo;
 	This->tab=malloc(sizeof(Case*)*Taille);
     unsigned int i,j;
 	for (i=0;i<10;++i){
@@ -140,4 +143,12 @@ printf("Nous somme dans la boucle pour le saut de 1 cases\n");
 
 	}
 	return tableau;
+}
+
+
+void Grille_moveFromTo(Grille *This, Element *elem, unsigned int posX, unsigned int posY)
+{
+	This->tab[elem->caseParent->posX][elem->caseParent->posY].liste->remove(This->tab[elem->caseParent->posX][elem->caseParent->posY].liste, elem);
+	This->tab[posX][posY].liste->Push(This->tab[posX][posY].liste, elem);
+	elem->caseParent=&(This->tab[posX][posY]);
 }

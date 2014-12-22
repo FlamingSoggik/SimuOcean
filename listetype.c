@@ -3,6 +3,8 @@
 
 void ListeType_Init(ListeType* This){
 	This->taille=0;
+	This->Push=ListeType_Push;
+	This->Pop=ListeType_Pop;
 	This->Clear=ListeType_Clear;
 	This->Taille=ListeType_Taille;
 }
@@ -54,4 +56,19 @@ Type ListeType_Pop(ListeType* This){
 
 int ListeType_Taille(ListeType* This){
 	return This->taille;
+}
+
+
+Bool ListeType_Contain(ListeType * This, Type t)
+{
+	if (This->taille == 0)
+		return False;
+	MaillonListeType *tmp=This->Top;
+	while(tmp != NULL)
+	{
+		if (tmp->t == t)
+			return True;
+		tmp=tmp->next;
+	}
+	return False;
 }

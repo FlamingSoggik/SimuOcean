@@ -8,15 +8,15 @@ struct Grille;
 
 typedef struct Case {
     unsigned int posX;
-    unsigned int posY;
-    Grille * g;
+	unsigned int posY;
+	struct Grille* g;
     struct ListeElem *liste;
 	void(*Free)();
 	void(*Clear)(struct Case*);
 	void (*Print)(struct Case *This);
 }Case;
 
-Case Case_Create(Grille * g, unsigned int posX, unsigned int posY);
+struct Case Case_Create(struct Grille * g, unsigned int posX, unsigned int posY);
 void Case_Free(Case *This);
 void Case_Clear(Case *This);
 void Case_Print(Case *This);

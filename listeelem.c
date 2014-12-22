@@ -1,4 +1,5 @@
 #include "listeelem.h"
+#include "elementanimal.h"
 #include <stdlib.h>
 
 void ListeElem_Init(ListeElem* This){
@@ -8,6 +9,10 @@ void ListeElem_Init(ListeElem* This){
 	This->HasAPont=ListeElem_hasAPont;
 	This->HasAPecheur=ListeElem_hasAPecheur;
 	This->HasAnAnimal=ListeElem_hasAnAnimal;
+	This->getAnimal=ListeElem_getAnimal;
+	This->getPont=ListeElem_getPont;
+	This->remove=ListeElem_remove;
+	This->deleteElement=ListeElem_deleteElement;
 }
 
 ListeElem* New_ListeElem(){
@@ -93,4 +98,102 @@ char ListeElem_hasAnAnimal(ListeElem* This){
 		tmp=tmp->next;
 	}
 	return 0;
+}
+
+
+Element* ListeElem_getAnimal(ListeElem *This)
+{
+	MaillonListeElem *tmp = This->Top;
+	while(tmp != NULL){
+		if (tmp->e->type != PECHEUR && tmp->e->type != PONT)
+			return tmp->e;
+		tmp=tmp->next;
+	}
+	return NULL;
+}
+
+
+Element *ListeElem_getPont(ListeElem *This)
+{
+	MaillonListeElem *tmp = This->Top;
+	while(tmp != NULL){
+		if (tmp->e->type == PONT)
+			return tmp->e;
+		tmp=tmp->next;
+	}
+	return NULL;
+}
+
+
+Bool ListeElem_deleteElement(ListeElem *This, Element *e)
+{
+	MaillonListeElem *tmp = This->Top;
+	MaillonListeElem *prec = NULL;
+	while(tmp != NULL){
+		if (tmp->e == e){
+			switch (e->type) {
+				case PONT:
+					Element_New_Free(e);
+					break;
+				case PECHEUR:
+					Element_New_Free(e);
+					break;
+				default:
+					ElementAnimal_New_Free((ElementAnimal *)e);
+					break;
+			}
+			if (prec == NULL){
+				This->Top=tmp->next;
+				--This->taille;
+				free(tmp);
+				return True;
+			}
+			else {
+				prec->next=tmp->next;
+				--This->taille;
+				free(tmp);
+				return True;
+			}
+		}
+		prec=tmp;
+		tmp=tmp->next;
+	}
+	return False;
+}
+
+
+Bool ListeElem_remove(ListeElem *This, Element *e)
+{
+	{
+		MaillonListeElem *tmp = This->Top;
+		MaillonListeElem *prec = NULL;
+		while(tmp != NULL){
+			if (tmp->e == e){
+				switch (e->type) {
+					case PONT:
+						Element_New_Free(e);
+						break;
+					case PECHEUR:
+						Element_New_Free(e);
+						break;
+					default:
+						ElementAnimal_New_Free((ElementAnimal *)e);
+						break;
+				}
+				if (prec == NULL){
+					This->Top=tmp->next;
+					--This->taille;
+					return True;
+				}
+				else {
+					prec->next=tmp->next;
+					--This->taille;
+					return True;
+				}
+			}
+			prec=tmp;
+			tmp=tmp->next;
+		}
+		return False;
+	}
 }
