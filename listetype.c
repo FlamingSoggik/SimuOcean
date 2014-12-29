@@ -28,9 +28,9 @@ void ListeType_Clear(ListeType *This){
 	{
 		tmp = This->Top->next;
 		free(This->Top);
+		--This->taille;
 		This->Top = tmp;
 	}
-	This->taille = 0;
 }
 
 int ListeType_Push(ListeType* This, Type t){
@@ -50,7 +50,7 @@ Type ListeType_Pop(ListeType* This){
 	Type t = This->Top->t;
 	free(This->Top);
 	This->Top=tmp;
-	This->taille--;
+	--This->taille;
 	return t;
 }
 

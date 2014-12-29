@@ -2,6 +2,7 @@
 #include "element.h"
 #include "elementanimal.h"
 #include "grille.h"
+#include <stdlib.h>
 
 int main(void)
 {
@@ -9,7 +10,13 @@ int main(void)
 	//Constructction d'un tableau d'élément
 	Grille g = Grille_Create(10);
 	g.Print(&g);
-	Grille_getMatriceVoisins(&g, 1,1,2);
+	Case*** mattmp;
+//	mattmp=Grille_getMatriceVoisins(&g, 1,1,2);
+//	int i;
+//	for (i=0; i<g.Taille;++i){
+//		free(mattmp[0]);
+//		free(mattmp);
+//	}
 	g.Free(&g);
 
 //	Element *tabElement[10][10];

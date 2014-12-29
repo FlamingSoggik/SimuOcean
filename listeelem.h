@@ -18,7 +18,7 @@ typedef struct MaillonListeElem{
 typedef struct ListeElem {
 	int taille;
     struct MaillonListeElem *Top;
-	void(*Free)();
+	void(*Free)(struct ListeElem*);
 	int(*Push)(struct ListeElem*, struct Element*);
 	void(*Pop)(struct ListeElem*);
 	void(*Clear)(struct ListeElem*);

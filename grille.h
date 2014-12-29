@@ -22,7 +22,7 @@ typedef struct Grille
 
 
 Grille Grille_Create(int Taille);
-void Grille_Init(Grille *This, int Taille);
+void Grille_Init(Grille *This, unsigned int Taille);
 void Grille_Clear(struct Grille *This);
 void Grille_Free(struct Grille *This);
 void Grille_Print(struct Grille *This);

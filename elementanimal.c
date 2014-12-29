@@ -193,7 +193,7 @@ void ElementAnimal_setDernierRepas(struct ElementAnimal *This, unsigned int tose
 }
 
 void ElementAnimal_New_Free(struct ElementAnimal *This){
-	if(This) Element_Clear((Element*)This);
+	if(This) ElementAnimal_Clear(This);
 	free(This);
 	puts("Destruction de l'Animal dynamique.\n");
 }
@@ -302,4 +302,10 @@ Bool ElementAnimal_peutManger(ElementAnimal *This, Type t)
 		return True;
 	}
 	return False;
+}
+
+
+void ElementAnimal_Clear(ElementAnimal *This)
+{
+	This->listePredation->Free(This->listePredation);
 }

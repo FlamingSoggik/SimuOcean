@@ -55,11 +55,11 @@ ElementAnimal* New_ElementAnimal(Case *c, Type t);
 
 //Initialisateur
 char ElementAnimal_Init(Case *c, ElementAnimal* This, Type t);
-void ElementAnimal_setType(ElementAnimal *This, Type t);
 
 //Destructeurs
 void ElementAnimal_Free(struct ElementAnimal *This);
 void ElementAnimal_New_Free(struct ElementAnimal *This);
+void ElementAnimal_Clear(struct ElementAnimal *This);
 
 //Others
 unsigned int ElementAnimal_getDernierRepas(struct ElementAnimal *This);

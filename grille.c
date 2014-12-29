@@ -16,7 +16,7 @@ Grille Grille_Create(int Taille){
 	return g;
 }
 
-void Grille_Init(Grille *This, int Taille){
+void Grille_Init(Grille *This, unsigned int Taille){
 	This->Clear = Grille_Clear;
 	This->Print = Grille_Print;
 	This->Taille=Taille;
@@ -25,23 +25,27 @@ void Grille_Init(Grille *This, int Taille){
 	This->moveFromTo=Grille_moveFromTo;
 	This->tab=malloc(sizeof(Case*)*Taille);
     unsigned int i,j;
-	for (i=0;i<10;++i){
+	for (i=0;i<Taille;++i){
 		This->tab[i]=malloc(sizeof(Case)*Taille);
 	}
-	for(i=0;i<10;++i){
-		for(j=0; j<10; ++j){
-            This->tab[i][j]= Case_Create(This, i, j);
+	for(i=0;i<Taille;++i){
+		for(j=0; j<Taille; ++j){
+			This->tab[i][j]= Case_Create(This, i, j);
 		}
 	}
 }
 
 void Grille_Clear(struct Grille *This){
-	int i, j;
-	for(i=0;i<10;++i){
-		for(j=0; j<10; ++j){
+	unsigned int i, j;
+	for(i=0;i<This->Taille;++i){
+		for(j=0; j<This->Taille; ++j){
 			This->tab[i][j].Free(&(This->tab[i][j]));
 		}
 	}
+	for(i=0; i<This->Taille; ++i){
+		free(This->tab[i]);
+	}
+	free(This->tab);
 }
 
 void Grille_Print(struct Grille *This){
@@ -85,12 +89,12 @@ void Grille_Free(struct Grille *This){
 
 Case*** Grille_getMatriceVoisins(Grille *This, unsigned int posX, unsigned int posY, unsigned int nbSauts)
 {
-printf("Taille de la grille : %d\n", This->Taille);
+//printf("Taille de la grille : %d\n", This->Taille);
 	unsigned int taille=2*nbSauts+1;
-printf("Taille du nouveau tableau : %d\n", taille);
+//printf("Taille du nouveau tableau : %d\n", taille);
 	//Coordonnées de la case du milieu du nouveau tableau
 	unsigned int cMNT = nbSauts;
-printf("Centre de la Matrice à renvoyer : %d\n", cMNT);
+//printf("Centre de la Matrice à renvoyer : %d\n", cMNT);
 	Case* **tableau = malloc(sizeof(Case*)*taille);
 	unsigned int i;
 	for(i=0;i<taille;++i){
@@ -99,7 +103,7 @@ printf("Centre de la Matrice à renvoyer : %d\n", cMNT);
 	tableau[cMNT][cMNT]=NULL;
 	int j, k;
 	for(i=nbSauts;i>0;--i){
-printf("Nous somme dans la boucle pour le saut de 1 cases\n");
+//printf("Nous somme dans la boucle pour le saut de 1 cases\n");
 		for(j=posX-i,k=0;j<(double)posX+i+1;++j,++k){
 //printf("J, qui correspond à la valeur de x qui varie afin de completer la première et dernière ligne vaut %d\n", j);
 			if (j < 0 || j > (double)This->Taille-1 || (double)posY-i < 0 || (double)posY-i > This->Taille-1){
@@ -144,7 +148,6 @@ printf("Nous somme dans la boucle pour le saut de 1 cases\n");
 	}
 	return tableau;
 }
-
 
 void Grille_moveFromTo(Grille *This, Element *elem, unsigned int posX, unsigned int posY)
 {

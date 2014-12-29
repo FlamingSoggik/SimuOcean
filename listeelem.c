@@ -4,6 +4,7 @@
 
 void ListeElem_Init(ListeElem* This){
 	This->taille=0;
+	This->Top=NULL;
 	This->Clear=ListeElem_Clear;
 	This->Taille=ListeElem_Taille;
 	This->HasAPont=ListeElem_hasAPont;
@@ -24,6 +25,13 @@ ListeElem* New_ListeElem(){
 }
 
 void ListeElem_New_Free(ListeElem *This){
+	MaillonListeElem *tmp;
+	while(This->Top != NULL){
+		tmp=This->Top;
+		This->Top=tmp->next;
+		tmp->e->Free(tmp->e);
+		free(tmp);
+	}
 	This->Clear(This);
 	free(This);
 }
@@ -61,7 +69,7 @@ Element* ListeElem_Pop(ListeElem* This){
 	Element *e = This->Top->e;
 	free(This->Top);
 	This->Top=tmp;
-	This->taille--;
+	--This->taille;
 	return e;
 }
 

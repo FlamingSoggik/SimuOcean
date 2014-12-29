@@ -25,11 +25,11 @@ void ListeCase_Clear(ListeCase *This){
     MaillonListeCase *tmp;
     while(This->Top)
     {
-        tmp = This->Top->next;
+		tmp = This->Top->next;
         free(This->Top);
+		--This->taille;
         This->Top = tmp;
-    }
-    This->taille = 0;
+	}
 }
 
 int ListeCase_Push(ListeCase* This, Case *c){
@@ -49,7 +49,7 @@ Case* ListeCase_Pop(ListeCase* This){
     Case *c = This->Top->c;
     free(This->Top);
     This->Top=tmp;
-    This->taille--;
+	--This->taille;
     return c;
 }
 

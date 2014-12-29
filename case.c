@@ -7,9 +7,10 @@ Case Case_Create(Grille *g, unsigned int posX, unsigned int posY)
     This.g = g;
     This.posX=posX;
     This.posY=posY;
-	This.Free=Case_Free;
-	This.Print=Case_Print;
 	This.liste = New_ListeElem();
+	This.Free=Case_Free;
+	This.Clear=Case_Clear;
+	This.Print=Case_Print;
 	return This;
 }
 
@@ -18,7 +19,7 @@ void Case_Free(Case *This){
 }
 
 void Case_Clear(Case *This){
-	This->liste->Free();
+	This->liste->Free(This->liste);
 }
 
 void Case_Print(Case *This){

@@ -7,11 +7,11 @@
 struct Grille;
 
 typedef struct Case {
+	struct Grille* g;
     unsigned int posX;
 	unsigned int posY;
-	struct Grille* g;
     struct ListeElem *liste;
-	void(*Free)();
+	void(*Free)(struct Case*);
 	void(*Clear)(struct Case*);
 	void (*Print)(struct Case *This);
 }Case;
