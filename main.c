@@ -11,12 +11,7 @@ int main(void)
 	Grille g = Grille_Create(10);
 	g.Print(&g);
 	Case*** mattmp;
-//	mattmp=Grille_getMatriceVoisins(&g, 1,1,2);
-//	int i;
-//	for (i=0; i<g.Taille;++i){
-//		free(mattmp[0]);
-//		free(mattmp);
-//	}
+	mattmp=Grille_getMatriceVoisins(&g, 1,1,2);
 	g.Free(&g);
 
 //	Element *tabElement[10][10];

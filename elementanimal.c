@@ -233,7 +233,7 @@ void ElementAnimal_tour(struct ElementAnimal *This){
 void ElementAnimal_predation(ElementAnimal *This)
 {
 	Case* **MatriceAccessiblePredation;
-	MatriceAccessiblePredation=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX, This->caseParent->posY, 1);
+	MatriceAccessiblePredation=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX, This->caseParent->posY, This->sautMax);
 	int i, j;
 	Element* plusInteressant;
 	char flag = 0;
@@ -282,6 +282,11 @@ void ElementAnimal_predation(ElementAnimal *This)
 			}
 		}
 	}
+	// On a plus besoin de la matrice temporaire donc on peux la supprimer :
+	for (i=0; i<5;++i){
+		free(MatriceAccessiblePredation[i]);
+	}
+	free(MatriceAccessiblePredation);
 	if(plusInteressant->type==PECHEUR){
 		This->caseParent->g->moveFromTo(This->caseParent->g, (Element*)This, plusInteressant->caseParent->posX, plusInteressant->caseParent->posY);
 		This->caseParent->liste->deleteElement(This->caseParent->liste, (Element*)This);
