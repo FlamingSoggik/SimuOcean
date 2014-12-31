@@ -50,12 +50,12 @@ void Grille_Clear(struct Grille *This){
 
 void Grille_Print(struct Grille *This){
 	int i, j;
-	for(i=0;i<10;++i)
+    for(i=0;i<This->Taille;++i)
         printf("=====" NORMAL);
 	printf("=\n");
-	for(i=0;i<10;++i){
+    for(i=0;i<This->Taille;++i){
 		printf("|");
-		for(j=0; j<10; ++j){
+        for(j=0; j<This->Taille; ++j){
 			if (This->tab[i][j].liste->HasAPecheur(This->tab[i][j].liste)) {
 				if (This->tab[i][j].liste->HasAPont(This->tab[i][j].liste)){
 					printf(" " PONT " " PECHEUR " " NORMAL " |");
@@ -75,7 +75,7 @@ void Grille_Print(struct Grille *This){
 			}
 		}
 		printf("\n");
-		for (j=0; j<10; j++)
+        for (j=0; j<This->Taille; j++)
 			printf("—————");
 		printf("—\n");
 	}
