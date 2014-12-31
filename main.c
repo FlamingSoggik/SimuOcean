@@ -8,8 +8,8 @@ int main(void)
 {
 
 	//Constructction d'un tableau d'élément
-	Grille g = Grille_Create(10);
-	g.Print(&g);
+    Grille g = Grille_Create(20); //Pour modifier cette valeur, il faut aussi modifier grill.c l.99
+    g.Print(&g);
 	Case*** mattmp;
 //	mattmp=Grille_getMatriceVoisins(&g, 1,1,2);
 //	int i;
