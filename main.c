@@ -16,6 +16,9 @@
 int main(void)
 {
 
+	Grille g = Grille_Create(20); //Pour modifier cette valeur, il faut aussi modifier grill.c l.99
+	g.Print(&g);
+
 	//Constructction d'un tableau d'élément
 //	Grille g = Grille_Create(10);
 //	g.Print(&g);
