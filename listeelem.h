@@ -8,6 +8,7 @@
 #define ERROR_LISTE_VIDE -2
 #define ERROR_BAD_TYPE_ELEMENT -3
 #define ERROR_ONE_PONT_MAX -4
+#define ERROR_ELEMENT_PASSED_NULL -5
 
 
 typedef struct MaillonListeElem{
@@ -20,7 +21,7 @@ typedef struct ListeElem {
     struct MaillonListeElem *Top;
 	void(*Free)(struct ListeElem*);
 	int(*Push)(struct ListeElem*, struct Element*);
-	void(*Pop)(struct ListeElem*);
+	struct Element* (*Pop)(struct ListeElem*);
 	void(*Clear)(struct ListeElem*);
 	int(*Taille)(struct ListeElem*);
 	char (*HasAPont)(struct ListeElem*);
@@ -30,6 +31,7 @@ typedef struct ListeElem {
 	struct Element* (*getPont)(struct ListeElem*);
 	Bool (*remove)(struct ListeElem*, struct Element*);
 	Bool (*deleteElement)(struct ListeElem*, struct Element*);
+	void (*Print)(struct ListeElem*);
 }ListeElem;
 
 int ListeElem_Taille(ListeElem* This);
@@ -46,5 +48,6 @@ struct Element* ListeElem_getAnimal(ListeElem* This);
 struct Element* ListeElem_getPont(ListeElem* This);
 Bool ListeElem_deleteElement(ListeElem*, struct Element*);
 Bool ListeElem_remove(ListeElem*, struct Element*);
+void ListeElem_Print(ListeElem*);
 
 #endif // LISTEELEM_H

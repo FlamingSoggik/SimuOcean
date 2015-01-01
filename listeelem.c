@@ -1,10 +1,14 @@
 #include "listeelem.h"
 #include "elementanimal.h"
 #include <stdlib.h>
+#include <stdio.h>
+
 
 void ListeElem_Init(ListeElem* This){
 	This->taille=0;
 	This->Top=NULL;
+	This->Push=ListeElem_Push;
+	This->Pop=ListeElem_Pop;
 	This->Clear=ListeElem_Clear;
 	This->Taille=ListeElem_Taille;
 	This->HasAPont=ListeElem_hasAPont;
@@ -14,6 +18,7 @@ void ListeElem_Init(ListeElem* This){
 	This->getPont=ListeElem_getPont;
 	This->remove=ListeElem_remove;
 	This->deleteElement=ListeElem_deleteElement;
+	This->Print=ListeElem_Print;
 }
 
 ListeElem* New_ListeElem(){
@@ -25,6 +30,11 @@ ListeElem* New_ListeElem(){
 }
 
 void ListeElem_New_Free(ListeElem *This){
+	This->Clear(This);
+	free(This);
+}
+
+void ListeElem_Clear(ListeElem *This){
 	MaillonListeElem *tmp;
 	while(This->Top != NULL){
 		tmp=This->Top;
@@ -32,24 +42,16 @@ void ListeElem_New_Free(ListeElem *This){
 		tmp->e->Free(tmp->e);
 		free(tmp);
 	}
-	This->Clear(This);
-	free(This);
-}
-
-void ListeElem_Clear(ListeElem *This){
-	MaillonListeElem *tmp;
-	while(This->Top)
-	{
-		tmp = This->Top->next;
-		free(This->Top);
-		This->Top = tmp;
-	}
 	This->taille = 0;
 }
 
 int ListeElem_Push(ListeElem* This, Element *e){
-	if(e->type == VOID)
+	if (e == NULL){
+		return ERROR_ELEMENT_PASSED_NULL;
+	}
+	if(e->type == VOID){
 		return ERROR_BAD_TYPE_ELEMENT;
+	}
 	if (e->type == PONT && This->HasAPont(This)){
 		return ERROR_ONE_PONT_MAX;
 	}
@@ -77,7 +79,7 @@ int ListeElem_Taille(ListeElem* This){
 	return This->taille;
 }
 
-
+//Cas non testé : la liste contient un pecheur
 char ListeElem_hasAPecheur(ListeElem* This){
 	MaillonListeElem *tmp = This->Top;
 	while(tmp != NULL){
@@ -88,6 +90,7 @@ char ListeElem_hasAPecheur(ListeElem* This){
 	return 0;
 }
 
+//Cas non testé : pont dans la liste
 char ListeElem_hasAPont(ListeElem* This){
 	MaillonListeElem *tmp = This->Top;
 	while(tmp != NULL){
@@ -101,14 +104,14 @@ char ListeElem_hasAPont(ListeElem* This){
 char ListeElem_hasAnAnimal(ListeElem* This){
 	MaillonListeElem *tmp = This->Top;
 	while(tmp != NULL){
-		if (tmp->e->type != PECHEUR && tmp->e->type != PONT)
+		if (tmp->e->type != PECHEUR && tmp->e->type != PONT && tmp->e->type != POLLUTION)
 			return 1;
 		tmp=tmp->next;
 	}
 	return 0;
 }
 
-
+//Renvoie un pointeur sur un animal et le garde dans la liste
 Element* ListeElem_getAnimal(ListeElem *This)
 {
 	MaillonListeElem *tmp = This->Top;
@@ -120,7 +123,7 @@ Element* ListeElem_getAnimal(ListeElem *This)
 	return NULL;
 }
 
-
+//Renvoie un pointeur sur un pont et le garde dans la liste
 Element *ListeElem_getPont(ListeElem *This)
 {
 	MaillonListeElem *tmp = This->Top;
@@ -132,24 +135,13 @@ Element *ListeElem_getPont(ListeElem *This)
 	return NULL;
 }
 
-
 Bool ListeElem_deleteElement(ListeElem *This, Element *e)
 {
 	MaillonListeElem *tmp = This->Top;
 	MaillonListeElem *prec = NULL;
 	while(tmp != NULL){
 		if (tmp->e == e){
-			switch (e->type) {
-				case PONT:
-					Element_New_Free(e);
-					break;
-				case PECHEUR:
-					Element_New_Free(e);
-					break;
-				default:
-					ElementAnimal_New_Free((ElementAnimal *)e);
-					break;
-			}
+			e->Free(e);
 			if (prec == NULL){
 				This->Top=tmp->next;
 				--This->taille;
@@ -169,7 +161,6 @@ Bool ListeElem_deleteElement(ListeElem *This, Element *e)
 	return False;
 }
 
-
 Bool ListeElem_remove(ListeElem *This, Element *e)
 {
 	{
@@ -177,17 +168,7 @@ Bool ListeElem_remove(ListeElem *This, Element *e)
 		MaillonListeElem *prec = NULL;
 		while(tmp != NULL){
 			if (tmp->e == e){
-				switch (e->type) {
-					case PONT:
-						Element_New_Free(e);
-						break;
-					case PECHEUR:
-						Element_New_Free(e);
-						break;
-					default:
-						ElementAnimal_New_Free((ElementAnimal *)e);
-						break;
-				}
+				e->Free(e);
 				if (prec == NULL){
 					This->Top=tmp->next;
 					--This->taille;
@@ -204,4 +185,15 @@ Bool ListeElem_remove(ListeElem *This, Element *e)
 		}
 		return False;
 	}
+}
+
+void ListeElem_Print(ListeElem * This)
+{
+	printf("Taille liste : %d --> ", This->taille);
+	MaillonListeElem *tmp = This->Top;
+	while(tmp != NULL){
+		printf("%d ", tmp->e->type);
+		tmp=tmp->next;
+	}
+	printf("\n");
 }

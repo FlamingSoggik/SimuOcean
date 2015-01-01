@@ -4,6 +4,7 @@
 
 void ListeCase_Init(ListeCase* This){
     This->taille=0;
+	This->Top=NULL;
     This->Clear=ListeCase_Clear;
     This->Taille=ListeCase_Taille;
 }

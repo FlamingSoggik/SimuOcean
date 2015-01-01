@@ -10,6 +10,26 @@
 extern "C" {
 #endif
 
+typedef struct ElementAnimal_Constantes{
+		unsigned int dureeSurvie;
+		unsigned int taille;
+		unsigned int tailleDuBide;
+		unsigned int sautMax;
+		int metabolisme;
+		int gestation;
+		int frequenceReproduction;
+		struct ListeType* listePredation;
+}ElementAnimal_Constantes;
+
+extern ElementAnimal_Constantes C_Plancton;
+extern ElementAnimal_Constantes C_Corail;
+extern ElementAnimal_Constantes C_Bar;
+extern ElementAnimal_Constantes C_Thon;
+extern ElementAnimal_Constantes C_Pyranha;
+extern ElementAnimal_Constantes C_Requin;
+extern ElementAnimal_Constantes C_Orque;
+extern ElementAnimal_Constantes C_Baleine;
+
 typedef struct ElementAnimal
 {
 
@@ -30,16 +50,7 @@ typedef struct ElementAnimal
 		unsigned int (*GetDerniereReproduction)(struct ElementAnimal*);
 		void (*SetDerniereReproduction)(struct ElementAnimal* , unsigned int);
 
-		struct ListeType* listePredation;
-
-		/* "Constantes" */
-		unsigned int dureeSurvie;
-		unsigned int taille;
-		unsigned int tailleDuBide;
-		unsigned int sautMax;
-		int metabolisme;
-		int gestation;
-		int frequenceReproduction;
+		ElementAnimal_Constantes* constantes;
 
         void (*tour)(struct ElementAnimal*);
         Bool (*survie)(struct ElementAnimal *, unsigned int);
@@ -57,9 +68,6 @@ ElementAnimal* New_ElementAnimal(Case *c, Type t);
 char ElementAnimal_Init(Case *c, ElementAnimal* This, Type t);
 
 //Destructeurs
-void ElementAnimal_Free(struct ElementAnimal *This);
-void ElementAnimal_New_Free(struct ElementAnimal *This);
-void ElementAnimal_Clear(struct ElementAnimal *This);
 
 //Others
 unsigned int ElementAnimal_getDernierRepas(struct ElementAnimal *This);

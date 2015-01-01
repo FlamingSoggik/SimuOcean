@@ -9,6 +9,17 @@
 
 #define max(a,b) (a>=b?a:b)
 
+
+ElementAnimal_Constantes C_Plancton;
+ElementAnimal_Constantes C_Corail;
+ElementAnimal_Constantes C_Bar;
+ElementAnimal_Constantes C_Thon;
+ElementAnimal_Constantes C_Pyranha;
+ElementAnimal_Constantes C_Requin;
+ElementAnimal_Constantes C_Orque;
+ElementAnimal_Constantes C_Baleine;
+
+
 ElementAnimal* New_ElementAnimal(Case *c, Type t){
 	ElementAnimal* This = malloc(sizeof(ElementAnimal));
 	if (!This) return NULL;
@@ -16,103 +27,36 @@ ElementAnimal* New_ElementAnimal(Case *c, Type t){
         free(This);
         return NULL;
     }
-	This->Free = (void*)Element_New_Free;
+	This->Free = Element_New_Free;
 	return This;
 }
 
-//ElementAnimal ElementAnimalCreate(Type t){
-//	ElementAnimal This;
-//    if (ElementAnimal_Init(&This, t) < 0){
-//        return;
-//    }
-//	This.Free = (void*)Element_Free;
-//	return This;
-//}
-
-//ElementAnimal* New_ElementAnimal_v12(int v12)
-//{
-//	   ElementAnimal *This = malloc(sizeof(ElementAnimal));
-//	   if(!This) return NULL;
-//	   ElementAnimal_Init(This);
-//	   This->Free = (void*)Element_New_Free;
-//	   This->dernierRepas = v12;
-//	   return This;
-//}
-
-char defineConstant(ElementAnimal* This, Type t)
+char lienVersConstantes(ElementAnimal* This, Type t)
 {
 	switch (t){
 	case PLANCTON:
-		This->dureeSurvie=1;
-		This->taille=1;
-		This->tailleDuBide=1;
-		This->sautMax=1;
-		This->metabolisme=1;
-		This->gestation=1;
-		This->frequenceReproduction=1;
+		This->constantes=&C_Plancton;
 		break;
 	case CORAIL:
-		This->dureeSurvie=1;
-		This->taille=1;
-		This->tailleDuBide=1;
-		This->sautMax=1;
-		This->metabolisme=1;
-		This->gestation=1;
-		This->frequenceReproduction=1;
+		This->constantes=&C_Corail;
 		break;
 	case BAR:
-		This->dureeSurvie=1;
-		This->taille=1;
-		This->tailleDuBide=1;
-		This->sautMax=1;
-		This->metabolisme=1;
-		This->gestation=1;
-		This->frequenceReproduction=1;
+		This->constantes=&C_Bar;
 		break;
 	case THON:
-		This->dureeSurvie=1;
-		This->taille=1;
-		This->tailleDuBide=1;
-		This->sautMax=1;
-		This->metabolisme=1;
-		This->gestation=1;
-		This->frequenceReproduction=1;
+		This->constantes=&C_Thon;
 		break;
 	case PYRANHA:
-		This->dureeSurvie=1;
-		This->taille=1;
-		This->tailleDuBide=1;
-		This->sautMax=1;
-		This->metabolisme=1;
-		This->gestation=1;
-		This->frequenceReproduction=1;
+		This->constantes=&C_Pyranha;
 		break;
 	case REQUIN:
-		This->dureeSurvie=1;
-		This->taille=1;
-		This->tailleDuBide=1;
-		This->sautMax=1;
-		This->metabolisme=1;
-		This->gestation=1;
-		This->frequenceReproduction=1;
+		This->constantes=&C_Requin;
 		break;
 	case ORQUE:
-		This->dureeSurvie=1;
-		This->taille=1;
-		This->tailleDuBide=1;
-		This->sautMax=1;
-		This->metabolisme=1;
-		This->gestation=1;
-		This->frequenceReproduction=1;
+		This->constantes=&C_Orque;
 		break;
 	case BALEINE:
-		This->dureeSurvie=1;
-		This->taille=1;
-		This->tailleDuBide=1;
-		This->sautMax=1;
-		This->metabolisme=1;
-		This->gestation=1;
-		This->frequenceReproduction=1;
+		This->constantes=&C_Baleine;
 		break;
 	default :
 		return ERR_TYPE_NOT_ANIMAL;
@@ -120,47 +64,126 @@ char defineConstant(ElementAnimal* This, Type t)
 	return 0;
 }
 
-char remplirListePredation(ElementAnimal* This, Type t)
+char defineConstant()
 {
-	This->listePredation=New_ListeType();
-	switch (t){
-	case PLANCTON:
-		break;
-	case CORAIL:
-		This->listePredation->Push(This->listePredation, PLANCTON);
-		break;
-	case BAR:
-		This->listePredation->Push(This->listePredation, PLANCTON);
-		This->listePredation->Push(This->listePredation, PONT);
-		break;
-	case THON:
-		This->listePredation->Push(This->listePredation, PLANCTON);
-		break;
-	case PYRANHA:
-		This->listePredation->Push(This->listePredation, BAR);
-		This->listePredation->Push(This->listePredation, THON);
-		This->listePredation->Push(This->listePredation, PECHEUR);
-		break;
-	case REQUIN:
-		This->listePredation->Push(This->listePredation, BAR);
-		This->listePredation->Push(This->listePredation, PECHEUR);
-		break;
-	case ORQUE:
-		This->listePredation->Push(This->listePredation, REQUIN);
-		This->listePredation->Push(This->listePredation, PECHEUR);
-		break;
-	case BALEINE:
-		This->listePredation->Push(This->listePredation, PLANCTON);
-		This->listePredation->Push(This->listePredation, PONT);
-		break;
-	default :
-		return ERR_TYPE_NOT_ANIMAL;
+	C_Plancton.dureeSurvie=1;
+	C_Plancton.taille=1;
+	C_Plancton.tailleDuBide=1;
+	C_Plancton.sautMax=1;
+	C_Plancton.metabolisme=1;
+	C_Plancton.gestation=1;
+	C_Plancton.frequenceReproduction=1;
+	C_Corail.dureeSurvie=1;
+	C_Corail.taille=1;
+	C_Corail.tailleDuBide=1;
+	C_Corail.sautMax=1;
+	C_Corail.metabolisme=1;
+	C_Corail.gestation=1;
+	C_Corail.frequenceReproduction=1;
+	C_Bar.dureeSurvie=1;
+	C_Bar.taille=1;
+	C_Bar.tailleDuBide=1;
+	C_Bar.sautMax=1;
+	C_Bar.metabolisme=1;
+	C_Bar.gestation=1;
+	C_Bar.frequenceReproduction=1;
+	C_Thon.dureeSurvie=1;
+	C_Thon.taille=1;
+	C_Thon.tailleDuBide=1;
+	C_Thon.sautMax=1;
+	C_Thon.metabolisme=1;
+	C_Thon.gestation=1;
+	C_Thon.frequenceReproduction=1;
+	C_Pyranha.dureeSurvie=1;
+	C_Pyranha.taille=1;
+	C_Pyranha.tailleDuBide=1;
+	C_Pyranha.sautMax=1;
+	C_Pyranha.metabolisme=1;
+	C_Pyranha.gestation=1;
+	C_Pyranha.frequenceReproduction=1;
+	C_Requin.dureeSurvie=1;
+	C_Requin.taille=1;
+	C_Requin.tailleDuBide=1;
+	C_Requin.sautMax=1;
+	C_Requin.metabolisme=1;
+	C_Requin.gestation=1;
+	C_Requin.frequenceReproduction=1;
+	C_Orque.dureeSurvie=1;
+	C_Orque.taille=1;
+	C_Orque.tailleDuBide=1;
+	C_Orque.sautMax=1;
+	C_Orque.metabolisme=1;
+	C_Orque.gestation=1;
+	C_Orque.frequenceReproduction=1;
+	C_Baleine.dureeSurvie=1;
+	C_Baleine.taille=1;
+	C_Baleine.tailleDuBide=1;
+	C_Baleine.sautMax=1;
+	C_Baleine.metabolisme=1;
+	C_Baleine.gestation=1;
+	C_Baleine.frequenceReproduction=1;
+	return 0;
+}
+
+char remplirListePredation()
+{
+	static char i = 0;
+	if (i == 0){
+		C_Plancton.listePredation = New_ListeType();
+		C_Corail.listePredation = New_ListeType();
+		C_Bar.listePredation = New_ListeType();
+		C_Thon.listePredation = New_ListeType();
+		C_Pyranha.listePredation = New_ListeType();
+		C_Requin.listePredation = New_ListeType();
+		C_Orque.listePredation = New_ListeType();
+		C_Baleine.listePredation = New_ListeType();
 	}
+	else {
+		C_Plancton.listePredation->Free(C_Plancton.listePredation);
+		C_Plancton.listePredation = New_ListeType();
+
+		C_Corail.listePredation->Free(C_Corail.listePredation);
+		C_Corail.listePredation = New_ListeType();
+
+		C_Bar.listePredation->Free(C_Bar.listePredation);
+		C_Bar.listePredation = New_ListeType();
+
+		C_Thon.listePredation->Free(C_Thon.listePredation);
+		C_Thon.listePredation = New_ListeType();
+
+		C_Pyranha.listePredation->Free(C_Pyranha.listePredation);
+		C_Pyranha.listePredation = New_ListeType();
+
+		C_Requin.listePredation->Free(C_Requin.listePredation);
+		C_Requin.listePredation = New_ListeType();
+
+		C_Orque.listePredation->Free(C_Orque.listePredation);
+		C_Orque.listePredation = New_ListeType();
+
+		C_Baleine.listePredation->Free(C_Baleine.listePredation);
+		C_Baleine.listePredation = New_ListeType();
+	}
+	C_Corail.listePredation->Push(C_Corail.listePredation, PLANCTON);
+	C_Bar.listePredation->Push(C_Bar.listePredation, PLANCTON);
+	C_Bar.listePredation->Push(C_Bar.listePredation, PONT);
+	C_Thon.listePredation->Push(C_Thon.listePredation, PLANCTON);
+	C_Pyranha.listePredation->Push(C_Pyranha.listePredation, BAR);
+	C_Pyranha.listePredation->Push(C_Pyranha.listePredation, THON);
+	C_Pyranha.listePredation->Push(C_Pyranha.listePredation, PECHEUR);
+	C_Requin.listePredation->Push(C_Requin.listePredation, BAR);
+	C_Requin.listePredation->Push(C_Requin.listePredation, PECHEUR);
+	C_Orque.listePredation->Push(C_Orque.listePredation, REQUIN);
+	C_Orque.listePredation->Push(C_Orque.listePredation, PECHEUR);
+	C_Baleine.listePredation->Push(C_Baleine.listePredation, PLANCTON);
+	C_Baleine.listePredation->Push(C_Baleine.listePredation, PONT);
+
 	return 0;
 }
 
 char ElementAnimal_Init(Case *c, ElementAnimal* This, Type t){
-    This->caseParent=c;
+	This->caseParent=c;
+	This->type=t;
+	This->Clear = Element_Clear;
 	This->dernierRepas = 0;
 	This->GetDernierRepas = ElementAnimal_getDernierRepas;
 	This->SetDernierRepas = ElementAnimal_setDernierRepas;
@@ -170,15 +193,11 @@ char ElementAnimal_Init(Case *c, ElementAnimal* This, Type t){
 	This->derniereReproduction = 0;
 	This->GetDerniereReproduction = ElementAnimal_getderniereReproduction;
 	This->SetDerniereReproduction = ElementAnimal_setderniereReproduction;
-    This->Clear = (void*)Element_Clear;
-    This->survie=ElementAnimal_survie;
-    This->tour=ElementAnimal_tour;
+	This->tour=ElementAnimal_tour;
+	This->survie=ElementAnimal_survie;
 	This->peutManger=ElementAnimal_peutManger;
-	if (remplirListePredation(This, t) < 0){
-		return ERR_TYPE_NOT_ANIMAL;
-
-	}
-    if (defineConstant(This, t) < 0){
+	if (lienVersConstantes(This, t) < 0){
+		puts("Erreur définition des constantes");
         return ERR_TYPE_NOT_ANIMAL;
     }
     return 0;
@@ -190,12 +209,6 @@ unsigned int ElementAnimal_getDernierRepas(struct ElementAnimal *This){
 
 void ElementAnimal_setDernierRepas(struct ElementAnimal *This, unsigned int toset){
 	This->dernierRepas=toset;
-}
-
-void ElementAnimal_New_Free(struct ElementAnimal *This){
-	if(This) ElementAnimal_Clear(This);
-	free(This);
-	puts("Destruction de l'Animal dynamique.\n");
 }
 
 void ElementAnimal_Free(struct ElementAnimal *This){
@@ -220,25 +233,25 @@ void ElementAnimal_setderniereReproduction(struct ElementAnimal *This, unsigned 
 }
 
 Bool ElementAnimal_survie(struct ElementAnimal *This, unsigned int tourCourrant){
-    if (This->sasiete == 0 && tourCourrant-This->dernierRepas > This->dureeSurvie)
+	if (This->sasiete == 0 && tourCourrant-This->dernierRepas > This->constantes->dureeSurvie)
         return False;
     return True;
 }
 
 void ElementAnimal_tour(struct ElementAnimal *This){
-    This->sasiete=max(This->sasiete-This->metabolisme, 0);
+	This->sasiete=max(This->sasiete-This->constantes->metabolisme, 0);
 }
 
 
 void ElementAnimal_predation(ElementAnimal *This)
 {
 	Case* **MatriceAccessiblePredation;
-	MatriceAccessiblePredation=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX, This->caseParent->posY, This->sautMax);
+	MatriceAccessiblePredation=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX, This->caseParent->posY, This->constantes->sautMax);
 	int i, j;
 	Element* plusInteressant;
 	char flag = 0;
-	for(i=0; i<2*This->sautMax+1.0 && flag == 0; ++i){
-		for(j=0; j<2*This->sautMax+1.0  && flag == 0; ++j){
+	for(i=0; i<2*This->constantes->sautMax+1.0 && flag == 0; ++i){
+		for(j=0; j<2*This->constantes->sautMax+1.0  && flag == 0; ++j){
 			if (MatriceAccessiblePredation[i][j] != NULL){
 				//Il y a une Case à cette position
 				if(MatriceAccessiblePredation[i][j]->liste->HasAPecheur(MatriceAccessiblePredation[i][j]->liste) == 1){
@@ -267,9 +280,9 @@ void ElementAnimal_predation(ElementAnimal *This)
 				if(MatriceAccessiblePredation[i][j]->liste->HasAnAnimal(MatriceAccessiblePredation[i][j]->liste) == 1){
 					//Elle contient un animal
 					ElementAnimal* current = (ElementAnimal*)MatriceAccessiblePredation[i][j]->liste->getAnimal(MatriceAccessiblePredation[i][j]->liste);
-					if (This->peutManger(This, current->type) == True && This->tailleDuBide > current->taille && ((ElementAnimal*)plusInteressant)->taille < current->taille){
+					if (This->peutManger(This, current->type) == True && This->constantes->tailleDuBide > current->constantes->taille && ((ElementAnimal*)plusInteressant)->constantes->taille < current->constantes->taille){
 						// L'element semble plus intéressant, il faut maintenant vérifier qu'il ne soit pas sous un pont sans qu'on y ait accès
-						if(This->taille < This->caseParent->g->TailleMaxSousPont){
+						if(This->constantes->taille < This->caseParent->g->TailleMaxSousPont){
 							plusInteressant=(Element*)current;
 						}
 						else {
@@ -293,9 +306,9 @@ void ElementAnimal_predation(ElementAnimal *This)
 	} else if (plusInteressant->type == PONT){
 
 	} else {
-		if(This->sasiete+((ElementAnimal*)plusInteressant)->taille < This->tailleDuBide){
+		if(This->sasiete+((ElementAnimal*)plusInteressant)->constantes->taille < This->constantes->tailleDuBide){
 			This->dernierRepas=This->caseParent->g->TourCourant;
-			This->sasiete=This->sasiete+((ElementAnimal*)plusInteressant)->taille;
+			This->sasiete=This->sasiete+((ElementAnimal*)plusInteressant)->constantes->taille;
 		}
 	}
 }
@@ -303,14 +316,8 @@ void ElementAnimal_predation(ElementAnimal *This)
 
 Bool ElementAnimal_peutManger(ElementAnimal *This, Type t)
 {
-	if (This->listePredation->contain(This->listePredation, t) == True){
+	if (This->constantes->listePredation->contain(This->constantes->listePredation, t) == True){
 		return True;
 	}
 	return False;
-}
-
-
-void ElementAnimal_Clear(ElementAnimal *This)
-{
-	This->listePredation->Free(This->listePredation);
 }

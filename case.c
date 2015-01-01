@@ -16,6 +16,7 @@ Case Case_Create(Grille *g, unsigned int posX, unsigned int posY)
 
 void Case_Free(Case *This){
 	This->Clear(This);
+	printf("Suppression de Case statique\n");
 }
 
 void Case_Clear(Case *This){
@@ -23,6 +24,6 @@ void Case_Clear(Case *This){
 }
 
 void Case_Print(Case *This){
-	printf("Rien à afficher pour le moment\n");
+	This->liste->Print(This->liste);
 }
 

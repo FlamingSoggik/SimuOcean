@@ -3,6 +3,7 @@
 
 void ListeType_Init(ListeType* This){
 	This->taille=0;
+	This->Top=NULL;
 	This->Push=ListeType_Push;
 	This->Pop=ListeType_Pop;
 	This->Clear=ListeType_Clear;

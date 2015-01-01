@@ -20,7 +20,6 @@ typedef struct Element
 } Element;
 
 //Constructeurs
-//Element Element_Create();
 Element* New_Element(struct Case *c);
 
 //Initialisateur
@@ -28,7 +27,6 @@ void Element_Init(struct Case *c, Element *This);
 
 //Destructructeurs
 void Element_New_Free(Element* This);
-void Element_Free(Element *This);
 
 //Others
 void Element_Clear(Element *This);

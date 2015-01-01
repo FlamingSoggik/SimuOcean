@@ -8,13 +8,6 @@ void Element_Init(Case *c, Element *This){
 	This->type=VOID;
 }
 
-//Element Element_Create(){
-//	Element This;
-//	Element_Init(&This);
-//	This.Free = Element_Free;
-//	return This;
-//}
-
 void Element_Free(Element *This){
 	This->Clear(This);
 	puts("Destruction de Element statique");
@@ -34,5 +27,5 @@ Element* New_Element(Case *c){
 
 void Element_New_Free(Element* This){
 	if(This) This->Clear(This);
-        free(This);
+	free(This);
 }
