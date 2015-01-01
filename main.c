@@ -3,7 +3,7 @@
 #include "elementanimal.h"
 #include "grille.h"
 #include <stdlib.h>
-
+#include "affichage.h"
 
 #define EAU "\033[00;44m"
 #define ANIMAL "\033[00;41m"
@@ -16,8 +16,9 @@
 int main(void)
 {
 
-	Grille g = Grille_Create(20); //Pour modifier cette valeur, il faut aussi modifier grill.c l.99
-	g.Print(&g);
+	Grille g = Grille_Create(200); //Pour modifier cette valeur, il faut aussi modifier grill.c l.99
+	//g.Print(&g);
+	METTRE_UN_NOM_DE_FONCTION_ET_LE_CHANGER_DANS_LE_FICHIER(&g);
 
 	//Constructction d'un tableau d'élément
 //	Grille g = Grille_Create(10);
