@@ -369,21 +369,26 @@ void ElementAnimal_deplacement(ElementAnimal *This){
 		srand (time(NULL));
 		first = 1;
 	}
-	Case*** MatriceAccessiblePredation = NULL;
-	MatriceAccessiblePredation=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX, This->caseParent->posY, This->constantes->sautMax);
+	Case*** MatriceAccessibleDeplacement = NULL;
+	MatriceAccessibleDeplacement=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX, This->caseParent->posY, This->constantes->sautMax);
 	int deplX, deplY;
 	int i, j;
 	flag=0;
 	for(i=0;i<2*This->constantes->sautMax+1.0 && flag == 0;++i){
 		for(j=0;j<2*This->constantes->sautMax+1.0 && flag == 0;++j){
-			if (MatriceAccessiblePredation[i][j] != NULL)
-				if (MatriceAccessiblePredation[i][j]->liste->HasAnAnimal(MatriceAccessiblePredation[i][j]->liste) == 0)
-					if (This->constantes->taille <= This->caseParent->g->TailleMaxSousPont || MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == 0)
+			if (MatriceAccessibleDeplacement[i][j] != NULL)
+				if (MatriceAccessibleDeplacement[i][j]->liste->HasAnAnimal(MatriceAccessibleDeplacement[i][j]->liste) == 0)
+					if (This->constantes->taille <= This->caseParent->g->TailleMaxSousPont || MatriceAccessibleDeplacement[i][j]->liste->HasAPont(MatriceAccessibleDeplacement[i][j]->liste) == 0)
 						flag=1;
 		}
 	}
-	if (flag == 0)
+	if (flag == 0){
+		for (i=0; i<2*This->constantes->sautMax+1.0;++i){
+			free(MatriceAccessibleDeplacement[i]);
+		}
+		free(MatriceAccessibleDeplacement);
 		return;
+	}
 	flag = 0;
 	while (flag == 0){
 		deplX = 0;
@@ -392,8 +397,8 @@ void ElementAnimal_deplacement(ElementAnimal *This){
 			deplX = (rand()%(This->constantes->sautMax*2))+1-This->constantes->sautMax;
 			deplY = (rand()%(This->constantes->sautMax*2))+1-This->constantes->sautMax;
 		}
-		if (MatriceAccessiblePredation[This->constantes->sautMax+deplX][This->constantes->sautMax+deplY] != NULL){
-			if (MatriceAccessiblePredation[This->constantes->sautMax+deplX][This->constantes->sautMax+deplY]->liste->HasAnAnimal(MatriceAccessiblePredation[This->constantes->sautMax+deplX][This->constantes->sautMax+deplY]->liste) == 0){
+		if (MatriceAccessibleDeplacement[This->constantes->sautMax+deplX][This->constantes->sautMax+deplY] != NULL){
+			if (MatriceAccessibleDeplacement[This->constantes->sautMax+deplX][This->constantes->sautMax+deplY]->liste->HasAnAnimal(MatriceAccessibleDeplacement[This->constantes->sautMax+deplX][This->constantes->sautMax+deplY]->liste) == 0){
 				flag = 1;
 			}
 		}
@@ -402,7 +407,10 @@ void ElementAnimal_deplacement(ElementAnimal *This){
 		This->caseParent->g->moveFromTo(This->caseParent->g, (Element*)This, This->constantes->sautMax+deplX, This->constantes->sautMax+deplY);
 		This->sasiete=This->sasiete-max(deplX, deplY);
 	}
-
+	for (i=0; i<2*This->constantes->sautMax+1.0;++i){
+		free(MatriceAccessibleDeplacement[i]);
+	}
+	free(MatriceAccessibleDeplacement);
 }
 
 Bool ElementAnimal_peutManger(ElementAnimal *This, Type t)
