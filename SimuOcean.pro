@@ -10,8 +10,8 @@ SOURCES += main.c \
     listeelem.c \
     listetype.c \
     grille.c \
+#    affichage.c \
     listecase.c
-    affichage.c
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -24,6 +24,6 @@ HEADERS += \
     listetype.h \
     grille.h \
     Bool.h \
+#    affichage.h \
     listecase.h
-    affichage.h
 
