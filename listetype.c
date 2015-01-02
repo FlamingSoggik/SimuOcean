@@ -8,6 +8,7 @@ void ListeType_Init(ListeType* This){
 	This->Pop=ListeType_Pop;
 	This->Clear=ListeType_Clear;
 	This->Taille=ListeType_Taille;
+	This->Contain=ListeType_Contain;
 }
 
 ListeType* New_ListeType(){

@@ -144,16 +144,13 @@ Bool ListeElem_deleteElement(ListeElem *This, Element *e)
 			e->Free(e);
 			if (prec == NULL){
 				This->Top=tmp->next;
-				--This->taille;
-				free(tmp);
-				return True;
 			}
 			else {
 				prec->next=tmp->next;
-				--This->taille;
-				free(tmp);
-				return True;
 			}
+			--This->taille;
+			free(tmp);
+			return True;
 		}
 		prec=tmp;
 		tmp=tmp->next;
@@ -163,28 +160,24 @@ Bool ListeElem_deleteElement(ListeElem *This, Element *e)
 
 Bool ListeElem_remove(ListeElem *This, Element *e)
 {
-	{
-		MaillonListeElem *tmp = This->Top;
-		MaillonListeElem *prec = NULL;
-		while(tmp != NULL){
-			if (tmp->e == e){
-				e->Free(e);
-				if (prec == NULL){
-					This->Top=tmp->next;
-					--This->taille;
-					return True;
-				}
-				else {
-					prec->next=tmp->next;
-					--This->taille;
-					return True;
-				}
+	MaillonListeElem *tmp = This->Top;
+	MaillonListeElem *prec = NULL;
+	while(tmp != NULL){
+		if (tmp->e == e){
+			if (prec == NULL){
+				This->Top=tmp->next;
 			}
-			prec=tmp;
-			tmp=tmp->next;
+			else {
+				prec->next=tmp->next;
+			}
+			--This->taille;
+			free(tmp);
+			return True;
 		}
-		return False;
+		prec=tmp;
+		tmp=tmp->next;
 	}
+	return False;
 }
 
 void ListeElem_Print(ListeElem * This)

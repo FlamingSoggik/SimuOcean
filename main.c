@@ -19,14 +19,16 @@ int main(void)
 	Grille *g = New_Grille(10);
 //		METTRE_UN_NOM_DE_FONCTION_ET_LE_CHANGER_DANS_LE_FICHIER(&g);
 	g->Print(g);
-	Grille* gr;
 	g->tab[2][2].liste->Push(g->tab[2][2].liste, (Element*)New_ElementAnimal(&(g->tab[2][2]), PYRANHA));
-
 	g->tab[1][1].liste->Push(g->tab[1][1].liste, (Element*)New_ElementAnimal(&(g->tab[1][1]), BAR));
-	gr=((ElementAnimal*)g->tab[2][2].liste->getAnimal(g->tab[2][2].liste))->caseParent->g;
-	ElementAnimal* e = (ElementAnimal*)g->tab[2][2].liste->getAnimal(g->tab[2][2].liste);
 
+
+	g->Print(g);
+	ElementAnimal* e = (ElementAnimal*)g->tab[2][2].liste->getAnimal(g->tab[2][2].liste);
 	e->predation(e);
+
+
+	g->Print(g);
 
 	g->Free(g);
 

@@ -106,7 +106,6 @@ void Grille_New_Free(struct Grille *This){
 
 Case*** Grille_getMatriceVoisins(Grille *This, unsigned int posX, unsigned int posY, unsigned int nbSauts)
 {
-	printf("Params : %d, %d, %d, %d\n", This->Taille, posX, posY, nbSauts);
 //printf("Taille de la grille : %d\n", This->Taille);
 	unsigned int taille=2*nbSauts+1;
 //printf("Taille du nouveau tableau : %d\n", taille);
