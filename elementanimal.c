@@ -371,7 +371,7 @@ void ElementAnimal_deplacement(ElementAnimal *This){
 	}
 	Case*** MatriceAccessibleDeplacement = NULL;
 	MatriceAccessibleDeplacement=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX, This->caseParent->posY, This->constantes->sautMax);
-	int deplX, deplY;
+	int deplX, deplY, isNeg;
 	int i, j;
 	flag=0;
 	for(i=0;i<2*This->constantes->sautMax+1.0 && flag == 0;++i){
@@ -396,6 +396,14 @@ void ElementAnimal_deplacement(ElementAnimal *This){
 		while(deplX == 0 && deplY == 0){
 			deplX = (rand()%(This->constantes->sautMax*2))+1-This->constantes->sautMax;
 			deplY = (rand()%(This->constantes->sautMax*2))+1-This->constantes->sautMax;
+		}
+		isNeg=rand()%2;
+		if(isNeg){
+			deplX*=-1;
+		}
+		isNeg=rand()%2;
+		if(isNeg){
+			deplY*=-1;
 		}
 		if (MatriceAccessibleDeplacement[This->constantes->sautMax+deplX][This->constantes->sautMax+deplY] != NULL){
 			if (MatriceAccessibleDeplacement[This->constantes->sautMax+deplX][This->constantes->sautMax+deplY]->liste->HasAnAnimal(MatriceAccessibleDeplacement[This->constantes->sautMax+deplX][This->constantes->sautMax+deplY]->liste) == 0){
