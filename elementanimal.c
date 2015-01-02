@@ -6,6 +6,7 @@
 #include "Bool.h"
 
 #include "listetype.h"
+#include <time.h>
 
 #define max(a,b) (a>=b?a:b)
 
@@ -212,6 +213,7 @@ char ElementAnimal_Init(Case *c, ElementAnimal* This, Type t){
 	This->survie=ElementAnimal_survie;
 	This->peutManger=ElementAnimal_peutManger;
 	This->predation=ElementAnimal_predation;
+	This->deplacement=ElementAnimal_deplacement;
 	if (lienVersConstantes(This, t) < 0){
 		puts("Erreur définition des constantes");
 		return ERR_TYPE_NOT_ANIMAL;
@@ -359,6 +361,49 @@ void ElementAnimal_predation(ElementAnimal *This)
 	}
 }
 
+void ElementAnimal_deplacement(ElementAnimal *This){
+	static int first = 0;
+	int flag;
+	if (first == 0)
+	{
+		srand (time(NULL));
+		first = 1;
+	}
+	Case*** MatriceAccessiblePredation = NULL;
+	MatriceAccessiblePredation=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX, This->caseParent->posY, This->constantes->sautMax);
+	int deplX, deplY;
+	int i, j;
+	flag=0;
+	for(i=0;i<2*This->constantes->sautMax+1.0 && flag == 0;++i){
+		for(j=0;j<2*This->constantes->sautMax+1.0 && flag == 0;++j){
+			if (MatriceAccessiblePredation[i][j] != NULL)
+				if (MatriceAccessiblePredation[i][j]->liste->HasAnAnimal(MatriceAccessiblePredation[i][j]->liste) == 0)
+					if (This->constantes->taille <= This->caseParent->g->TailleMaxSousPont || MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == 0)
+						flag=1;
+		}
+	}
+	if (flag == 0)
+		return;
+	flag = 0;
+	while (flag == 0){
+		deplX = 0;
+		deplY = 0;
+		while(deplX == 0 && deplY == 0){
+			deplX = (rand()%(This->constantes->sautMax*2))+1-This->constantes->sautMax;
+			deplY = (rand()%(This->constantes->sautMax*2))+1-This->constantes->sautMax;
+		}
+		if (MatriceAccessiblePredation[This->constantes->sautMax+deplX][This->constantes->sautMax+deplY] != NULL){
+			if (MatriceAccessiblePredation[This->constantes->sautMax+deplX][This->constantes->sautMax+deplY]->liste->HasAnAnimal(MatriceAccessiblePredation[This->constantes->sautMax+deplX][This->constantes->sautMax+deplY]->liste) == 0){
+				flag = 1;
+			}
+		}
+	}
+	if(This->sasiete-max(deplX, deplY)>=0){
+		This->caseParent->g->moveFromTo(This->caseParent->g, (Element*)This, This->constantes->sautMax+deplX, This->constantes->sautMax+deplY);
+		This->sasiete=This->sasiete-max(deplX, deplY);
+	}
+
+}
 
 Bool ElementAnimal_peutManger(ElementAnimal *This, Type t)
 {

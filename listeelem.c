@@ -116,7 +116,7 @@ Element* ListeElem_getAnimal(ListeElem *This)
 {
 	MaillonListeElem *tmp = This->Top;
 	while(tmp != NULL){
-		if (tmp->e->type != PECHEUR && tmp->e->type != PONT)
+		if (tmp->e->type != PECHEUR && tmp->e->type != PONT && tmp->e->type != POLLUTION)
 			return tmp->e;
 		tmp=tmp->next;
 	}
