@@ -21,7 +21,8 @@ typedef struct Grille
 } Grille;
 
 
-Grille Grille_Create(int Taille);
+//Grille Grille_Create(int Taille);
+Grille* New_Grille(int Taille);
 void Grille_Init(Grille *This, unsigned int Taille);
 void Grille_Clear(struct Grille *This);
 void Grille_Free(struct Grille *This);

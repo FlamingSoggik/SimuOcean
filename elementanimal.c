@@ -23,10 +23,10 @@ ElementAnimal_Constantes C_Baleine;
 ElementAnimal* New_ElementAnimal(Case *c, Type t){
 	ElementAnimal* This = malloc(sizeof(ElementAnimal));
 	if (!This) return NULL;
-    if (ElementAnimal_Init(c, This, t) < 0){
-        free(This);
-        return NULL;
-    }
+	if (ElementAnimal_Init(c, This, t) < 0){
+		free(This);
+		return NULL;
+	}
 	This->Free = Element_New_Free;
 	return This;
 }
@@ -34,37 +34,39 @@ ElementAnimal* New_ElementAnimal(Case *c, Type t){
 char lienVersConstantes(ElementAnimal* This, Type t)
 {
 	switch (t){
-	case PLANCTON:
-		This->constantes=&C_Plancton;
-		break;
-	case CORAIL:
-		This->constantes=&C_Corail;
-		break;
-	case BAR:
-		This->constantes=&C_Bar;
-		break;
-	case THON:
-		This->constantes=&C_Thon;
-		break;
-	case PYRANHA:
-		This->constantes=&C_Pyranha;
-		break;
-	case REQUIN:
-		This->constantes=&C_Requin;
-		break;
-	case ORQUE:
-		This->constantes=&C_Orque;
-		break;
-	case BALEINE:
-		This->constantes=&C_Baleine;
-		break;
-	default :
-		return ERR_TYPE_NOT_ANIMAL;
+		case PLANCTON:
+			This->constantes=&C_Plancton;
+			break;
+		case CORAIL:
+			This->constantes=&C_Corail;
+			break;
+		case BAR:
+			This->constantes=&C_Bar;
+			break;
+		case THON:
+			This->constantes=&C_Thon;
+			break;
+		case PYRANHA:
+			This->constantes=&C_Pyranha;
+			break;
+		case REQUIN:
+			This->constantes=&C_Requin;
+			break;
+		case ORQUE:
+			This->constantes=&C_Orque;
+			break;
+		case BALEINE:
+			This->constantes=&C_Baleine;
+			break;
+		default :
+			puts("Erreur lienVersConstantes");
+			return ERR_TYPE_NOT_ANIMAL;
+			break;
 	}
 	return 0;
 }
 
-char defineConstant()
+void defineConstant()
 {
 	C_Plancton.dureeSurvie=1;
 	C_Plancton.taille=1;
@@ -122,10 +124,9 @@ char defineConstant()
 	C_Baleine.metabolisme=1;
 	C_Baleine.gestation=1;
 	C_Baleine.frequenceReproduction=1;
-	return 0;
 }
 
-char remplirListePredation()
+void remplirListePredation()
 {
 	static char i = 0;
 	if (i == 0){
@@ -137,6 +138,7 @@ char remplirListePredation()
 		C_Requin.listePredation = New_ListeType();
 		C_Orque.listePredation = New_ListeType();
 		C_Baleine.listePredation = New_ListeType();
+		++i;
 	}
 	else {
 		C_Plancton.listePredation->Free(C_Plancton.listePredation);
@@ -176,11 +178,24 @@ char remplirListePredation()
 	C_Orque.listePredation->Push(C_Orque.listePredation, PECHEUR);
 	C_Baleine.listePredation->Push(C_Baleine.listePredation, PLANCTON);
 	C_Baleine.listePredation->Push(C_Baleine.listePredation, PONT);
+}
 
-	return 0;
+void viderListePredation()
+{
+	C_Plancton.listePredation->Free(C_Plancton.listePredation);
+	C_Corail.listePredation->Free(C_Corail.listePredation);
+	C_Bar.listePredation->Free(C_Bar.listePredation);
+	C_Thon.listePredation->Free(C_Thon.listePredation);
+	C_Pyranha.listePredation->Free(C_Pyranha.listePredation);
+	C_Requin.listePredation->Free(C_Requin.listePredation);
+	C_Orque.listePredation->Free(C_Orque.listePredation);
+	C_Baleine.listePredation->Free(C_Baleine.listePredation);
 }
 
 char ElementAnimal_Init(Case *c, ElementAnimal* This, Type t){
+	if (c == NULL){
+		puts("Erreur creation animal case parent vide");
+	}
 	This->caseParent=c;
 	This->type=t;
 	This->Clear = Element_Clear;
@@ -196,11 +211,12 @@ char ElementAnimal_Init(Case *c, ElementAnimal* This, Type t){
 	This->tour=ElementAnimal_tour;
 	This->survie=ElementAnimal_survie;
 	This->peutManger=ElementAnimal_peutManger;
+	This->predation=ElementAnimal_predation;
 	if (lienVersConstantes(This, t) < 0){
 		puts("Erreur définition des constantes");
-        return ERR_TYPE_NOT_ANIMAL;
-    }
-    return 0;
+		return ERR_TYPE_NOT_ANIMAL;
+	}
+	return 0;
 }
 
 unsigned int ElementAnimal_getDernierRepas(struct ElementAnimal *This){
@@ -212,7 +228,7 @@ void ElementAnimal_setDernierRepas(struct ElementAnimal *This, unsigned int tose
 }
 
 void ElementAnimal_Free(struct ElementAnimal *This){
-    Element_Clear((Element*)This);
+	Element_Clear((Element*)This);
 	puts("Destruction de l'Animal statique.\n");
 }
 
@@ -234,8 +250,8 @@ void ElementAnimal_setderniereReproduction(struct ElementAnimal *This, unsigned 
 
 Bool ElementAnimal_survie(struct ElementAnimal *This, unsigned int tourCourrant){
 	if (This->sasiete == 0 && tourCourrant-This->dernierRepas > This->constantes->dureeSurvie)
-        return False;
-    return True;
+		return False;
+	return True;
 }
 
 void ElementAnimal_tour(struct ElementAnimal *This){
@@ -245,34 +261,61 @@ void ElementAnimal_tour(struct ElementAnimal *This){
 
 void ElementAnimal_predation(ElementAnimal *This)
 {
-	Case* **MatriceAccessiblePredation;
-	MatriceAccessiblePredation=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX, This->caseParent->posY, This->constantes->sautMax);
+	Case***MatriceAccessiblePredation = NULL;
 	int i, j;
+	MatriceAccessiblePredation=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX, This->caseParent->posY, This->constantes->sautMax);
+
+	printf("%s : %d\n", __FILE__, __LINE__);
+	printf("%ld\n", This->caseParent->g);
+	printf("%s : %d\n", __FILE__, __LINE__);
+
 	Element* plusInteressant;
 	char flag = 0;
 	for(i=0; i<2*This->constantes->sautMax+1.0 && flag == 0; ++i){
 		for(j=0; j<2*This->constantes->sautMax+1.0  && flag == 0; ++j){
+			printf("%s : %d\n", __FILE__, __LINE__);
 			if (MatriceAccessiblePredation[i][j] != NULL){
 				//Il y a une Case à cette position
+				printf("%s : %d\n", __FILE__, __LINE__);
+printf("%d\n", MatriceAccessiblePredation[i][j]->posX);
+				printf("%s : %d\n", __FILE__, __LINE__);
 				if(MatriceAccessiblePredation[i][j]->liste->HasAPecheur(MatriceAccessiblePredation[i][j]->liste) == 1){
+
+					printf("%s : %d\n", __FILE__, __LINE__);
 					// Si il y a un pecheur
 					if(MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == 1){
+
+						printf("%s : %d\n", __FILE__, __LINE__);
 						//sur un pont
 						if(This->peutManger(This, PONT) == True){
+
+							printf("%s : %d\n", __FILE__, __LINE__);
 							plusInteressant= MatriceAccessiblePredation[i][j]->liste->getPont(MatriceAccessiblePredation[i][j]->liste);
 							flag = 1;
 						}
 					} else {
+
+						printf("%s : %d\n", __FILE__, __LINE__);
 						//seul dans l'eau
 						if(This->peutManger(This, PECHEUR) == True){
+
+							printf("%s : %d\n", __FILE__, __LINE__);
 							plusInteressant = (Element*)MatriceAccessiblePredation[i][j]->liste->getPont(MatriceAccessiblePredation[i][j]->liste);
 							flag=1;
 						}
 					}
 				}
+				else {
+
+					printf("Pas DANS LE IF\n");
+				}
 				if(MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == 1){
+
+					printf("%s : %d\n", __FILE__, __LINE__);
 					//Cas ou la case ciblée à un pont
 					if(This->peutManger(This, PONT) == True){
+
+						printf("%s : %d\n", __FILE__, __LINE__);
 						plusInteressant = (Element*)MatriceAccessiblePredation[i][j]->liste->getPont(MatriceAccessiblePredation[i][j]->liste);
 						flag=1;
 					}
