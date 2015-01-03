@@ -2,13 +2,23 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "elementanimal.h"
+#include "element.h"
 
-#define EAU "\033[00;44m"
-#define ANIMAL "\033[00;41m"
-#define PONT "\033[48;5;130m"
-#define PECHEUR "\033[00;47m"
+#define EAU "\033[00m"
+#define PVOID "\033[48;5;1m"
+#define PPLANCTON "\033[48;5;2m"
+#define PCORAIL "\033[48;5;9m"
+#define PBAR "\033[48;5;184m"
+#define PTHON "\033[48;5;8m"
+#define PPOLLUTION "\033[48;5;7m"
+#define PPYRANHA "\033[48;5;90m"
+#define PREQUIN "\033[48;5;18m"
+#define PORQUE "\033[48;5;27m"
+#define PBALEINE "\033[48;5;22m"
+#define PPONT "\033[48;5;130m"
+#define PPECHEUR "\033[00;47m"
 #define NORMAL "\033[00m"
-#define GRAS "\033[01m"
+#define PGRAS "\033[01m"
 
 Grille Grille_Create(int Taille){
 	Grille g;
@@ -63,17 +73,51 @@ void Grille_Print(struct Grille *This){
 		for(j=0; j<This->Taille; ++j){
 			if (This->tab[i][j].liste->HasAPecheur(This->tab[i][j].liste)) {
 				if (This->tab[i][j].liste->HasAPont(This->tab[i][j].liste)){
-					printf(" " PONT " " PECHEUR " " NORMAL " |");
+					printf(" " PPONT " " PPECHEUR " " NORMAL " |");
 				}
 				else {
-					printf(" " EAU " " PECHEUR " " NORMAL " |");
+					printf(" " EAU " " PPECHEUR " " NORMAL " |");
 				}
 			}
 			else if (This->tab[i][j].liste->HasAPont(This->tab[i][j].liste)){
-				printf(" " PONT "  " NORMAL " |");
+				printf(" " PPONT "  " NORMAL " |");
 			}
 			else if (This->tab[i][j].liste->HasAnAnimal(This->tab[i][j].liste)){
-				printf(" " ANIMAL "  " NORMAL " |");
+				switch(This->tab[i][j].liste->getAnimal(This->tab[i][j].liste)->type){
+					case VOID:
+						printf(" " PVOID "  " NORMAL " |");
+						break;
+					case PLANCTON:
+						printf(" " PPLANCTON "  " NORMAL " |");
+						break;
+					case CORAIL:
+						printf(" " PCORAIL "  " NORMAL " |");
+						break;
+					case BAR:
+						printf(" " PBAR "  " NORMAL " |");
+						break;
+					case THON:
+						printf(" " PTHON "  " NORMAL " |");
+						break;
+					case POLLUTION:
+						printf(" " PPOLLUTION "  " NORMAL " |");
+						break;
+					case PYRANHA:
+						printf(" " PPYRANHA "  " NORMAL " |");
+						break;
+					case REQUIN:
+						printf(" " PREQUIN "  " NORMAL " |");
+						break;
+					case ORQUE:
+						printf(" " PORQUE "  " NORMAL " |");
+						break;
+					case BALEINE:
+						printf(" " PBALEINE "  " NORMAL " |");
+						break;
+					default:
+						printf(" " NORMAL "ER" NORMAL " |");
+						break;
+				}
 			}
 			else {
 				printf(" " EAU "  " NORMAL " |");

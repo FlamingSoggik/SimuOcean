@@ -57,6 +57,7 @@ typedef struct ElementAnimal
 		Bool (*peutManger)(struct ElementAnimal*, Type t);
 		void (*predation)(struct ElementAnimal*);
 		void (*deplacement)(struct ElementAnimal*);
+		void (*reproduction)(struct ElementAnimal*);
 
 } ElementAnimal;
 
@@ -83,6 +84,7 @@ Bool ElementAnimal_survie(struct ElementAnimal *This, unsigned int tourCourrant)
 void ElementAnimal_tour(struct ElementAnimal *This);
 void ElementAnimal_predation(struct ElementAnimal *This);
 void ElementAnimal_deplacement(ElementAnimal *This);
+void ElementAnimal_reproduction(ElementAnimal *This);
 Bool ElementAnimal_peutManger(struct ElementAnimal* This, Type t);
 
 void defineConstant();
