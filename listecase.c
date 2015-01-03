@@ -1,7 +1,6 @@
 #include "listecase.h"
 #include <stdlib.h>
 
-
 void ListeCase_Init(ListeCase* This){
     This->taille=0;
 	This->Top=NULL;

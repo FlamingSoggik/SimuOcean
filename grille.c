@@ -1,6 +1,7 @@
 #include "grille.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include "elementanimal.h"
 
 #define EAU "\033[00;44m"
 #define ANIMAL "\033[00;41m"
@@ -17,14 +18,15 @@ Grille Grille_Create(int Taille){
 }
 
 void Grille_Init(Grille *This, unsigned int Taille){
+	unsigned int i,j;
 	This->Clear = Grille_Clear;
 	This->Print = Grille_Print;
 	This->Taille=Taille;
 	This->TailleMaxSousPont=10;
 	This->TourCourant = 0;
 	This->moveFromTo=Grille_moveFromTo;
+	This->getMatriceVoisins=Grille_getMatriceVoisins;
 	This->tab=malloc(sizeof(Case*)*Taille);
-    unsigned int i,j;
 	for (i=0;i<Taille;++i){
 		This->tab[i]=malloc(sizeof(Case)*Taille);
 	}
@@ -33,6 +35,8 @@ void Grille_Init(Grille *This, unsigned int Taille){
 			This->tab[i][j]= Case_Create(This, i, j);
 		}
 	}
+	defineConstant();
+	remplirListePredation();
 }
 
 void Grille_Clear(struct Grille *This){
@@ -46,6 +50,7 @@ void Grille_Clear(struct Grille *This){
 		free(This->tab[i]);
 	}
 	free(This->tab);
+	viderListePredation();
 }
 
 void Grille_Print(struct Grille *This){
@@ -75,14 +80,27 @@ void Grille_Print(struct Grille *This){
 			}
 		}
 		printf("\n");
-		for (j=0; j<This->Taille; j++)
-			printf("—————");
-		printf("—\n");
+		if (i == This->Taille-1){
+			for (j=0; j<This->Taille; j++)
+				printf("=====");
+			printf("=\n");
+		}
+		else {
+			for (j=0; j<This->Taille; j++)
+				printf("—————");
+			printf("—\n");
+		}
 	}
 }
 
 void Grille_Free(struct Grille *This){
 	This->Clear(This);
+	puts("Grille detruite\n");
+}
+
+void Grille_New_Free(struct Grille *This){
+	if(This) This->Clear(This);
+	free(This);
 	puts("Grille detruite\n");
 }
 
@@ -95,6 +113,10 @@ Case*** Grille_getMatriceVoisins(Grille *This, unsigned int posX, unsigned int p
 	unsigned int cMNT = nbSauts;
 //printf("Centre de la Matrice à renvoyer : %d\n", cMNT);
 	Case* **tableau = malloc(sizeof(Case**)*taille);
+	if (tableau == NULL){
+		puts("ERROR creating matrice in detMatriceVoicins");
+		return NULL;
+	}
 	unsigned int i;
 	for(i=0;i<taille;++i){
 		tableau[i] = malloc(sizeof(Case*)*taille);
@@ -151,4 +173,14 @@ void Grille_moveFromTo(Grille *This, Element *elem, unsigned int posX, unsigned 
 	This->tab[elem->caseParent->posX][elem->caseParent->posY].liste->remove(This->tab[elem->caseParent->posX][elem->caseParent->posY].liste, elem);
 	This->tab[posX][posY].liste->Push(This->tab[posX][posY].liste, elem);
 	elem->caseParent=&(This->tab[posX][posY]);
+}
+
+
+Grille *New_Grille(int Taille)
+{
+	Grille* This = malloc(sizeof(Grille));
+	if(!This) return NULL;
+	Grille_Init(This, Taille);
+	This->Free=Grille_New_Free;
+	return This;
 }

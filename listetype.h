@@ -20,7 +20,7 @@ typedef struct ListeType {
 	Type(*Pop)(struct ListeType*);
 	void(*Clear)(struct ListeType*);
 	int(*Taille)(struct ListeType*);
-	Bool (*contain)(struct ListeType*, Type t);
+	Bool (*Contain)(struct ListeType*, Type t);
 }ListeType;
 
 int ListeType_Taille(ListeType* This);

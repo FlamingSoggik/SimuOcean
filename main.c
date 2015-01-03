@@ -16,14 +16,35 @@
 int main(void)
 {
 
-	Grille g = Grille_Create(200); //Pour modifier cette valeur, il faut aussi modifier grill.c l.99
-	//g.Print(&g);
-	METTRE_UN_NOM_DE_FONCTION_ET_LE_CHANGER_DANS_LE_FICHIER(&g);
+	Grille *g = New_Grille(10);
+//		METTRE_UN_NOM_DE_FONCTION_ET_LE_CHANGER_DANS_LE_FICHIER(&g);
+	g->Print(g);
+	g->tab[2][2].liste->Push(g->tab[2][2].liste, (Element*)New_ElementAnimal(&(g->tab[2][2]), PYRANHA));
+	g->tab[1][1].liste->Push(g->tab[1][1].liste, (Element*)New_ElementAnimal(&(g->tab[1][1]), BAR));
+//	g->tab[1][2].liste->Push(g->tab[1][2].liste, (Element*)New_ElementAnimal(&(g->tab[1][2]), BAR));
+//	g->tab[1][3].liste->Push(g->tab[1][3].liste, (Element*)New_ElementAnimal(&(g->tab[1][3]), BAR));
+//	g->tab[2][1].liste->Push(g->tab[2][1].liste, (Element*)New_ElementAnimal(&(g->tab[2][1]), BAR));
+//	g->tab[2][3].liste->Push(g->tab[2][3].liste, (Element*)New_ElementAnimal(&(g->tab[2][3]), BAR));
+//	g->tab[3][1].liste->Push(g->tab[3][1].liste, (Element*)New_ElementAnimal(&(g->tab[3][1]), BAR));
+//	g->tab[3][2].liste->Push(g->tab[3][2].liste, (Element*)New_ElementAnimal(&(g->tab[3][2]), BAR));
+//	g->tab[3][3].liste->Push(g->tab[3][3].liste, (Element*)New_ElementAnimal(&(g->tab[3][3]), BAR));
 
-	//Constructction d'un tableau d'élément
+
+	g->Print(g);
+	ElementAnimal* e = (ElementAnimal*)g->tab[2][2].liste->getAnimal(g->tab[2][2].liste);
+	e->predation(e);
+	g->Print(g);
+
+	e->deplacement(e);
+	g->Print(g);
+	g->Free(g);
+
+
+
+//	//Constructction d'un tableau d'élément
 //	Grille g = Grille_Create(10);
 //	g.Print(&g);
-///Test de la demande de matrice de mouvement
+////Test de la demande de matrice de mouvement
 //	Case*** mattmp;
 //	int i, j;
 //	mattmp=Grille_getMatriceVoisins(&g, 1,1,2);
@@ -32,7 +53,6 @@ int main(void)
 //			if (mattmp[i][j] == NULL)
 //				printf(" NN |");
 //			else {
-
 //				if (mattmp[i][j]->liste->HasAPecheur(mattmp[i][j]->liste)) {
 //					if (mattmp[i][j]->liste->HasAPont(mattmp[i][j]->liste)){
 //						printf(" " PONT " " PECHEUR " " NORMAL " |");
