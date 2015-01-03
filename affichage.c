@@ -7,20 +7,35 @@ void SDL_Print(struct Grille *grill){
 	const int NBR_CASES=grill->Taille; // Largeur de la grille
 
 	/* Initialisation des variables nécessaires */
-    SDL_Surface *Case_Type=NULL, *ecran = NULL ,*fenetre = NULL, *curseur1 = NULL, *curseur2 = NULL, *boite = NULL;
+    SDL_Surface **Selected_Type_Case=NULL, *Case_Type=NULL, *ecran = NULL ,*fenetre = NULL, *curseur1 = NULL, *curseur2 = NULL, *boite = NULL;
     TTF_Font *police=NULL;
 	SDL_Event event;
 	int continuer=1;
 	int select_curseur2=0;
     int i=0; int j=0;
 
-    printf("%s  %d\n", __FUNCTION__, __LINE__);
+
     SDLCase ***carre = malloc(sizeof(SDLCase**)*grill->Taille);
 	unsigned int k;
 	for(k=0;k<grill->Taille;++k){
         carre[k] = malloc(sizeof(SDLCase*)*grill->Taille);
     }
 
+
+    for(i=0;i<NBR_CASES; ++i){
+            for(j=0; j<NBR_CASES; ++j){
+                    carre[i][j]= malloc(sizeof(SDLCase));
+                    carre[i][j]->srf= Case_Type;
+            }
+    }
+
+    // UN TABLEAU SERAIT LE BIENVENUE
+
+    SDL_Surface** Tab_Type;
+    for(i=0; i<10; i++)
+        Tab_Type=(SDL_Surface**)malloc(sizeof(SDL_Surface*)*10);
+
+    SDL_Surface *Case_Type_Mer=NULL, *Case_Type_Pont=NULL, *Case_Type_Pecheur=NULL, *Case_Type_Animal=NULL;
 
 	/* Initialisation de la SDL */
 	SDL_Init(SDL_INIT_VIDEO);
@@ -33,7 +48,7 @@ void SDL_Print(struct Grille *grill){
 	int ScreenW=videoInfo->current_w*0.9;
 	int ScreenH=videoInfo->current_h*0.9;
 
-    printf("%s  %d\n", __FUNCTION__, __LINE__);
+
 	ecran = SDL_SetVideoMode(ScreenW, ScreenH, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
 
 	/* Test d'erreur d'affichage*/
@@ -52,9 +67,9 @@ void SDL_Print(struct Grille *grill){
 
     /*Gestion de la police*/
 
-    police=TTF_OpenFont("ma-front.ttf", 30);
-    SDL_Color couleurInconnu = {24,158,158};
-    boite = TTF_RenderText_Blended(police, "Heyheyhey", couleurInconnu);
+  //  police=TTF_OpenFont("ma-front.ttf", 30);
+  //  SDL_Color couleurInconnu = {24,158,158,0};
+  //  boite = TTF_RenderText_Blended(police, "Heyheyhey", couleurInconnu);
 
 
 	/* Gestion de la grille */
@@ -86,9 +101,23 @@ void SDL_Print(struct Grille *grill){
 	pos_curseur2.y=pos_curseur1.y-15;
 
 
+        /* Initialisation des cases */
 
 
-    printf("%s  %d\n", __FUNCTION__, __LINE__);
+    for(i=0; i<10; i++)
+    {
+        Tab_Type[i]=Charger(taille_case, ecran, i);
+    }
+
+
+
+/*
+    Case_Type_Mer=Charger(taille_case, ecran, 0);
+    Case_Type_Pecheur=Charger(taille_case, ecran, 1);
+    Case_Type_Pont=Charger(taille_case, ecran, 2);
+    Case_Type_Animal=Charger(taille_case,ecran,3);
+*/
+
 
     while(continuer)
     {
@@ -141,66 +170,20 @@ while(SDL_PollEvent(&event)){
     /* Tous les BLIT */
     SDL_BlitSurface(fenetre, NULL, ecran, &pos_fenetre);
     SDL_BlitSurface(curseur1, NULL, ecran, &pos_curseur1);
-    SDL_BlitSurface(boite, NULL, ecran, &pos_curseur2);
+    SDL_BlitSurface(curseur2, NULL, ecran, &pos_curseur2);
 
 
     /* Opérations */
 
-    printf("%s  %d\nn", __FUNCTION__, __LINE__);
 
-    Charger(Case_Type, taille_case, ecran);
 
-    printf("%s  %d\n", __FUNCTION__, __LINE__);
+
     for(i=0; i<NBR_CASES; i++)
         for(j=0; j<NBR_CASES; j++){
-printf("%s  %d\n", __FUNCTION__, __LINE__);
-            Actualiser(&*carre[i][j], Case_Type, (j*taille_case+j+pos_fenetre.x), (i*taille_case+i+pos_fenetre.y));
-printf("%s  %d\n", __FUNCTION__, __LINE__);
-            SDL_BlitSurface(carre[i][j]->srf, NULL, ecran, &(carre[i][j]->pos));
+            Selected_Type_Case=Select_Type(grill, Tab_Type, i, j);
+            Actualiser(carre[i][j], Selected_Type_Case, (j*taille_case+j+pos_fenetre.x), (i*taille_case+i+pos_fenetre.y));
+            SDL_BlitSurface((carre[i][j]->srf), NULL, ecran, &(carre[i][j]->pos));
         }
-printf("%s  %d\n", __FUNCTION__, __LINE__);
-
-
-
-    /*
-
-
-    for(i=0; i<NBR_CASES; i++){
-        for(j=0; j<NBR_CASES; j++){
-
-            carre[i][j]=SDL_CreateRGBSurface(SDL_HWSURFACE, taille_case, taille_case, 32, 0,0,0,0);
-            pos_case.x=(j*taille_case)+j+pos_fenetre.x;
-            pos_case.y=(i*taille_case)+i+pos_fenetre.y;
-
-            if (grill->tab[i][j].liste->HasAPecheur(grill->tab[i][j].liste)) {
-                if (grill->tab[i][j].liste->HasAPont(grill->tab[i][j].liste)){
-                    SDL_FillRect(carre[i][j], NULL, SDL_MapRGB(ecran->format, 214, 0, 0)); // Violet pécheur
-                }
-                else {
-                    SDL_FillRect(carre[i][j], NULL, SDL_MapRGB(ecran->format, 138, 20, 79));// Violet pécheur
-                }
-            }
-            else if (grill->tab[i][j].liste->HasAPont(grill->tab[i][j].liste)){
-                    SDL_FillRect(carre[i][j], NULL, SDL_MapRGB(ecran->format, 214, 0, 0)); // Gris pont
-            }
-            else if (grill->tab[i][j].liste->HasAnAnimal(grill->tab[i][j].liste)){
-                SDL_FillRect(carre[i][j], NULL, SDL_MapRGB(ecran->format, 134, 160, 45)); // Vert poisson
-            }
-            //else if(i==m && j==m)
-                //SDL_FillRect(carre[m][m], NULL, SDL_MapRGB(ecran->format, 255, 0, 0)); // Red pixel
-            else {
-                SDL_FillRect(carre[i][j], NULL, SDL_MapRGB(ecran->format, 204, 255, 229)); //Bleu mer
-            }
-
-
-
-            SDL_BlitSurface(carre[i][j], NULL, ecran, &pos_case);
-        }
-    }
-
-
-
-*/
 
 
 
@@ -211,20 +194,29 @@ printf("%s  %d\n", __FUNCTION__, __LINE__);
     SDL_Flip(ecran);
 
 
- //   for(i=0; i<NBR_CASES; i++)
- //       for(j=0; j<NBR_CASES; j++)
- //           SDL_FreeSurface(carre[i][j]);
-
-
 
 
     } // End of while
-printf("\nTaille de la case : %d\n", taille_case);
+
+
+
+
+    /*Fermeture de l'affichage*/
+
 	SDL_FreeSurface(fenetre);
 	SDL_FreeSurface(curseur1);
 	SDL_FreeSurface(curseur2);
     SDL_FreeSurface(boite);
     SDL_FreeSurface(Case_Type);
+    SDL_FreeSurface(Case_Type_Animal);
+    SDL_FreeSurface(Case_Type_Mer);
+    SDL_FreeSurface(Case_Type_Pecheur);
+    SDL_FreeSurface(Case_Type_Pont);
+
+
+    for(i=0; i<NBR_CASES; i++)
+        for(j=0; j<NBR_CASES; j++)
+            free(carre[i][j]);
 
     for(k=0;k<grill->Taille;++k)
         free(carre[k]);
@@ -236,32 +228,53 @@ printf("\nTaille de la case : %d\n", taille_case);
 }
 
 
-void Charger(SDL_Surface *Case_Type, int taille_case, SDL_Surface *ecran){
+SDL_Surface* Charger(int taille_case, SDL_Surface *ecran, int type){
 
-    Case_Type = SDL_CreateRGBSurface(SDL_HWSURFACE, taille_case, taille_case, 32,0,0,0,0);
-    SDL_FillRect(Case_Type, NULL, SDL_MapRGB(ecran->format, 204, 255, 229));
+    SDL_Surface *Case;
+    Case = SDL_CreateRGBSurface(SDL_HWSURFACE, taille_case, taille_case, 32,0,0,0,0);
+
+    switch (type){
+
+        case 1:
+            SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 96, 96, 96));
+            break;
+        case 2:
+            SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 255, 0, 0));
+            break;
+        default:
+            SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 204, 255, 229));
+            break;
+    }
+
+
+    return Case;
 
 }
 
-void Actualiser( SDLCase* Case_Tab, SDL_Surface *Case_Type, int absisse, int ordonnee)
+void Actualiser( SDLCase *Case_Tab, SDL_Surface **Case_Type, int absisse, int ordonnee)
 {
 
-    SDL_Rect pos_tmp;
-    pos_tmp.x=absisse;
-    pos_tmp.y=ordonnee;
 
-
-    Case_Tab->caca=2;
-
-    printf("%s  %d\n", __FUNCTION__, __LINE__);
-    Case_Tab->pos=pos_tmp;
-    printf("%s  %d\n", __FUNCTION__, __LINE__);
     Case_Tab->pos.x=absisse;
     Case_Tab->pos.y=ordonnee;
-    printf("%s  %d\n", __FUNCTION__, __LINE__);
-    Case_Tab->srf=Case_Type;
-    printf("%s  %d\n", __FUNCTION__, __LINE__);
+    Case_Tab->srf=*Case_Type;
+
 }
 
+SDL_Surface** Select_Type(struct Grille *grill, SDL_Surface **Tab_Type, int i, int j){
+
+
+
+    if (grill->tab[i][j].liste->HasAPont(grill->tab[i][j].liste)){
+        return &Tab_Type[1];
+    }
+    else if (grill->tab[i][j].liste->HasAnAnimal(grill->tab[i][j].liste)){
+        return &Tab_Type[2];
+        }
+    else {
+        return &Tab_Type[0];
+         }
+
+}
 
 
