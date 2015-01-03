@@ -3,7 +3,7 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 
-LIBS += -L/usr/lib/x86_64-linux-gnu -lSDL
+LIBS += -L/usr/lib/x86_64-linux-gnu -lSDL -lSDL_ttf
 
 SOURCES += main.c \
     element.c \
