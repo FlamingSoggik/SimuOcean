@@ -100,7 +100,7 @@ void defineConstant()
 	C_Pyranha.dureeSurvie=1;
 	C_Pyranha.taille=15;
 	C_Pyranha.tailleDuBide=14;
-	C_Pyranha.sautMax=1;
+	C_Pyranha.sautMax=2;
 	C_Pyranha.metabolisme=1;
 	C_Pyranha.gestation=1;
 	C_Pyranha.frequenceReproduction=1;
@@ -203,7 +203,7 @@ char ElementAnimal_Init(Case *c, ElementAnimal* This, Type t){
 	This->dernierRepas = 0;
 	This->GetDernierRepas = ElementAnimal_getDernierRepas;
 	This->SetDernierRepas = ElementAnimal_setDernierRepas;
-	This->sasiete = 0;
+	This->sasiete = 10;
 	This->GetSasiete = ElementAnimal_getSasiete;
 	This->SetSasiete = ElementAnimal_setSasiete;
 	This->derniereReproduction = 0;
@@ -214,6 +214,7 @@ char ElementAnimal_Init(Case *c, ElementAnimal* This, Type t){
 	This->peutManger=ElementAnimal_peutManger;
 	This->predation=ElementAnimal_predation;
 	This->deplacement=ElementAnimal_deplacement;
+	This->reproduction=ElementAnimal_reproduction;
 	if (lienVersConstantes(This, t) < 0){
 		puts("Erreur définition des constantes");
 		return ERR_TYPE_NOT_ANIMAL;
@@ -265,11 +266,11 @@ void ElementAnimal_predation(ElementAnimal *This)
 {
 	Case***MatriceAccessiblePredation = NULL;
 	int i, j;
-	MatriceAccessiblePredation=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX, This->caseParent->posY, This->constantes->sautMax);
+	MatriceAccessiblePredation=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX, This->caseParent->posY, 1);
 	Element* plusInteressant = NULL;
 	char flag = 0;
-	for(i=0; i<2*This->constantes->sautMax+1.0 && flag == 0; ++i){
-		for(j=0; j<2*This->constantes->sautMax+1.0  && flag == 0; ++j){
+	for(i=0; i<3 && flag == 0; ++i){
+		for(j=0; j<3  && flag == 0; ++j){
 			if (MatriceAccessiblePredation[i][j] != NULL){
 				//Il y a une Case à cette position
 				if(MatriceAccessiblePredation[i][j]->liste->HasAPecheur(MatriceAccessiblePredation[i][j]->liste) == 1){
@@ -340,7 +341,7 @@ void ElementAnimal_predation(ElementAnimal *This)
 		}
 	}
 	// On a plus besoin de la matrice temporaire donc on peux la supprimer :
-	for (i=0; i<2*This->constantes->sautMax+1.0;++i){
+	for (i=0; i<3;++i){
 		free(MatriceAccessiblePredation[i]);
 	}
 	free(MatriceAccessiblePredation);
@@ -419,6 +420,47 @@ void ElementAnimal_deplacement(ElementAnimal *This){
 		free(MatriceAccessibleDeplacement[i]);
 	}
 	free(MatriceAccessibleDeplacement);
+}
+
+
+void ElementAnimal_reproduction(ElementAnimal *This){
+	if (This->sasiete < This->constantes->gestation*This->constantes->metabolisme){
+		return;
+	}
+	if (This->derniereReproduction + This->constantes->frequenceReproduction >= This->caseParent->g->TourCourant){
+		return;
+	}
+	int flag;
+	Case*** MatriceAccessibleReproduction= NULL;
+	MatriceAccessibleReproduction=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX, This->caseParent->posY, 1);
+	int i, j;
+	flag=0;
+	Case *caseNaissance;
+	ElementAnimal* e = NULL, *amoureux = NULL;
+	for(i=0;i<3 && flag == 0;++i){
+		for(j=0;j<3 && flag == 0;++j){
+			if (MatriceAccessibleReproduction[i][j] != NULL) {
+				if (MatriceAccessibleReproduction[i][j]->liste->HasAnAnimal(MatriceAccessibleReproduction[i][j]->liste)){
+					e=(ElementAnimal*)MatriceAccessibleReproduction[i][j]->liste->getAnimal(MatriceAccessibleReproduction[i][j]->liste);
+					if (e->type == This->type)
+						amoureux=e;
+				}
+				else if (This->constantes->taille <= This->caseParent->g->TailleMaxSousPont || MatriceAccessibleReproduction[i][j]->liste->HasAPont(MatriceAccessibleReproduction[i][j]->liste) == 0){
+					caseNaissance=MatriceAccessibleReproduction[i][j];
+				}
+			}
+		}
+	}
+	if (caseNaissance == NULL || amoureux == NULL){
+		return;
+	}
+	This->sasiete-=(This->constantes->gestation*This->constantes->metabolisme);
+	caseNaissance->liste->Push(caseNaissance->liste, (Element*)New_ElementAnimal(caseNaissance, This->type));
+	This->derniereReproduction=This->caseParent->g->TourCourant;
+	for (i=0; i<3;++i){
+		free(MatriceAccessibleReproduction[i]);
+	}
+	free(MatriceAccessibleReproduction);
 }
 
 Bool ElementAnimal_peutManger(ElementAnimal *This, Type t)
