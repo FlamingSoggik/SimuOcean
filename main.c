@@ -17,7 +17,10 @@ int main(void)
 {
 
 	Grille *g = New_Grille(10);
-//		METTRE_UN_NOM_DE_FONCTION_ET_LE_CHANGER_DANS_LE_FICHIER(&g);
+   // SDL_Print(g)
+   // g->Free(g);
+
+
 	g->Print(g);
 //	g->tab[2][2].liste->Push(g->tab[2][2].liste, (Element*)New_ElementAnimal(&(g->tab[2][2]), PYRANHA));
 //	g->tab[1][1].liste->Push(g->tab[1][1].liste, (Element*)New_ElementAnimal(&(g->tab[1][1]), BAR));
