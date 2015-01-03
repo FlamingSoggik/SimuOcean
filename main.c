@@ -17,47 +17,49 @@ int main(void)
 {
 
 	Grille *g = New_Grille(10);
-//		METTRE_UN_NOM_DE_FONCTION_ET_LE_CHANGER_DANS_LE_FICHIER(&g);
 	g->Print(g);
-//	g->tab[2][2].liste->Push(g->tab[2][2].liste, (Element*)New_ElementAnimal(&(g->tab[2][2]), PYRANHA));
-//	g->tab[1][1].liste->Push(g->tab[1][1].liste, (Element*)New_ElementAnimal(&(g->tab[1][1]), BAR));
-//	g->tab[1][2].liste->Push(g->tab[1][2].liste, (Element*)New_ElementAnimal(&(g->tab[1][2]), PLANCTON));
-//	g->tab[1][3].liste->Push(g->tab[1][3].liste, (Element*)New_ElementAnimal(&(g->tab[1][3]), CORAIL));
-//	g->tab[2][1].liste->Push(g->tab[2][1].liste, (Element*)New_ElementAnimal(&(g->tab[2][1]), THON));
-//	g->tab[3][1].liste->Push(g->tab[3][1].liste, (Element*)New_ElementAnimal(&(g->tab[3][1]), REQUIN));
-//	g->tab[3][2].liste->Push(g->tab[3][2].liste, (Element*)New_ElementAnimal(&(g->tab[3][2]), ORQUE));
-//	g->tab[3][3].liste->Push(g->tab[3][3].liste, (Element*)New_ElementAnimal(&(g->tab[3][3]), BALEINE));
-
 	g->tab[2][2].liste->Push(g->tab[2][2].liste, (Element*)New_ElementAnimal(&(g->tab[2][2]), PYRANHA));
-	g->tab[1][1].liste->Push(g->tab[1][1].liste, (Element*)New_ElementAnimal(&(g->tab[1][1]), PYRANHA));
-	g->tab[1][2].liste->Push(g->tab[1][2].liste, (Element*)New_ElementAnimal(&(g->tab[1][2]), PYRANHA));
-	g->tab[1][3].liste->Push(g->tab[1][3].liste, (Element*)New_ElementAnimal(&(g->tab[1][3]), PYRANHA));
-	g->tab[2][1].liste->Push(g->tab[2][1].liste, (Element*)New_ElementAnimal(&(g->tab[2][1]), PYRANHA));
-	g->tab[3][1].liste->Push(g->tab[3][1].liste, (Element*)New_ElementAnimal(&(g->tab[3][1]), PYRANHA));
-	g->tab[3][2].liste->Push(g->tab[3][2].liste, (Element*)New_ElementAnimal(&(g->tab[3][2]), PYRANHA));
-	g->tab[3][3].liste->Push(g->tab[3][3].liste, (Element*)New_ElementAnimal(&(g->tab[3][3]), PYRANHA));
+	g->tab[1][1].liste->Push(g->tab[1][1].liste, (Element*)New_ElementAnimal(&(g->tab[1][1]), BAR));
+	g->tab[1][2].liste->Push(g->tab[1][2].liste, (Element*)New_ElementAnimal(&(g->tab[1][2]), PLANCTON));
+	g->tab[1][3].liste->Push(g->tab[1][3].liste, (Element*)New_ElementAnimal(&(g->tab[1][3]), CORAIL));
+	g->tab[2][1].liste->Push(g->tab[2][1].liste, (Element*)New_ElementAnimal(&(g->tab[2][1]), THON));
+	g->tab[3][1].liste->Push(g->tab[3][1].liste, (Element*)New_ElementAnimal(&(g->tab[3][1]), REQUIN));
+	g->tab[3][2].liste->Push(g->tab[3][2].liste, (Element*)New_ElementAnimal(&(g->tab[3][2]), ORQUE));
+	g->tab[3][3].liste->Push(g->tab[3][3].liste, (Element*)New_ElementAnimal(&(g->tab[3][3]), BALEINE));
 
 	g->Print(g);
-	ElementAnimal* e = (ElementAnimal*)g->tab[2][2].liste->getAnimal(g->tab[2][2].liste);
-	e->reproduction(e);
-	printf("Reproduction sensée être faite\n");
+	g->faireTour(g);
 	g->Print(g);
 
-	e->deplacement(e);
-	g->Print(g);
+//	ElementAnimal* e = (ElementAnimal*)g->tab[2][2].liste->getAnimal(g->tab[2][2].liste);
+//	e->reproduction(e);
+//	printf("Reproduction sensée être faite\n");
+//	g->Print(g);
+
+//	e->deplacement(e);
+//	g->Print(g);
 	g->Free(g);
 
 
 
 //	//Constructction d'un tableau d'élément
-//	Grille g = Grille_Create(10);
-//	g.Print(&g);
+//	Grille *g = New_Grille(10);
+//	g->Print(g);
+//		g->tab[2][2].liste->Push(g->tab[2][2].liste, (Element*)New_ElementAnimal(&(g->tab[2][2]), PYRANHA));
+//		g->tab[1][1].liste->Push(g->tab[1][1].liste, (Element*)New_ElementAnimal(&(g->tab[1][1]), BAR));
+//		g->tab[1][2].liste->Push(g->tab[1][2].liste, (Element*)New_ElementAnimal(&(g->tab[1][2]), PLANCTON));
+//		g->tab[1][3].liste->Push(g->tab[1][3].liste, (Element*)New_ElementAnimal(&(g->tab[1][3]), CORAIL));
+//		g->tab[2][1].liste->Push(g->tab[2][1].liste, (Element*)New_ElementAnimal(&(g->tab[2][1]), THON));
+//		g->tab[3][1].liste->Push(g->tab[3][1].liste, (Element*)New_ElementAnimal(&(g->tab[3][1]), REQUIN));
+//		g->tab[3][2].liste->Push(g->tab[3][2].liste, (Element*)New_ElementAnimal(&(g->tab[3][2]), ORQUE));
+//		g->tab[3][3].liste->Push(g->tab[3][3].liste, (Element*)New_ElementAnimal(&(g->tab[3][3]), BALEINE));
+//	g->Print(g);
 ////Test de la demande de matrice de mouvement
 //	Case*** mattmp;
 //	int i, j;
-//	mattmp=Grille_getMatriceVoisins(&g, 1,1,2);
-//	for(i=0; i<2*2+1.0; ++i){
-//		for(j=0; j<2*2+1.0; ++j){
+//	mattmp=Grille_getMatriceVoisins(g, 1,2,1);
+//	for(i=0; i<2*1+1.0; ++i){
+//		for(j=0; j<2*1+1.0; ++j){
 //			if (mattmp[i][j] == NULL)
 //				printf(" NN |");
 //			else {
@@ -82,15 +84,15 @@ int main(void)
 //		}
 
 //		printf("\n");
-//		for (j=0; j<2*2+1.0; j++)
+//		for (j=0; j<2*1+1.0; j++)
 //			printf("—————");
 //		printf("—\n");
 //	}
-//	for (i=0; i<5;++i){
+//	for (i=0; i<3;++i){
 //		free(mattmp[i]);
 //	}
 //	free(mattmp);
-//	g.Free(&g);
+//	g->Free(g);
 /////////////////////////////////////////////////////////////////////////////////////////
 
 //	Element *tabElement[10][10];

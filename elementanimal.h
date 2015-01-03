@@ -53,7 +53,7 @@ typedef struct ElementAnimal
 		ElementAnimal_Constantes* constantes;
 
         void (*tour)(struct ElementAnimal*);
-        Bool (*survie)(struct ElementAnimal *, unsigned int);
+		Bool (*survie)(struct ElementAnimal *);
 		Bool (*peutManger)(struct ElementAnimal*, Type t);
 		void (*predation)(struct ElementAnimal*);
 		void (*deplacement)(struct ElementAnimal*);
@@ -80,7 +80,7 @@ void ElementAnimal_setSasiete(struct ElementAnimal *This, int toset);
 unsigned int ElementAnimal_getderniereReproduction(struct ElementAnimal *This);
 void ElementAnimal_setderniereReproduction(struct ElementAnimal *This, unsigned int toset);
 
-Bool ElementAnimal_survie(struct ElementAnimal *This, unsigned int tourCourrant);
+Bool ElementAnimal_survie(struct ElementAnimal *This);
 void ElementAnimal_tour(struct ElementAnimal *This);
 void ElementAnimal_predation(struct ElementAnimal *This);
 void ElementAnimal_deplacement(ElementAnimal *This);

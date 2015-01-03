@@ -36,6 +36,7 @@ void Grille_Init(Grille *This, unsigned int Taille){
 	This->TourCourant = 0;
 	This->moveFromTo=Grille_moveFromTo;
 	This->getMatriceVoisins=Grille_getMatriceVoisins;
+	This->faireTour=Grille_faireTour;
 	This->tab=malloc(sizeof(Case*)*Taille);
 	for (i=0;i<Taille;++i){
 		This->tab[i]=malloc(sizeof(Case)*Taille);
@@ -188,7 +189,7 @@ Case*** Grille_getMatriceVoisins(Grille *This, unsigned int posX, unsigned int p
 			}
 		}
 
-		for(j=posY-i+1,k=1;j<(double)posX+i-1+1;++j,++k){
+		for(j=posY-i+1,k=1;j<(double)posY+i-1+1;++j,++k){
 //printf("J, qui correspond à la valeur de y qui varie afin de completer la première et dernière colonne vaut %d\n", j);
 			if (j < 0 || j > (double)This->Taille-1 || (double)posX-i < 0 || (double)posX-i > This->Taille-1){
 //printf("La position (ligne superieure) évaluée est en dehors de la Grille ([%d][%d]), la valeur null est placée dans la case [%d][%d]\n", posX-i, j, cMNT-i, cMNT-i+k);
@@ -219,6 +220,28 @@ void Grille_moveFromTo(Grille *This, Element *elem, unsigned int posX, unsigned 
 	elem->caseParent=&(This->tab[posX][posY]);
 }
 
+void Grille_faireTour(Grille *This){
+	unsigned int i, j;
+	ElementAnimal *e;
+	for (i=0; i<This->Taille; ++i){
+		for (j=0; j<This->Taille; ++j){
+			if (This->tab[i][j].liste->HasAnAnimal(This->tab[i][j].liste)){
+				e=(ElementAnimal*)This->tab[i][j].liste->getAnimal(This->tab[i][j].liste);
+				if (e->survie(e) == False){
+					This->tab[i][j].liste->deleteElement(This->tab[i][j].liste, (Element*)e);;
+				}
+				else {
+					e->reproduction(e);
+					e->predation(e);
+					e->deplacement(e);
+					e->tour(e);
+				}
+			}
+			e=NULL;
+		}
+	}
+	++This->TourCourant;
+}
 
 Grille *New_Grille(int Taille)
 {
