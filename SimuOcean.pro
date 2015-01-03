@@ -3,6 +3,8 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 
+LIBS += -L/usr/lib/x86_64-linux-gnu -lSDL
+
 SOURCES += main.c \
     element.c \
     elementanimal.c \
@@ -10,7 +12,7 @@ SOURCES += main.c \
     listeelem.c \
     listetype.c \
     grille.c \
-#    affichage.c \
+	affichage.c \
     listecase.c
 
 include(deployment.pri)
@@ -23,7 +25,7 @@ HEADERS += \
     listeelem.h \
     listetype.h \
     grille.h \
-    Bool.h \
-#    affichage.h \
+	Bool.h \
+	affichage.h \
     listecase.h
 

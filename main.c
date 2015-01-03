@@ -21,19 +21,19 @@ int main(void)
 	g->Print(g);
 	g->tab[2][2].liste->Push(g->tab[2][2].liste, (Element*)New_ElementAnimal(&(g->tab[2][2]), PYRANHA));
 	g->tab[1][1].liste->Push(g->tab[1][1].liste, (Element*)New_ElementAnimal(&(g->tab[1][1]), BAR));
-	g->tab[1][2].liste->Push(g->tab[1][2].liste, (Element*)New_ElementAnimal(&(g->tab[1][2]), BAR));
-	g->tab[1][3].liste->Push(g->tab[1][3].liste, (Element*)New_ElementAnimal(&(g->tab[1][3]), BAR));
-	g->tab[2][1].liste->Push(g->tab[2][1].liste, (Element*)New_ElementAnimal(&(g->tab[2][1]), BAR));
-	g->tab[2][3].liste->Push(g->tab[2][3].liste, (Element*)New_ElementAnimal(&(g->tab[2][3]), BAR));
-	g->tab[3][1].liste->Push(g->tab[3][1].liste, (Element*)New_ElementAnimal(&(g->tab[3][1]), BAR));
-	g->tab[3][2].liste->Push(g->tab[3][2].liste, (Element*)New_ElementAnimal(&(g->tab[3][2]), BAR));
-	g->tab[3][3].liste->Push(g->tab[3][3].liste, (Element*)New_ElementAnimal(&(g->tab[3][3]), BAR));
+//	g->tab[1][2].liste->Push(g->tab[1][2].liste, (Element*)New_ElementAnimal(&(g->tab[1][2]), BAR));
+//	g->tab[1][3].liste->Push(g->tab[1][3].liste, (Element*)New_ElementAnimal(&(g->tab[1][3]), BAR));
+//	g->tab[2][1].liste->Push(g->tab[2][1].liste, (Element*)New_ElementAnimal(&(g->tab[2][1]), BAR));
+//	g->tab[2][3].liste->Push(g->tab[2][3].liste, (Element*)New_ElementAnimal(&(g->tab[2][3]), BAR));
+//	g->tab[3][1].liste->Push(g->tab[3][1].liste, (Element*)New_ElementAnimal(&(g->tab[3][1]), BAR));
+//	g->tab[3][2].liste->Push(g->tab[3][2].liste, (Element*)New_ElementAnimal(&(g->tab[3][2]), BAR));
+//	g->tab[3][3].liste->Push(g->tab[3][3].liste, (Element*)New_ElementAnimal(&(g->tab[3][3]), BAR));
 
 
 	g->Print(g);
 	ElementAnimal* e = (ElementAnimal*)g->tab[2][2].liste->getAnimal(g->tab[2][2].liste);
-	//e->predation(e);
-	//g->Print(g);
+	e->predation(e);
+	g->Print(g);
 
 	e->deplacement(e);
 	g->Print(g);
