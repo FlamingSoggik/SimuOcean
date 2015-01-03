@@ -67,9 +67,11 @@ void SDL_Print(struct Grille *grill){
 
     /*Gestion de la police*/
 
+
   //  police=TTF_OpenFont("ma-front.ttf", 30);
   //  SDL_Color couleurInconnu = {24,158,158,0};
   //  boite = TTF_RenderText_Blended(police, "Heyheyhey", couleurInconnu);
+
 
 
 	/* Gestion de la grille */
