@@ -16,10 +16,10 @@
 int main(void)
 {
 
-	Grille *g = New_Grille(10);
-   // SDL_Print(g)
-   // g->Free(g);
-
+    Grille *g = New_Grille(70);
+    SDL_Print(g);
+    g->Free(g);
+/*
 
 	g->Print(g);
 //	g->tab[2][2].liste->Push(g->tab[2][2].liste, (Element*)New_ElementAnimal(&(g->tab[2][2]), PYRANHA));
@@ -50,7 +50,7 @@ int main(void)
 	g->Print(g);
 	g->Free(g);
 
-
+*/
 
 //	//Constructction d'un tableau d'élément
 //	Grille g = Grille_Create(10);

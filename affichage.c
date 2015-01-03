@@ -7,7 +7,7 @@ void SDL_Print(struct Grille *grill){
 	const int NBR_CASES=grill->Taille; // Largeur de la grille
 
 	/* Initialisation des variables nécessaires */
-    SDL_Surface **Selected_Type_Case=NULL, *Case_Type=NULL, *ecran = NULL ,*fenetre = NULL, *curseur1 = NULL, *curseur2 = NULL, *boite = NULL;
+    SDL_Surface **Selected_Type_Case=NULL, *plus=NULL, *moins=NULL,  *ecran = NULL ,*fenetre = NULL, *curseur1 = NULL, *curseur2 = NULL, *boite = NULL;
     TTF_Font *police=NULL;
 	SDL_Event event;
 	int continuer=1;
@@ -25,17 +25,14 @@ void SDL_Print(struct Grille *grill){
     for(i=0;i<NBR_CASES; ++i){
             for(j=0; j<NBR_CASES; ++j){
                     carre[i][j]= malloc(sizeof(SDLCase));
-                    carre[i][j]->srf= Case_Type;
+                    carre[i][j]->srf= NULL;
             }
     }
 
-    // UN TABLEAU SERAIT LE BIENVENUE
 
     SDL_Surface** Tab_Type;
     for(i=0; i<10; i++)
         Tab_Type=(SDL_Surface**)malloc(sizeof(SDL_Surface*)*10);
-
-    SDL_Surface *Case_Type_Mer=NULL, *Case_Type_Pont=NULL, *Case_Type_Pecheur=NULL, *Case_Type_Animal=NULL;
 
 	/* Initialisation de la SDL */
 	SDL_Init(SDL_INIT_VIDEO);
@@ -68,9 +65,10 @@ void SDL_Print(struct Grille *grill){
     /*Gestion de la police*/
 
 
-  //  police=TTF_OpenFont("ma-front.ttf", 30);
+  //  police=TTF_OpenFont("ma-front.ttf", 40);
+  //  TTF_SetFontStyle(police, TTF_STYLE_BOLD);
   //  SDL_Color couleurInconnu = {24,158,158,0};
-  //  boite = TTF_RenderText_Blended(police, "Heyheyhey", couleurInconnu);
+  //  boite = TTF_RenderText_Blended(police, "123456789", couleurInconnu);
 
 
 
@@ -113,12 +111,6 @@ void SDL_Print(struct Grille *grill){
 
 
 
-/*
-    Case_Type_Mer=Charger(taille_case, ecran, 0);
-    Case_Type_Pecheur=Charger(taille_case, ecran, 1);
-    Case_Type_Pont=Charger(taille_case, ecran, 2);
-    Case_Type_Animal=Charger(taille_case,ecran,3);
-*/
 
 
     while(continuer)
@@ -174,11 +166,10 @@ while(SDL_PollEvent(&event)){
     SDL_BlitSurface(curseur1, NULL, ecran, &pos_curseur1);
     SDL_BlitSurface(curseur2, NULL, ecran, &pos_curseur2);
 
-
     /* Opérations */
 
-
-
+    plus=Spinner_Print(ecran, 0, ScreenH, ScreenW);
+    moins=Spinner_Print(ecran, 1, ScreenH, ScreenW);
 
     for(i=0; i<NBR_CASES; i++)
         for(j=0; j<NBR_CASES; j++){
@@ -209,16 +200,11 @@ while(SDL_PollEvent(&event)){
 	SDL_FreeSurface(curseur1);
 	SDL_FreeSurface(curseur2);
     SDL_FreeSurface(boite);
-    SDL_FreeSurface(Case_Type);
-    SDL_FreeSurface(Case_Type_Animal);
-    SDL_FreeSurface(Case_Type_Mer);
-    SDL_FreeSurface(Case_Type_Pecheur);
-    SDL_FreeSurface(Case_Type_Pont);
+    SDL_FreeSurface(plus);
+    SDL_FreeSurface(moins);
 
-
-    for(i=0; i<NBR_CASES; i++)
-        for(j=0; j<NBR_CASES; j++)
-            free(carre[i][j]);
+    for(i=0; i<10; i++)
+            free(Tab_Type[i]);
 
     for(k=0;k<grill->Taille;++k)
         free(carre[k]);
@@ -234,6 +220,8 @@ SDL_Surface* Charger(int taille_case, SDL_Surface *ecran, int type){
 
     SDL_Surface *Case;
     Case = SDL_CreateRGBSurface(SDL_HWSURFACE, taille_case, taille_case, 32,0,0,0,0);
+
+
 
     switch (type){
 
@@ -279,4 +267,55 @@ SDL_Surface** Select_Type(struct Grille *grill, SDL_Surface **Tab_Type, int i, i
 
 }
 
+SDL_Surface* Spinner_Print(SDL_Surface *ecran, int Plus_Ou_Moins, int ScreenH, int ScreenW)
+{
+    int i;
+    int Centre_Commandes=(ScreenH +(ScreenW-ScreenH)/2-15); // Le 15 correspond à la largeur des images bmp !
+    SDL_Surface *srf;
 
+    if(Plus_Ou_Moins==0)
+        {
+            srf=Charger_Image("ICONE_plus.bmp", ecran);
+            for(i=0; i<7; i++)
+                Blit_Image(ecran, srf, (Centre_Commandes + 100), (ScreenH/2 - 100 + 50*i));
+        }
+    else
+        {
+            srf=Charger_Image("ICONE_moins.bmp", ecran);
+            for(i=0; i<7; i++)
+                Blit_Image(ecran, srf, (Centre_Commandes - 100), (ScreenH/2 -100 + 50*i));
+        }
+
+
+    return srf;
+}
+
+SDL_Surface* Charger_Image(const char* fic, SDL_Surface* ecran)
+{
+    SDL_Surface* res;
+    SDL_Surface* tmp = SDL_LoadBMP(fic);
+    if (tmp==NULL)
+    {
+        printf("Erreur chargement %s\n",fic);
+        exit(-1);
+    }
+    res = SDL_DisplayFormat(tmp);
+
+
+   /* Cas d'un carré rouge au lieu de l'image */
+   // res = SDL_CreateRGBSurface(SDL_HWSURFACE, 10, 10, 32, 0,0,0,0);
+   // SDL_FillRect(res, NULL, SDL_MapRGB(ecran->format, 255, 0,0));
+
+
+    SDL_FreeSurface(tmp);
+    return res;
+
+}
+
+void Blit_Image(SDL_Surface* ecran,SDL_Surface* srf,int x,int y)
+{
+    SDL_Rect R;
+    R.x = x;
+    R.y = y;
+    SDL_BlitSurface(srf,NULL,ecran,&R);
+}

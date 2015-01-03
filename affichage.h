@@ -18,8 +18,9 @@ void SDL_Print(struct Grille *grill);
 SDL_Surface** Select_Type(Grille *grill, SDL_Surface **Tab_Type, int i, int j);
 
 
-
-
+SDL_Surface* Spinner_Print(SDL_Surface *ecran, int Plus_Ou_Moins, int ScreenH, int ScreenW);
+SDL_Surface* Charger_Image(const char* fic, SDL_Surface *ecran);
+void Blit_Image(SDL_Surface* ecran,SDL_Surface* srf,int x,int y);
 
 
 #endif // AFFICHAGE_H
