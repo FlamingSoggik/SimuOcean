@@ -21,13 +21,13 @@ int main(void)
 	g->Print(g);
 	g->tab[2][2].liste->Push(g->tab[2][2].liste, (Element*)New_ElementAnimal(&(g->tab[2][2]), PYRANHA));
 	g->tab[1][1].liste->Push(g->tab[1][1].liste, (Element*)New_ElementAnimal(&(g->tab[1][1]), BAR));
-//	g->tab[1][2].liste->Push(g->tab[1][2].liste, (Element*)New_ElementAnimal(&(g->tab[1][2]), BAR));
-//	g->tab[1][3].liste->Push(g->tab[1][3].liste, (Element*)New_ElementAnimal(&(g->tab[1][3]), BAR));
-//	g->tab[2][1].liste->Push(g->tab[2][1].liste, (Element*)New_ElementAnimal(&(g->tab[2][1]), BAR));
-//	g->tab[2][3].liste->Push(g->tab[2][3].liste, (Element*)New_ElementAnimal(&(g->tab[2][3]), BAR));
-//	g->tab[3][1].liste->Push(g->tab[3][1].liste, (Element*)New_ElementAnimal(&(g->tab[3][1]), BAR));
-//	g->tab[3][2].liste->Push(g->tab[3][2].liste, (Element*)New_ElementAnimal(&(g->tab[3][2]), BAR));
-//	g->tab[3][3].liste->Push(g->tab[3][3].liste, (Element*)New_ElementAnimal(&(g->tab[3][3]), BAR));
+	g->tab[1][2].liste->Push(g->tab[1][2].liste, (Element*)New_ElementAnimal(&(g->tab[1][2]), PLANCTON));
+	g->tab[1][3].liste->Push(g->tab[1][3].liste, (Element*)New_ElementAnimal(&(g->tab[1][3]), CORAIL));
+	g->tab[2][1].liste->Push(g->tab[2][1].liste, (Element*)New_ElementAnimal(&(g->tab[2][1]), THON));
+//	g->tab[2][3].liste->Push(g->tab[2][3].liste, (Element*)New_ElementAnimal(&(g->tab[2][3]), PYRANHA));
+	g->tab[3][1].liste->Push(g->tab[3][1].liste, (Element*)New_ElementAnimal(&(g->tab[3][1]), REQUIN));
+	g->tab[3][2].liste->Push(g->tab[3][2].liste, (Element*)New_ElementAnimal(&(g->tab[3][2]), ORQUE));
+	g->tab[3][3].liste->Push(g->tab[3][3].liste, (Element*)New_ElementAnimal(&(g->tab[3][3]), BALEINE));
 
 
 	g->Print(g);
