@@ -60,7 +60,7 @@ char lienVersConstantes(ElementAnimal* This, Type t)
 			This->constantes=&C_Baleine;
 			break;
 		default :
-			puts("Erreur lienVersConstantes");
+			//printf("Erreur lienVersConstantes %d\n", t);
 			return ERR_TYPE_NOT_ANIMAL;
 			break;
 	}
@@ -69,62 +69,69 @@ char lienVersConstantes(ElementAnimal* This, Type t)
 
 void defineConstant()
 {
-	C_Plancton.dureeSurvie=1;
-	C_Plancton.taille=1;
+	C_Plancton.dureeSurvie=10000;
+	C_Plancton.taille=2;
 	C_Plancton.tailleDuBide=1;
-	C_Plancton.sautMax=1;
-	C_Plancton.metabolisme=1;
-	C_Plancton.gestation=1;
-	C_Plancton.frequenceReproduction=1;
-	C_Corail.dureeSurvie=1;
-	C_Corail.taille=1;
-	C_Corail.tailleDuBide=1;
-	C_Corail.sautMax=1;
+	C_Plancton.sautMax=0;
+	C_Plancton.metabolisme=0;
+	C_Plancton.gestation=0;
+	C_Plancton.frequenceReproduction=40;
+
+	C_Corail.dureeSurvie=30;
+	C_Corail.taille=2;
+	C_Corail.tailleDuBide=3;
+	C_Corail.sautMax=0;
 	C_Corail.metabolisme=1;
 	C_Corail.gestation=1;
-	C_Corail.frequenceReproduction=1;
-	C_Bar.dureeSurvie=1;
-	C_Bar.taille=2;
-	C_Bar.tailleDuBide=1;
-	C_Bar.sautMax=1;
+	C_Corail.frequenceReproduction=25;
+
+	C_Bar.dureeSurvie=30;
+	C_Bar.taille=3;
+	C_Bar.tailleDuBide=3;
+	C_Bar.sautMax=3;
 	C_Bar.metabolisme=1;
 	C_Bar.gestation=1;
-	C_Bar.frequenceReproduction=1;
-	C_Thon.dureeSurvie=1;
-	C_Thon.taille=1;
-	C_Thon.tailleDuBide=1;
-	C_Thon.sautMax=1;
+	C_Bar.frequenceReproduction=10;
+
+	C_Thon.dureeSurvie=30;
+	C_Thon.taille=4;
+	C_Thon.tailleDuBide=3;
+	C_Thon.sautMax=3;
 	C_Thon.metabolisme=1;
 	C_Thon.gestation=1;
-	C_Thon.frequenceReproduction=1;
-	C_Pyranha.dureeSurvie=1;
-	C_Pyranha.taille=15;
-	C_Pyranha.tailleDuBide=14;
-	C_Pyranha.sautMax=2;
+	C_Thon.frequenceReproduction=15;
+
+	C_Pyranha.dureeSurvie=60;
+	C_Pyranha.taille=5;
+	C_Pyranha.tailleDuBide=5;
+	C_Pyranha.sautMax=3;
 	C_Pyranha.metabolisme=1;
 	C_Pyranha.gestation=1;
-	C_Pyranha.frequenceReproduction=1;
-	C_Requin.dureeSurvie=1;
-	C_Requin.taille=1;
-	C_Requin.tailleDuBide=1;
-	C_Requin.sautMax=1;
+	C_Pyranha.frequenceReproduction=5;
+
+	C_Requin.dureeSurvie=30;
+	C_Requin.taille=6;
+	C_Requin.tailleDuBide=4;
+	C_Requin.sautMax=3;
 	C_Requin.metabolisme=1;
 	C_Requin.gestation=1;
-	C_Requin.frequenceReproduction=1;
-	C_Orque.dureeSurvie=1;
-	C_Orque.taille=1;
-	C_Orque.tailleDuBide=1;
-	C_Orque.sautMax=1;
+	C_Requin.frequenceReproduction=2;
+
+	C_Orque.dureeSurvie=60;
+	C_Orque.taille=7;
+	C_Orque.tailleDuBide=9;
+	C_Orque.sautMax=3;
 	C_Orque.metabolisme=1;
-	C_Orque.gestation=1;
-	C_Orque.frequenceReproduction=1;
-	C_Baleine.dureeSurvie=1;
-	C_Baleine.taille=1;
-	C_Baleine.tailleDuBide=1;
-	C_Baleine.sautMax=1;
+	C_Orque.gestation=2;
+	C_Orque.frequenceReproduction=5;
+
+	C_Baleine.dureeSurvie=30;
+	C_Baleine.taille=8;
+	C_Baleine.tailleDuBide=2;
+	C_Baleine.sautMax=3;
 	C_Baleine.metabolisme=1;
 	C_Baleine.gestation=1;
-	C_Baleine.frequenceReproduction=1;
+	C_Baleine.frequenceReproduction=20;
 }
 
 void remplirListePredation()
@@ -203,7 +210,6 @@ char ElementAnimal_Init(Case *c, ElementAnimal* This, Type t){
 	This->dernierRepas = 0;
 	This->GetDernierRepas = ElementAnimal_getDernierRepas;
 	This->SetDernierRepas = ElementAnimal_setDernierRepas;
-	This->sasiete = 10;
 	This->GetSasiete = ElementAnimal_getSasiete;
 	This->SetSasiete = ElementAnimal_setSasiete;
 	This->derniereReproduction = 0;
@@ -215,11 +221,13 @@ char ElementAnimal_Init(Case *c, ElementAnimal* This, Type t){
 	This->predation=ElementAnimal_predation;
 	This->deplacement=ElementAnimal_deplacement;
 	This->reproduction=ElementAnimal_reproduction;
-	if (lienVersConstantes(This, t) < 0){
-		puts("Erreur définition des constantes");
-		return ERR_TYPE_NOT_ANIMAL;
-	}
-	return 0;
+	This->hasAlreadyPlayed=0;
+	This->aFaitSonTour=ElementAnimal_aFaitSonTour;
+	This->finDuTour=ElementAnimal_finDuTour;
+	This->doitJouerCeTour=ElementAnimal_doitJouerCeTour;
+	char ret = lienVersConstantes(This, t);
+	This->sasiete = This->constantes->tailleDuBide;
+	return ret;
 }
 
 unsigned int ElementAnimal_getDernierRepas(struct ElementAnimal *This){
@@ -252,7 +260,7 @@ void ElementAnimal_setderniereReproduction(struct ElementAnimal *This, unsigned 
 }
 
 Bool ElementAnimal_survie(struct ElementAnimal *This){
-	if (This->sasiete == 0 && This->caseParent->g->TourCourant-This->dernierRepas > This->constantes->dureeSurvie)
+	if (This->sasiete == 0 && This->caseParent->g->TourCourant - This->dernierRepas > This->constantes->dureeSurvie)
 		return False;
 	return True;
 }
@@ -273,49 +281,51 @@ void ElementAnimal_predation(ElementAnimal *This)
 		for(j=0; j<3  && flag == 0; ++j){
 			if (MatriceAccessiblePredation[i][j] != NULL){
 				//Il y a une Case à cette position
-				if(MatriceAccessiblePredation[i][j]->liste->HasAPecheur(MatriceAccessiblePredation[i][j]->liste) == 1){
+//				if(MatriceAccessiblePredation[i][j]->liste->HasAPecheur(MatriceAccessiblePredation[i][j]->liste) == 1){
 
-					// Si il y a un pecheur
-					if(MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == 1){
-						//sur un pont
-						if(This->peutManger(This, PONT) == True){
-							plusInteressant= MatriceAccessiblePredation[i][j]->liste->getPont(MatriceAccessiblePredation[i][j]->liste);
-							flag = 1;
-						}
-					} else {
+//					// Si il y a un pecheur
+//					if(MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == 1){
+//						//sur un pont
+//						if(This->peutManger(This, PONT) == True){
+//							plusInteressant= MatriceAccessiblePredation[i][j]->liste->getPont(MatriceAccessiblePredation[i][j]->liste);
+//							flag = 1;
+//						}
+//					} else {
 
-						//seul dans l'eau
-						if(This->peutManger(This, PECHEUR) == True){
-							plusInteressant = (Element*)MatriceAccessiblePredation[i][j]->liste->getPont(MatriceAccessiblePredation[i][j]->liste);
-							flag=1;
-						}
-					}
-				}
-				///Necessaire ou non ?
-				if (flag == 1){
-					continue;
-				}
-				if(MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == 1){
+//						//seul dans l'eau
+//						if(This->peutManger(This, PECHEUR) == True){
+//							plusInteressant = (Element*)MatriceAccessiblePredation[i][j]->liste->getPont(MatriceAccessiblePredation[i][j]->liste);
+//							flag=1;
+//						}
+//					}
+//				}
+//				///Necessaire ou non ?
+//				if (flag == 1){
+//					continue;
+//				}
+//				if(MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == 1){
 
-					//Cas ou la case ciblée à un pont
-					if(This->peutManger(This, PONT) == True){
-						plusInteressant = (Element*)MatriceAccessiblePredation[i][j]->liste->getPont(MatriceAccessiblePredation[i][j]->liste);
-						flag=1;
-					}
+//					//Cas ou la case ciblée à un pont
+//					if(This->peutManger(This, PONT) == True){
+//						plusInteressant = (Element*)MatriceAccessiblePredation[i][j]->liste->getPont(MatriceAccessiblePredation[i][j]->liste);
+//						flag=1;
+//					}
 
 
-				}
-				///Necessaire ou non ?
-				if (flag == 1){
-					continue;
-				}
+//				}
+//				///Necessaire ou non ?
+//				if (flag == 1){
+//					continue;
+//				}
 				if(MatriceAccessiblePredation[i][j]->liste->HasAnAnimal(MatriceAccessiblePredation[i][j]->liste) == 1){
-
 
 					//Elle contient un animal
 					ElementAnimal* current = (ElementAnimal*)MatriceAccessiblePredation[i][j]->liste->getAnimal(MatriceAccessiblePredation[i][j]->liste);
+					if (This->peutManger(This, current->type)){
+printf("%s : %d\n", __FUNCTION__, __LINE__);
+					}
 					if (This->peutManger(This, current->type) == True && This->sasiete+current->constantes->taille < This->constantes->tailleDuBide){
-
+printf("%s : %d\n", __FUNCTION__, __LINE__);
 						//L'élément est mangeable mais est-ce le plus intéressant ?
 						if (plusInteressant == NULL){
 
@@ -340,15 +350,12 @@ void ElementAnimal_predation(ElementAnimal *This)
 
 							// L'element semble plus intéressant, il faut maintenant vérifier qu'il ne soit pas sous un pont sans qu'on y ait accès
 							if(This->constantes->taille < This->caseParent->g->TailleMaxSousPont){
-
+								// Je passe sous un pont, let's go
 								plusInteressant=(Element*)current;
 							}
-							else {
-
-								if (MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == False){
-
-									plusInteressant=(Element*)current;
-								}
+							else if (MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == False){
+								//Je passe pas sous les ponts mais de toute façon, il y en a pas
+								plusInteressant=(Element*)current;
 							}
 						}
 					}
@@ -383,12 +390,12 @@ void ElementAnimal_predation(ElementAnimal *This)
 }
 
 void ElementAnimal_deplacement(ElementAnimal *This){
-	static int first = 0;
+	static int first = 1;
 	int flag;
-	if (first == 0)
+	if (first == 1)
 	{
 		srand (time(NULL));
-		first = 1;
+		first = 0;
 	}
 	Case*** MatriceAccessibleDeplacement = NULL;
 	MatriceAccessibleDeplacement=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX, This->caseParent->posY, This->constantes->sautMax);
@@ -403,6 +410,7 @@ void ElementAnimal_deplacement(ElementAnimal *This){
 						flag=1;
 		}
 	}
+
 	if (flag == 0){
 		for (i=0; i<2*This->constantes->sautMax+1.0;++i){
 			free(MatriceAccessibleDeplacement[i]);
@@ -410,6 +418,7 @@ void ElementAnimal_deplacement(ElementAnimal *This){
 		free(MatriceAccessibleDeplacement);
 		return;
 	}
+
 	flag = 0;
 	while (flag == 0){
 		deplX = 0;
@@ -433,7 +442,7 @@ void ElementAnimal_deplacement(ElementAnimal *This){
 		}
 	}
 	if(This->sasiete-max(deplX, deplY)>=0){
-		This->caseParent->g->moveFromTo(This->caseParent->g, (Element*)This, This->constantes->sautMax+deplX, This->constantes->sautMax+deplY);
+		This->caseParent->g->moveFromTo(This->caseParent->g, (Element*)This, MatriceAccessibleDeplacement[This->constantes->sautMax+deplX][This->constantes->sautMax+deplY]->posX, MatriceAccessibleDeplacement[This->constantes->sautMax+deplX][This->constantes->sautMax+deplY]->posY);
 		This->sasiete=This->sasiete-max(deplX, deplY);
 	}
 	for (i=0; i<2*This->constantes->sautMax+1.0;++i){
@@ -455,7 +464,7 @@ void ElementAnimal_reproduction(ElementAnimal *This){
 	MatriceAccessibleReproduction=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX, This->caseParent->posY, 1);
 	int i, j;
 	flag=0;
-	Case *caseNaissance;
+	Case *caseNaissance = NULL;
 	ElementAnimal* e = NULL, *amoureux = NULL;
 	for(i=0;i<3 && flag == 0;++i){
 		for(j=0;j<3 && flag == 0;++j){
@@ -489,4 +498,23 @@ Bool ElementAnimal_peutManger(ElementAnimal *This, Type t)
 		return True;
 	}
 	return False;
+}
+
+
+void ElementAnimal_aFaitSonTour(ElementAnimal *This)
+{
+	This->hasAlreadyPlayed=1;
+}
+
+void ElementAnimal_finDuTour(ElementAnimal *This)
+{
+	This->hasAlreadyPlayed=0;
+}
+
+
+Bool ElementAnimal_doitJouerCeTour(ElementAnimal *This)
+{
+	if (This->hasAlreadyPlayed == 1)
+		return False;
+	return True;
 }

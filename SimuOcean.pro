@@ -3,17 +3,18 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 
-LIBS += -L/usr/lib/x86_64-linux-gnu -lSDL -lSDL_ttf
+LIBS += -L/usr/lib/x86_64-linux-gnu -lSDL -lSDL_image -lSDL_ttf
 
 SOURCES += main.c \
     element.c \
-    elementanimal.c \
+	elementanimal.c \
     case.c \
     listeelem.c \
     listetype.c \
     grille.c \
 	affichage.c \
-    listecase.c
+    listecase.c \
+    elementpecheur.c
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -27,5 +28,6 @@ HEADERS += \
     grille.h \
 	Bool.h \
 	affichage.h \
-    listecase.h
+    listecase.h \
+    elementpecheur.h
 

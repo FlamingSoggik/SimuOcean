@@ -3,21 +3,22 @@
 #include <stdio.h>
 #include "elementanimal.h"
 #include "element.h"
+#include <time.h>
 
-#define EAU "\033[00m"
-#define PVOID "\033[48;5;1m"
-#define PPLANCTON "\033[48;5;2m"
-#define PCORAIL "\033[48;5;9m"
-#define PBAR "\033[48;5;184m"
-#define PTHON "\033[48;5;8m"
-#define PPOLLUTION "\033[48;5;7m"
-#define PPYRANHA "\033[48;5;90m"
-#define PREQUIN "\033[48;5;18m"
-#define PORQUE "\033[48;5;27m"
-#define PBALEINE "\033[48;5;22m"
-#define PPONT "\033[48;5;130m"
-#define PPECHEUR "\033[00;47m"
-#define NORMAL "\033[00m"
+#define EAU "\033[00m"				//NOIR
+#define PVOID "\033[48;5;1m"		//ROUGE FONCE
+#define PPLANCTON "\033[48;5;2m"	//VERT CLAIR
+#define PCORAIL "\033[48;5;9m"		//ROUGE CLAIR
+#define PBAR "\033[48;5;184m"		//MARON-JAUNE
+#define PTHON "\033[48;5;8m"		//GRIS
+#define PPOLLUTION "\033[48;5;7m"	//GRIS TRES CLAIR
+#define PPYRANHA "\033[48;5;90m"	//VIOLET
+#define PREQUIN "\033[48;5;18m"		//BLEU FONCE
+#define PORQUE "\033[48;5;27m"		//BLEU CLAIR
+#define PBALEINE "\033[48;5;22m"	//VERT FONCE
+#define PPONT "\033[48;5;130m"		//MARRON
+#define PPECHEUR "\033[00;47m"		//VERT-BLEU
+#define NORMAL "\033[00m"			//NOIR
 #define PGRAS "\033[01m"
 
 Grille Grille_Create(int Taille){
@@ -28,6 +29,11 @@ Grille Grille_Create(int Taille){
 }
 
 void Grille_Init(Grille *This, unsigned int Taille){
+	static int premierpassage = 1;
+	if (premierpassage == 1){
+		srand(time(NULL));
+		premierpassage = 0;
+	}
 	unsigned int i,j;
 	This->Clear = Grille_Clear;
 	This->Print = Grille_Print;
@@ -48,6 +54,53 @@ void Grille_Init(Grille *This, unsigned int Taille){
 	}
 	defineConstant();
 	remplirListePredation();
+	int nbrCase = Taille*Taille;
+	int nbrEspece = 0;
+	int comptelemespece = 0;
+	Type compteurTypeEspece = PLANCTON;
+
+
+	while (compteurTypeEspece < PONT){
+		comptelemespece = 0;
+		switch(compteurTypeEspece){
+			case PLANCTON:
+				nbrEspece = 40*nbrCase/100;
+				break;
+			case CORAIL:
+				nbrEspece = 2*nbrCase/100;
+				break;
+			case BAR:
+				nbrEspece = 5*nbrCase/100;
+				break;
+			case THON:
+				nbrEspece = 5*nbrCase/100;
+				break;
+			case PYRANHA:
+				nbrEspece = 2*nbrCase/100;
+				break;
+			case REQUIN:
+				nbrEspece = 4*nbrCase/100;
+				break;
+			case ORQUE:
+				nbrEspece = 2*nbrCase/100;
+				break;
+			case BALEINE:
+				nbrEspece = 5*nbrCase/100;
+				break;
+			default:
+				nbrEspece = 0;
+				break;
+		}
+		while (comptelemespece != nbrEspece){
+			i = rand()%Taille;
+			j = rand()%Taille;
+			if (This->tab[i][j].liste->HasAnAnimal(This->tab[i][j].liste) == 0){
+				This->tab[i][j].liste->Push(This->tab[i][j].liste, (Element*)New_ElementAnimal(&This->tab[i][j], compteurTypeEspece));
+				++comptelemespece;
+			}
+		}
+		++compteurTypeEspece;
+	}
 }
 
 void Grille_Clear(struct Grille *This){
@@ -65,11 +118,12 @@ void Grille_Clear(struct Grille *This){
 }
 
 void Grille_Print(struct Grille *This){
+	printf(EAU "EAU" NORMAL " " PVOID "RIEN(erreur)" NORMAL " " PPLANCTON "PLANCTON" NORMAL " " PCORAIL "CORAIL" NORMAL " " PBAR "BAR" NORMAL " " PTHON "THON" NORMAL " " PPOLLUTION "POLLUTION" NORMAL " " PPYRANHA "PYRANHA" NORMAL " " PREQUIN "PYRANHA" NORMAL " " PORQUE "ORQUE" NORMAL " " PBALEINE "BALEINE" NORMAL "\n");
 	unsigned int i, j;
-    for(i=0;i<This->Taille;++i)
-        printf("=====" NORMAL);
+	for(i=0;i<This->Taille;++i)
+		printf("=====" NORMAL);
 	printf("=\n");
-    for(i=0;i<This->Taille;++i){
+	for(i=0;i<This->Taille;++i){
 		printf("|");
 		for(j=0; j<This->Taille; ++j){
 			if (This->tab[i][j].liste->HasAPecheur(This->tab[i][j].liste)) {
@@ -227,17 +281,29 @@ void Grille_faireTour(Grille *This){
 		for (j=0; j<This->Taille; ++j){
 			if (This->tab[i][j].liste->HasAnAnimal(This->tab[i][j].liste)){
 				e=(ElementAnimal*)This->tab[i][j].liste->getAnimal(This->tab[i][j].liste);
+				if (e->doitJouerCeTour(e) == False)
+					continue;
 				if (e->survie(e) == False){
 					This->tab[i][j].liste->deleteElement(This->tab[i][j].liste, (Element*)e);;
 				}
 				else {
 					e->reproduction(e);
 					e->predation(e);
-					e->deplacement(e);
+					e->deplacement(e); //<-- Contient le probleme de localisation dans la sous matrice
 					e->tour(e);
+					e->aFaitSonTour(e);
 				}
 			}
 			e=NULL;
+//			This->Print(This);
+		}
+	}
+	for (i=0; i<This->Taille; ++i){
+		for (j=0; j<This->Taille; ++j){
+			if (This->tab[i][j].liste->HasAnAnimal(This->tab[i][j].liste)){
+				e=(ElementAnimal*)This->tab[i][j].liste->getAnimal(This->tab[i][j].liste);
+				e->finDuTour(e);
+			}
 		}
 	}
 	++This->TourCourant;

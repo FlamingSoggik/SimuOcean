@@ -4,6 +4,7 @@
 #include "grille.h"
 #include <stdlib.h>
 #include "affichage.h"
+#include <unistd.h>
 
 #define EAU "\033[00;44m"
 #define ANIMAL "\033[00;41m"
@@ -17,9 +18,9 @@ int main(void)
 {
 
 
-	Grille *g = New_Grille(10);
-	//SDL_Print(g);
-	//g->Free(g);
+	Grille *g = New_Grille(20);
+//	SDL_Print(g);
+//	g->Free(g);
 
 
 
@@ -34,9 +35,12 @@ int main(void)
 	g->tab[3][3].liste->Push(g->tab[3][3].liste, (Element*)New_ElementAnimal(&(g->tab[3][3]), BALEINE));
 
 	g->Print(g);
-	g->faireTour(g);
-	g->Print(g);
-
+	while(g->TourCourant < 1000){
+		g->faireTour(g);
+		system("clear");
+		g->Print(g);
+		usleep(700000);
+	}
 //	ElementAnimal* e = (ElementAnimal*)g->tab[2][2].liste->getAnimal(g->tab[2][2].liste);
 //	e->reproduction(e);
 //	printf("Reproduction sensée être faite\n");
@@ -63,9 +67,9 @@ int main(void)
 ////Test de la demande de matrice de mouvement
 //	Case*** mattmp;
 //	int i, j;
-//	mattmp=Grille_getMatriceVoisins(g, 1,2,1);
-//	for(i=0; i<2*1+1.0; ++i){
-//		for(j=0; j<2*1+1.0; ++j){
+//	mattmp=Grille_getMatriceVoisins(g, 1,3,2);
+//	for(i=0; i<2*2+1.0; ++i){
+//		for(j=0; j<2*2+1.0; ++j){
 //			if (mattmp[i][j] == NULL)
 //				printf(" NN |");
 //			else {
@@ -90,11 +94,11 @@ int main(void)
 //		}
 
 //		printf("\n");
-//		for (j=0; j<2*1+1.0; j++)
+//		for (j=0; j<2*2+1.0; j++)
 //			printf("—————");
 //		printf("—\n");
 //	}
-//	for (i=0; i<3;++i){
+//	for (i=0; i<5;++i){
 //		free(mattmp[i]);
 //	}
 //	free(mattmp);

@@ -59,6 +59,12 @@ typedef struct ElementAnimal
 		void (*deplacement)(struct ElementAnimal*);
 		void (*reproduction)(struct ElementAnimal*);
 
+
+		char hasAlreadyPlayed;
+		void (*aFaitSonTour)(struct ElementAnimal*);
+		void (*finDuTour)(struct ElementAnimal*);
+		Bool (*doitJouerCeTour)(struct ElementAnimal*);
+
 } ElementAnimal;
 
 //Constructeurs
@@ -80,12 +86,15 @@ void ElementAnimal_setSasiete(struct ElementAnimal *This, int toset);
 unsigned int ElementAnimal_getderniereReproduction(struct ElementAnimal *This);
 void ElementAnimal_setderniereReproduction(struct ElementAnimal *This, unsigned int toset);
 
-Bool ElementAnimal_survie(struct ElementAnimal *This);
-void ElementAnimal_tour(struct ElementAnimal *This);
-void ElementAnimal_predation(struct ElementAnimal *This);
+Bool ElementAnimal_survie(ElementAnimal *This);
+void ElementAnimal_tour(ElementAnimal *This);
+void ElementAnimal_predation(ElementAnimal *This);
 void ElementAnimal_deplacement(ElementAnimal *This);
 void ElementAnimal_reproduction(ElementAnimal *This);
-Bool ElementAnimal_peutManger(struct ElementAnimal* This, Type t);
+Bool ElementAnimal_peutManger(ElementAnimal* This, Type t);
+void ElementAnimal_aFaitSonTour(ElementAnimal* This);
+void ElementAnimal_finDuTour(ElementAnimal *This);
+Bool ElementAnimal_doitJouerCeTour(ElementAnimal *This);
 
 void defineConstant();
 void remplirListePredation();

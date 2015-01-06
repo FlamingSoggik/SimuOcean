@@ -119,43 +119,43 @@ void SDL_Print(struct Grille *grill){
 
 
 while(SDL_PollEvent(&event)){
-    switch(event.type)
-        {
-            case SDL_QUIT:
-                continuer=0;
-                break;
+	switch(event.type)
+		{
+			case SDL_QUIT:
+				continuer=0;
+				break;
 
-            case SDL_KEYDOWN:
+			case SDL_KEYDOWN:
 
-                switch (event.key.keysym.sym)
-                    {
-                        case SDLK_ESCAPE:
-                            continuer = 0;
-                            break;
-                        default: break;
-                    }
-                break;
+				switch (event.key.keysym.sym)
+					{
+						case SDLK_ESCAPE:
+							continuer = 0;
+							break;
+						default: break;
+					}
+				break;
 
-            case SDL_MOUSEBUTTONDOWN: // Moment de pression
-                if ((pos_curseur2.x<=event.button.x) && (event.button.x<=pos_curseur2.x+12) && (pos_curseur2.y<=event.button.y) && (event.button.y<=pos_curseur2.y+32))
-                    select_curseur2=1;
-                break;
+			case SDL_MOUSEBUTTONDOWN: // Moment de pression
+				if ((pos_curseur2.x<=event.button.x) && (event.button.x<=pos_curseur2.x+12) && (pos_curseur2.y<=event.button.y) && (event.button.y<=pos_curseur2.y+32))
+					select_curseur2=1;
+				break;
 
-            case SDL_MOUSEBUTTONUP:
-                select_curseur2=0;
-                break;
+			case SDL_MOUSEBUTTONUP:
+				select_curseur2=0;
+				break;
 
-            case SDL_MOUSEMOTION:
-                if (select_curseur2 && (event.motion.x >= pos_curseur1.x) && (event.motion.x <= pos_curseur1.x+100)) // Movement du curseur2.
-                {
-                    pos_curseur2.x=event.motion.x-6;
-                }
-            break;
-
-
+			case SDL_MOUSEMOTION:
+				if (select_curseur2 && (event.motion.x >= pos_curseur1.x) && (event.motion.x <= pos_curseur1.x+100)) // Movement du curseur2.
+				{
+					pos_curseur2.x=event.motion.x-6;
+				}
+			break;
 
 
-         }
+
+
+		 }
 }
 
     /* On efface l'écran */
@@ -275,7 +275,7 @@ SDL_Surface* Spinner_Print(SDL_Surface *ecran, int Plus_Ou_Moins, int ScreenH, i
 
     if(Plus_Ou_Moins==0)
         {
-            srf=Charger_Image("ICONE_plus.bmp", ecran);
+			srf=Charger_Image("ICONE_plus.bmp", ecran);
             for(i=0; i<7; i++)
                 Blit_Image(ecran, srf, (Centre_Commandes + 100), (ScreenH/2 - 100 + 50*i));
         }
