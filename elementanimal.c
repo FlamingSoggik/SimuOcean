@@ -321,11 +321,7 @@ void ElementAnimal_predation(ElementAnimal *This)
 
 					//Elle contient un animal
 					ElementAnimal* current = (ElementAnimal*)MatriceAccessiblePredation[i][j]->liste->getAnimal(MatriceAccessiblePredation[i][j]->liste);
-					if (This->peutManger(This, current->type)){
-printf("%s : %d\n", __FUNCTION__, __LINE__);
-					}
 					if (This->peutManger(This, current->type) == True && This->sasiete+current->constantes->taille < This->constantes->tailleDuBide){
-printf("%s : %d\n", __FUNCTION__, __LINE__);
 						//L'élément est mangeable mais est-ce le plus intéressant ?
 						if (plusInteressant == NULL){
 
