@@ -18,13 +18,13 @@ int main(void)
 {
 
 
-	Grille *g = New_Grille(20);
+	Grille *g = New_Grille(100);
 //	SDL_Print(g);
 //	g->Free(g);
 
 
 	g->Print(g);
-	while(g->TourCourant < 70){
+	while(g->TourCourant < 10000){
 		g->faireTour(g);
 		system("clear");
 		g->Print(g);

@@ -1,4 +1,4 @@
-#include "elementpecheur.h"
+#include "elementpont.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -10,8 +10,8 @@
 
 #define max(a,b) (a>=b?a:b)
 
-ElementPecheur* New_ElementPecheur(Case *c){
-	ElementPecheur* This = malloc(sizeof(ElementPecheur));
+ElementPont* New_ElementPont(Case *c){
+	ElementPont* This = malloc(sizeof(ElementPont));
 	if (!This) return NULL;
 	if (ElementPecheur_Init(c, This) < 0){
 		free(This);
@@ -21,13 +21,12 @@ ElementPecheur* New_ElementPecheur(Case *c){
 	return This;
 }
 
-char ElementPecheur_Init(Case *c, ElementPecheur* This){
+char ElementPont_Init(Case *c, ElementPont* This){
 	if (c == NULL){
 		puts("Erreur creation animal case parent vide");
 	}
 	This->caseParent=c;
-	This->type=PECHEUR;
+	This->type=PONT;
 	This->Clear = Element_Clear;
-	This->sac = 0;
 	return 0;
 }

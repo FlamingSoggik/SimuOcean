@@ -29,11 +29,11 @@ typedef struct ElementPecheur
 } ElementPecheur;
 
 //Constructeurs
-ElementPecheur* New_ElementPecheur(Case *c, Type t);
+ElementPecheur* New_ElementPecheur(Case *c);
 
 
 //Initialisateur
-char ElementPecheur_Init(Case *c, ElementPecheur* This, Type t);
+char ElementPecheur_Init(Case *c, ElementPecheur* This);
 
 //Destructeurs
 
