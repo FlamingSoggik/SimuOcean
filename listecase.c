@@ -6,6 +6,7 @@ void ListeCase_Init(ListeCase* This){
 	This->Top=NULL;
     This->Clear=ListeCase_Clear;
     This->Taille=ListeCase_Taille;
+	This->getNieme=ListeCase_getNieme;
 }
 
 ListeCase* New_ListeCase(){
@@ -55,4 +56,20 @@ Case* ListeCase_Pop(ListeCase* This){
 
 int ListeCase_Taille(ListeCase* This){
     return This->taille;
+}
+
+
+Case *ListeCase_getNieme(ListeCase *This, unsigned int number)
+{
+	++number;
+	if (number > This->taille){
+		return NULL;
+	}
+	MaillonListeCase *tmp = This->Top;
+	--number;
+	while(number != 0){
+		tmp=tmp->next;
+		--number;
+	}
+	return tmp->c;
 }
