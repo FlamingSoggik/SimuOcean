@@ -18,7 +18,7 @@ int main(void)
 {
 
 
-    Grille *g = New_Grille(120);
+    Grille *g = New_Grille(75);
     SDL_Print(g);
 //	g->Free(g);
 /*

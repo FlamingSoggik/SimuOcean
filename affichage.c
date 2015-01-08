@@ -105,7 +105,7 @@ void SDL_Print(struct Grille *grill){
 	curseur2 = SDL_CreateRGBSurface(SDL_HWSURFACE, 12, 32, 32, 0, 0, 0, 0);
 	SDL_FillRect(curseur2, NULL, SDL_MapRGB(ecran->format, 104, 111, 140));
 	SDL_Rect pos_curseur2;
-	pos_curseur2.x=pos_curseur1.x+50-6;
+    pos_curseur2.x=pos_curseur1.x-6;
 	pos_curseur2.y=pos_curseur1.y-15;
         /*DevMode*/
     Dev_Icone=Charger_Image("ICONE_moins.bmp", ecran);
@@ -147,6 +147,18 @@ while(SDL_PollEvent(&event)){
                         case SDLK_ESCAPE:
                             continuer = 0;
                             break;
+                        case SDLK_F5:
+                            i=grill->Taille;
+                            Grille_Init(grill, i);
+                            break;
+                        case SDLK_SPACE:
+                            if (Refresh_Timer>=95) pos_curseur2.x=pos_curseur1.x+50-6;
+                            else if (pos_curseur2.x == (pos_curseur1.x+50-6)) pos_curseur2.x=pos_curseur1.x-6;
+                            else pos_curseur2.x=pos_curseur1.x+100-6;
+                            break;
+
+
+
                         default: break;
                     }
                 break;
@@ -214,15 +226,18 @@ while(SDL_PollEvent(&event)){
 
     /* Actualisation de la grille ! */
 
-    if (Compteur_Tours%Refresh_Timer==0)
+                /*Mise à jour vitesse*/
+ Refresh_Timer=((pos_curseur2.x - pos_curseur1.x)+7); // La différence varie entre -6 et 94.
+
+
+    if ((Compteur_Tours%Refresh_Timer==0) && (Refresh_Timer<=95))
     {
         grill->faireTour(grill);
         system("clear");
     }
 
             //usleep(100000);
-
-
+printf("%d\n", Refresh_Timer);
 Compteur_Tours++;
 
     } // End of while
