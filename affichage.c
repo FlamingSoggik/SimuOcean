@@ -7,12 +7,15 @@ void SDL_Print(struct Grille *grill){
 	const int NBR_CASES=grill->Taille; // Largeur de la grille
 
 	/* Initialisation des variables nécessaires */
-    SDL_Surface **Selected_Type_Case=NULL, *plus=NULL, *moins=NULL,  *ecran = NULL ,*fenetre = NULL, *curseur1 = NULL, *curseur2 = NULL, *boite = NULL;
+    SDL_Surface **Selected_Type_Case=NULL, *plus=NULL, *moins=NULL, *Dev_Icone=NULL,  *ecran = NULL ,*fenetre = NULL, *curseur1 = NULL, *curseur2 = NULL, *boite = NULL;
     TTF_Font *police=NULL;
 	SDL_Event event;
 	int continuer=1;
 	int select_curseur2=0;
     int i=0; int j=0;
+    int Est_Un_Dev =0;
+    int Compteur_Tours=0, Refresh_Timer=1;
+
 
 
     SDLCase ***carre = malloc(sizeof(SDLCase**)*grill->Taille);
@@ -31,8 +34,10 @@ void SDL_Print(struct Grille *grill){
 
 
     SDL_Surface** Tab_Type;
-   // for(i=0; i<11; i++) ????????????????????????????????????????????????????????????????????????????????????????
         Tab_Type=(SDL_Surface**)malloc(sizeof(SDL_Surface*)*11);
+
+
+
 
 	/* Initialisation de la SDL */
 	SDL_Init(SDL_INIT_VIDEO);
@@ -65,10 +70,13 @@ void SDL_Print(struct Grille *grill){
     /*Gestion de la police*/
 
 
-  police=TTF_OpenFont("ma-front.ttf", 40);
+  police=TTF_OpenFont("ma-front.ttf", 30);
   TTF_SetFontStyle(police, TTF_STYLE_BOLD);
-  SDL_Color couleurInconnu = {24,158,158,0};
-  boite = TTF_RenderText_Blended(police, "123456789", couleurInconnu);
+
+  SDL_Surface** Legendes_Surface;
+      Legendes_Surface=(SDL_Surface**)malloc(sizeof(SDL_Surface*)*11);
+
+      Legendes_Surface=Legendes_Print(Legendes_Surface, police);
 
 
 
@@ -99,6 +107,13 @@ void SDL_Print(struct Grille *grill){
 	SDL_Rect pos_curseur2;
 	pos_curseur2.x=pos_curseur1.x+50-6;
 	pos_curseur2.y=pos_curseur1.y-15;
+        /*DevMode*/
+    Dev_Icone=Charger_Image("ICONE_moins.bmp", ecran);
+
+
+
+
+
 
 
         /* Initialisation des cases */
@@ -139,6 +154,8 @@ while(SDL_PollEvent(&event)){
             case SDL_MOUSEBUTTONDOWN: // Moment de pression
                 if ((pos_curseur2.x<=event.button.x) && (event.button.x<=pos_curseur2.x+12) && (pos_curseur2.y<=event.button.y) && (event.button.y<=pos_curseur2.y+32))
                     select_curseur2=1;
+                if ((ScreenW-45<=event.button.x) && (event.button.x<=ScreenW-45+30) && (15<=event.button.y) && (event.button.y<=15+30))
+                { Est_Un_Dev++; Est_Un_Dev=Est_Un_Dev%2; }
                 break;
 
             case SDL_MOUSEBUTTONUP:
@@ -165,11 +182,15 @@ while(SDL_PollEvent(&event)){
     SDL_BlitSurface(fenetre, NULL, ecran, &pos_fenetre);
     SDL_BlitSurface(curseur1, NULL, ecran, &pos_curseur1);
     SDL_BlitSurface(curseur2, NULL, ecran, &pos_curseur2);
+    Blit_Image(ecran, Dev_Icone, ScreenW-45, 15);
 
     /* Opérations */
 
+    if(Est_Un_Dev)
+    {
     plus=Spinner_Print(ecran, 0, ScreenH, ScreenW);
     moins=Spinner_Print(ecran, 1, ScreenH, ScreenW);
+    }
 
     for(i=0; i<NBR_CASES; i++)
         for(j=0; j<NBR_CASES; j++){
@@ -179,7 +200,10 @@ while(SDL_PollEvent(&event)){
         }
 
 
+    /*Legendes*/
 
+    for (i=0; i<11; i++)
+        Blit_Image(ecran, Legendes_Surface[i], (ScreenH), (100+40*i));
 
 
 
@@ -188,14 +212,18 @@ while(SDL_PollEvent(&event)){
 
 
 
+    /* Actualisation de la grille ! */
+
+    if (Compteur_Tours%Refresh_Timer==0)
+    {
         grill->faireTour(grill);
         system("clear");
+    }
+
+            //usleep(100000);
 
 
-            usleep(100000);
-
-
-
+Compteur_Tours++;
 
     } // End of while
 
@@ -210,9 +238,12 @@ while(SDL_PollEvent(&event)){
     SDL_FreeSurface(boite);
     SDL_FreeSurface(plus);
     SDL_FreeSurface(moins);
+    SDL_FreeSurface(Dev_Icone);
 
-    for(i=0; i<11; i++)
+    for(i=0; i<11; i++){
             free(Tab_Type[i]);
+            free(Legendes_Surface[i]);
+    }
 
     for(k=0;k<grill->Taille;++k)
         free(carre[k]);
@@ -224,7 +255,8 @@ while(SDL_PollEvent(&event)){
 }
 
 
-SDL_Surface* Charger(int taille_case, SDL_Surface *ecran, int type){
+SDL_Surface* Charger(int taille_case, SDL_Surface *ecran, int type)
+{
 
     SDL_Surface *Case;
     Case = SDL_CreateRGBSurface(SDL_HWSURFACE, taille_case, taille_case, 32,0,0,0,0);
@@ -283,7 +315,8 @@ void Actualiser( SDLCase *Case_Tab, SDL_Surface **Case_Type, int absisse, int or
 
 }
 
-SDL_Surface** Select_Type(struct Grille *grill, SDL_Surface **Tab_Type, int i, int j){
+SDL_Surface** Select_Type(struct Grille *grill, SDL_Surface **Tab_Type, int i, int j)
+{
 
 
 
@@ -381,4 +414,34 @@ void Blit_Image(SDL_Surface* ecran,SDL_Surface* srf,int x,int y)
     R.x = x;
     R.y = y;
     SDL_BlitSurface(srf,NULL,ecran,&R);
+}
+
+SDL_Surface** Legendes_Print(SDL_Surface** Legendes_Surface, TTF_Font* police)
+{
+    SDL_Color Couleur_Mer = {204, 255, 229,0};
+    SDL_Color Couleur_Pont = {96, 96, 96,0};
+    SDL_Color Couleur_Baleine = {254, 255, 255,0};
+    SDL_Color Couleur_Bar = {0, 114, 45,0};
+    SDL_Color Couleur_Corail = {255, 102, 0,0 };
+    SDL_Color Couleur_Orque = {15, 14, 20,0};
+    SDL_Color Couleur_Plancton = {253, 190, 1,0};
+    SDL_Color Couleur_Pollution = {80, 24, 69,0};
+    SDL_Color Couleur_Thon = {236, 68, 155,0};
+    SDL_Color Couleur_Requin = {55, 49, 33,0};
+    SDL_Color Couleur_Pyranha = {209, 0, 57};
+
+    Legendes_Surface[0] = TTF_RenderText_Blended(police, "Mer", Couleur_Mer);
+    Legendes_Surface[1] = TTF_RenderText_Blended(police, "Pont", Couleur_Pont);
+    Legendes_Surface[2] = TTF_RenderText_Blended(police, "Baleine", Couleur_Baleine);
+    Legendes_Surface[3] = TTF_RenderText_Blended(police, "Bar", Couleur_Bar);
+    Legendes_Surface[4] = TTF_RenderText_Blended(police, "Corail", Couleur_Corail);
+    Legendes_Surface[5] = TTF_RenderText_Blended(police, "Orque", Couleur_Orque);
+    Legendes_Surface[6] = TTF_RenderText_Blended(police, "Plancton", Couleur_Plancton);
+    Legendes_Surface[7] = TTF_RenderText_Blended(police, "Pollution", Couleur_Pollution);
+    Legendes_Surface[8] = TTF_RenderText_Blended(police, "Thon", Couleur_Thon);
+    Legendes_Surface[9] = TTF_RenderText_Blended(police, "Requin", Couleur_Requin);
+    Legendes_Surface[10] = TTF_RenderText_Blended(police, "Pyranha", Couleur_Pyranha);
+
+
+    return Legendes_Surface;
 }
