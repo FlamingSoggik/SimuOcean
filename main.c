@@ -18,10 +18,10 @@ int main(void)
 {
 
 
-	Grille *g = New_Grille(20);
-//	SDL_Print(g);
+    Grille *g = New_Grille(120);
+    SDL_Print(g);
 //	g->Free(g);
-
+/*
 
 	g->Print(g);
 	while(g->TourCourant < 70){
@@ -29,7 +29,7 @@ int main(void)
 		system("clear");
 		g->Print(g);
 		usleep(100000);
-	}
+    }*/
 //	ElementAnimal* e = (ElementAnimal*)g->tab[2][2].liste->getAnimal(g->tab[2][2].liste);
 //	e->reproduction(e);
 //	printf("Reproduction sensée être faite\n");

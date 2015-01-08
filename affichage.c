@@ -31,8 +31,8 @@ void SDL_Print(struct Grille *grill){
 
 
     SDL_Surface** Tab_Type;
-    for(i=0; i<10; i++)
-        Tab_Type=(SDL_Surface**)malloc(sizeof(SDL_Surface*)*10);
+   // for(i=0; i<11; i++) ????????????????????????????????????????????????????????????????????????????????????????
+        Tab_Type=(SDL_Surface**)malloc(sizeof(SDL_Surface*)*11);
 
 	/* Initialisation de la SDL */
 	SDL_Init(SDL_INIT_VIDEO);
@@ -65,10 +65,10 @@ void SDL_Print(struct Grille *grill){
     /*Gestion de la police*/
 
 
-  //  police=TTF_OpenFont("ma-front.ttf", 40);
-  //  TTF_SetFontStyle(police, TTF_STYLE_BOLD);
-  //  SDL_Color couleurInconnu = {24,158,158,0};
-  //  boite = TTF_RenderText_Blended(police, "123456789", couleurInconnu);
+  police=TTF_OpenFont("ma-front.ttf", 40);
+  TTF_SetFontStyle(police, TTF_STYLE_BOLD);
+  SDL_Color couleurInconnu = {24,158,158,0};
+  boite = TTF_RenderText_Blended(police, "123456789", couleurInconnu);
 
 
 
@@ -104,7 +104,7 @@ void SDL_Print(struct Grille *grill){
         /* Initialisation des cases */
 
 
-    for(i=0; i<10; i++)
+    for(i=0; i<11; i++)
     {
         Tab_Type[i]=Charger(taille_case, ecran, i);
     }
@@ -119,43 +119,43 @@ void SDL_Print(struct Grille *grill){
 
 
 while(SDL_PollEvent(&event)){
-	switch(event.type)
-		{
-			case SDL_QUIT:
-				continuer=0;
-				break;
+    switch(event.type)
+        {
+            case SDL_QUIT:
+                continuer=0;
+                break;
 
-			case SDL_KEYDOWN:
+            case SDL_KEYDOWN:
 
-				switch (event.key.keysym.sym)
-					{
-						case SDLK_ESCAPE:
-							continuer = 0;
-							break;
-						default: break;
-					}
-				break;
+                switch (event.key.keysym.sym)
+                    {
+                        case SDLK_ESCAPE:
+                            continuer = 0;
+                            break;
+                        default: break;
+                    }
+                break;
 
-			case SDL_MOUSEBUTTONDOWN: // Moment de pression
-				if ((pos_curseur2.x<=event.button.x) && (event.button.x<=pos_curseur2.x+12) && (pos_curseur2.y<=event.button.y) && (event.button.y<=pos_curseur2.y+32))
-					select_curseur2=1;
-				break;
+            case SDL_MOUSEBUTTONDOWN: // Moment de pression
+                if ((pos_curseur2.x<=event.button.x) && (event.button.x<=pos_curseur2.x+12) && (pos_curseur2.y<=event.button.y) && (event.button.y<=pos_curseur2.y+32))
+                    select_curseur2=1;
+                break;
 
-			case SDL_MOUSEBUTTONUP:
-				select_curseur2=0;
-				break;
+            case SDL_MOUSEBUTTONUP:
+                select_curseur2=0;
+                break;
 
-			case SDL_MOUSEMOTION:
-				if (select_curseur2 && (event.motion.x >= pos_curseur1.x) && (event.motion.x <= pos_curseur1.x+100)) // Movement du curseur2.
-				{
-					pos_curseur2.x=event.motion.x-6;
-				}
-			break;
-
-
+            case SDL_MOUSEMOTION:
+                if (select_curseur2 && (event.motion.x >= pos_curseur1.x) && (event.motion.x <= pos_curseur1.x+100)) // Movement du curseur2.
+                {
+                    pos_curseur2.x=event.motion.x-6;
+                }
+            break;
 
 
-		 }
+
+
+         }
 }
 
     /* On efface l'écran */
@@ -188,6 +188,14 @@ while(SDL_PollEvent(&event)){
 
 
 
+        grill->faireTour(grill);
+        system("clear");
+
+
+            usleep(100000);
+
+
+
 
     } // End of while
 
@@ -203,7 +211,7 @@ while(SDL_PollEvent(&event)){
     SDL_FreeSurface(plus);
     SDL_FreeSurface(moins);
 
-    for(i=0; i<10; i++)
+    for(i=0; i<11; i++)
             free(Tab_Type[i]);
 
     for(k=0;k<grill->Taille;++k)
@@ -226,14 +234,38 @@ SDL_Surface* Charger(int taille_case, SDL_Surface *ecran, int type){
     switch (type){
 
         case 1:
-            SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 96, 96, 96));
+            SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 96, 96, 96)); // Pont gris
             break;
         case 2:
-            SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 255, 0, 0));
+            SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 254, 255, 255)); //Baleine blanche
             break;
-        default:
-            SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 204, 255, 229));
+    case 3:
+        SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 0, 114, 45)); // Bar Vert
+        break;
+        case 4:
+            SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 255, 102, 0)); // Corail Orange
             break;
+    case 5:
+        SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 15, 14, 20)); //Orque noir
+        break;
+    case 6:
+        SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 253, 190, 1)); // Plancton jaune
+        break;
+    case 7:
+        SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 80, 24, 69)); //Polution viollet
+        break;
+    case 8:
+        SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 236, 68, 155)); // Thon rose
+        break;
+    case 9:
+        SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 55, 49, 33)); // Requin marron
+        break;
+    case 10:
+        SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 209, 0, 57)); // Pyranha rose
+        break;
+    default:
+        SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 204, 255, 229)); // Mer
+        break;
     }
 
 
@@ -259,8 +291,39 @@ SDL_Surface** Select_Type(struct Grille *grill, SDL_Surface **Tab_Type, int i, i
         return &Tab_Type[1];
     }
     else if (grill->tab[i][j].liste->HasAnAnimal(grill->tab[i][j].liste)){
-        return &Tab_Type[2];
-        }
+
+        switch(grill->tab[i][j].liste->getAnimal(grill->tab[i][j].liste)->type){
+            case BALEINE:
+                return &Tab_Type[2];
+                break;
+            case BAR:
+                return &Tab_Type[3];
+                break;
+            case CORAIL:
+                return &Tab_Type[4];
+                break;
+            case ORQUE:
+                return &Tab_Type[5];
+                break;
+            case PLANCTON:
+                return &Tab_Type[6];
+                break;
+            case POLLUTION:
+                return &Tab_Type[7];
+                break;
+            case PYRANHA:
+                return &Tab_Type[8];
+                break;
+            case REQUIN:
+                return &Tab_Type[9];
+                break;
+            case THON:
+                return &Tab_Type[10];
+                break;
+            default:
+                return &Tab_Type[0];
+                break;
+        }}
     else {
         return &Tab_Type[0];
          }
@@ -275,7 +338,7 @@ SDL_Surface* Spinner_Print(SDL_Surface *ecran, int Plus_Ou_Moins, int ScreenH, i
 
     if(Plus_Ou_Moins==0)
         {
-			srf=Charger_Image("ICONE_plus.bmp", ecran);
+            srf=Charger_Image("ICONE_plus.bmp", ecran);
             for(i=0; i<7; i++)
                 Blit_Image(ecran, srf, (Centre_Commandes + 100), (ScreenH/2 - 100 + 50*i));
         }
