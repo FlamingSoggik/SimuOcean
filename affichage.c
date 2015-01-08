@@ -215,7 +215,7 @@ while(SDL_PollEvent(&event)){
     /*Legendes*/
 
     for (i=0; i<11; i++)
-        Blit_Image(ecran, Legendes_Surface[i], (ScreenH), (100+40*i));
+        Blit_Image(ecran, Legendes_Surface[i], (ScreenH-40), (140+40*i));
 
 
 
@@ -237,7 +237,7 @@ while(SDL_PollEvent(&event)){
     }
 
             //usleep(100000);
-printf("%d\n", Refresh_Timer);
+
 Compteur_Tours++;
 
     } // End of while
