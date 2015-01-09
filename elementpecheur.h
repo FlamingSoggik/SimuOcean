@@ -20,6 +20,7 @@ typedef struct ElementPecheur
 
 		unsigned int sac;
 		unsigned int longueurCanne;
+		unsigned int tailleFilet;
 		struct ListeType* listeDePeche;
 		void (*pecheParCanne)(struct ElementPecheur*);
 		void (*pecheParFilet)(struct ElementPecheur*);
@@ -28,7 +29,6 @@ typedef struct ElementPecheur
 		void (*mourir)(struct ElementPecheur*);
 		void (*lancerpoisson)(struct ElementPecheur*);
 		Bool (*peutPecher)(struct ElementPecheur*, Type);
-
 } ElementPecheur;
 
 //Constructeurs
