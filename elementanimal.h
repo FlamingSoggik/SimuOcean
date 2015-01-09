@@ -97,8 +97,8 @@ void ElementAnimal_finDuTour(ElementAnimal *This);
 Bool ElementAnimal_doitJouerCeTour(ElementAnimal *This);
 
 void defineConstant();
-void remplirListePredation();
-void viderListePredation();
+void remplirListePredation(Grille *This);
+void viderListePredation(Grille *This);
 
 #ifdef __cplusplus
 }

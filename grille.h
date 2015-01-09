@@ -13,6 +13,7 @@ typedef struct Grille
 	unsigned int Taille;
 	unsigned int TailleMaxSousPont;
 	unsigned int TourCourant;
+	unsigned char listePredationInitialise;
 	void (*Free)(struct Grille *This);
 	void (*Clear)(struct Grille *This);
 	void (*Print)(struct Grille *This);

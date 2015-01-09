@@ -152,9 +152,8 @@ void SDL_Print(struct Grille *grill){
 							break;
 						case SDLK_F5:
 							i=grill->Taille;
-							//grill->Free(grill);
-							//grill=New_Grille(i);
-							Grille_Init(grill, i);
+							grill->Free(grill);
+							grill=New_Grille(i);
 							break;
 						case SDLK_SPACE:
 							if (Refresh_Timer>=95) pos_curseur2.x=pos_curseur1.x+50-6;

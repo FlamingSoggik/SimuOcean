@@ -134,10 +134,9 @@ void defineConstant()
 	C_Baleine.frequenceReproduction=20;
 }
 
-void remplirListePredation()
+void remplirListePredation(Grille* This)
 {
-	static char i = 0;
-	if (i == 0){
+	if (This->listePredationInitialise == 0){
 		C_Plancton.listePredation = New_ListeType();
 		C_Corail.listePredation = New_ListeType();
 		C_Bar.listePredation = New_ListeType();
@@ -146,7 +145,7 @@ void remplirListePredation()
 		C_Requin.listePredation = New_ListeType();
 		C_Orque.listePredation = New_ListeType();
 		C_Baleine.listePredation = New_ListeType();
-		++i;
+		++This->listePredationInitialise;
 	}
 	else {
 		C_Plancton.listePredation->Free(C_Plancton.listePredation);
@@ -188,7 +187,7 @@ void remplirListePredation()
 	C_Baleine.listePredation->Push(C_Baleine.listePredation, PONT);
 }
 
-void viderListePredation()
+void viderListePredation(Grille* This)
 {
 	C_Plancton.listePredation->Free(C_Plancton.listePredation);
 	C_Corail.listePredation->Free(C_Corail.listePredation);
@@ -198,6 +197,7 @@ void viderListePredation()
 	C_Requin.listePredation->Free(C_Requin.listePredation);
 	C_Orque.listePredation->Free(C_Orque.listePredation);
 	C_Baleine.listePredation->Free(C_Baleine.listePredation);
+	This->listePredationInitialise=0;
 }
 
 char ElementAnimal_Init(Case *c, ElementAnimal* This, Type t){

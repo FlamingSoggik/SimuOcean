@@ -40,9 +40,11 @@ void Grille_Init(Grille *This, unsigned int Taille){
 	This->Taille=Taille;
 	This->TailleMaxSousPont=10;
 	This->TourCourant = 0;
+	This->listePredationInitialise = 0;
 	This->moveFromTo=Grille_moveFromTo;
 	This->getMatriceVoisins=Grille_getMatriceVoisins;
 	This->faireTour=Grille_faireTour;
+
 	This->tab=malloc(sizeof(Case*)*Taille);
 	for (i=0;i<Taille;++i){
 		This->tab[i]=malloc(sizeof(Case)*Taille);
@@ -52,8 +54,9 @@ void Grille_Init(Grille *This, unsigned int Taille){
 			This->tab[i][j]= Case_Create(This, i, j);
 		}
 	}
+
 	defineConstant();
-	remplirListePredation();
+	remplirListePredation(This);
 	int nbrCase = Taille*Taille;
 	int nbrEspece = 0;
 	int comptelemespece = 0;
@@ -114,7 +117,7 @@ void Grille_Clear(struct Grille *This){
 		free(This->tab[i]);
 	}
 	free(This->tab);
-	viderListePredation();
+	viderListePredation(This);
 }
 
 void Grille_Print(struct Grille *This){
