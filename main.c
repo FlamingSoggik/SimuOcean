@@ -24,7 +24,7 @@ int main(void)
 /*
 
 	g->Print(g);
-	while(g->TourCourant < 70){
+	while(g->TourCourant < 100){
 		g->faireTour(g);
 		system("clear");
 		g->Print(g);

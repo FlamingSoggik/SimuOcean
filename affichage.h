@@ -1,9 +1,9 @@
+#ifndef AFFICHAGE_H
+#define AFFICHAGE_H
+
 #include "grille.h"
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
-
-#ifndef AFFICHAGE_H
-#define AFFICHAGE_H
 
 typedef struct SDLCase
 {

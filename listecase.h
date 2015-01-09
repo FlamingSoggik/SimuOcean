@@ -15,19 +15,21 @@ typedef struct MaillonListeCase{
 }MaillonListeCase;
 
 typedef struct ListeCase {
-    int taille;
+	unsigned int taille;
     struct MaillonListeCase *Top;
     void(*Free)();
     int(*Push)(struct ListeCase*, struct Case*);
     void(*Pop)(struct ListeCase*);
     void(*Clear)(struct ListeCase*);
     int(*Taille)(struct ListeCase*);
+	struct Case*(*getNieme)(struct ListeCase*, unsigned int);
 }ListeCase;
 
 int ListeCase_Taille(ListeCase* This);
 void ListeCase_Clear(ListeCase *This);
 void ListeCase_New_Free(ListeCase *This);
 int ListeCase_Push(ListeCase* This, struct Case *c);
+struct Case* ListeCase_getNieme(ListeCase* This, unsigned int number);
 struct Case* ListeCase_Pop(ListeCase* This);
 ListeCase* New_ListeCase();
 void ListeCase_Init(ListeCase* This);

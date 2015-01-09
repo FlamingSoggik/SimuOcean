@@ -477,6 +477,10 @@ void ElementAnimal_reproduction(ElementAnimal *This){
 		}
 	}
 	if (caseNaissance == NULL || amoureux == NULL){
+		for (i=0; i<3;++i){
+			free(MatriceAccessibleReproduction[i]);
+		}
+		free(MatriceAccessibleReproduction);
 		return;
 	}
 	This->sasiete-=(This->constantes->gestation*This->constantes->metabolisme);

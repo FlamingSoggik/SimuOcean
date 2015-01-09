@@ -14,7 +14,8 @@ SOURCES += main.c \
     grille.c \
 	affichage.c \
     listecase.c \
-    elementpecheur.c
+    elementpecheur.c \
+    elementpont.c
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -29,5 +30,6 @@ HEADERS += \
 	Bool.h \
 	affichage.h \
     listecase.h \
-    elementpecheur.h
+    elementpecheur.h \
+    elementpont.h
 
