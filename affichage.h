@@ -22,5 +22,6 @@ SDL_Surface* Spinner_Print(SDL_Surface *ecran, int Plus_Ou_Moins, int ScreenH, i
 SDL_Surface* Charger_Image(const char* fic, SDL_Surface *ecran);
 void Blit_Image(SDL_Surface* ecran,SDL_Surface* srf,int x,int y);
 SDL_Surface** Legendes_Print(SDL_Surface** Legendes_Surface, TTF_Font *police);
+SDL_Surface** Select_Legende(SDL_Surface** Legendes_Surface, TTF_Font* police, TTF_Font *police_underline, int selected);
 
 #endif // AFFICHAGE_H

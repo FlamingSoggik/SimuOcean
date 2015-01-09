@@ -8,7 +8,7 @@ void SDL_Print(struct Grille *grill){
 
 	/* Initialisation des variables nécessaires */
     SDL_Surface **Selected_Type_Case=NULL, *plus=NULL, *moins=NULL, *Dev_Icone=NULL,  *ecran = NULL ,*fenetre = NULL, *curseur1 = NULL, *curseur2 = NULL, *boite = NULL;
-    TTF_Font *police=NULL;
+    TTF_Font *police=NULL, *police_underline=NULL;
 	SDL_Event event;
 	int continuer=1;
 	int select_curseur2=0;
@@ -71,7 +71,9 @@ void SDL_Print(struct Grille *grill){
 
 
   police=TTF_OpenFont("ma-front.ttf", 30);
-  TTF_SetFontStyle(police, TTF_STYLE_BOLD);
+  police_underline=TTF_OpenFont("ma-front.ttf", 30);
+  TTF_SetFontStyle(police, TTF_STYLE_NORMAL);
+  TTF_SetFontStyle(police_underline, TTF_STYLE_BOLD | TTF_STYLE_UNDERLINE);
 
   SDL_Surface** Legendes_Surface;
       Legendes_Surface=(SDL_Surface**)malloc(sizeof(SDL_Surface*)*11);
@@ -158,7 +160,9 @@ while(SDL_PollEvent(&event)){
                             break;
 
 
-
+//SDL_Surface** Select_Legende(SDL_Surface** Legendes_Surface, TTF_Font* police, int selected)
+//    for (i=0; i<11; i++)
+  //       Blit_Image(ecran, Legendes_Surface[i], (ScreenH-40), (140+40*i));
                         default: break;
                     }
                 break;
@@ -168,6 +172,9 @@ while(SDL_PollEvent(&event)){
                     select_curseur2=1;
                 if ((ScreenW-45<=event.button.x) && (event.button.x<=ScreenW-45+30) && (15<=event.button.y) && (event.button.y<=15+30))
                 { Est_Un_Dev++; Est_Un_Dev=Est_Un_Dev%2; }
+                if (Est_Un_Dev)
+                    if (((ScreenH-40)<=event.button.x) && (event.button.x<=(ScreenH-40+300)) && ((180)<=event.button.y) && (event.button.y<=585))
+                        Legendes_Surface=Select_Legende(Legendes_Surface, police, police_underline, ((event.button.y)-140)/((580-140)/11));
                 break;
 
             case SDL_MOUSEBUTTONUP:
@@ -179,6 +186,7 @@ while(SDL_PollEvent(&event)){
                 {
                     pos_curseur2.x=event.motion.x-6;
                 }
+                 printf("%d\n", event.motion.y);
             break;
 
 
@@ -214,8 +222,10 @@ while(SDL_PollEvent(&event)){
 
     /*Legendes*/
 
+
     for (i=0; i<11; i++)
         Blit_Image(ecran, Legendes_Surface[i], (ScreenH-40), (140+40*i));
+
 
 
 
@@ -456,6 +466,58 @@ SDL_Surface** Legendes_Print(SDL_Surface** Legendes_Surface, TTF_Font* police)
     Legendes_Surface[8] = TTF_RenderText_Blended(police, "Thon", Couleur_Thon);
     Legendes_Surface[9] = TTF_RenderText_Blended(police, "Requin", Couleur_Requin);
     Legendes_Surface[10] = TTF_RenderText_Blended(police, "Pyranha", Couleur_Pyranha);
+
+
+    return Legendes_Surface;
+}
+
+
+SDL_Surface** Select_Legende(SDL_Surface** Legendes_Surface, TTF_Font* police, TTF_Font *police_underline, int selected)
+{
+
+    SDL_Color Couleur_Mer = {204, 255, 229,0};
+    SDL_Color Couleur_Pont = {96, 96, 96,0};
+    SDL_Color Couleur_Baleine = {254, 255, 255,0};
+    SDL_Color Couleur_Bar = {0, 114, 45,0};
+    SDL_Color Couleur_Corail = {255, 102, 0,0 };
+    SDL_Color Couleur_Orque = {15, 14, 20,0};
+    SDL_Color Couleur_Plancton = {253, 190, 1,0};
+    SDL_Color Couleur_Pollution = {80, 24, 69,0};
+    SDL_Color Couleur_Thon = {236, 68, 155,0};
+    SDL_Color Couleur_Requin = {55, 49, 33,0};
+    SDL_Color Couleur_Pyranha = {209, 0, 57};
+
+
+    Legendes_Surface[0] = TTF_RenderText_Blended(police, "Mer", Couleur_Mer);
+    Legendes_Surface[1] = TTF_RenderText_Blended(police, "Pont", Couleur_Pont);
+    Legendes_Surface[2] = TTF_RenderText_Blended(police, "Baleine", Couleur_Baleine);
+    Legendes_Surface[3] = TTF_RenderText_Blended(police, "Bar", Couleur_Bar);
+    Legendes_Surface[4] = TTF_RenderText_Blended(police, "Corail", Couleur_Corail);
+    Legendes_Surface[5] = TTF_RenderText_Blended(police, "Orque", Couleur_Orque);
+    Legendes_Surface[6] = TTF_RenderText_Blended(police, "Plancton", Couleur_Plancton);
+    Legendes_Surface[7] = TTF_RenderText_Blended(police, "Pollution", Couleur_Pollution);
+    Legendes_Surface[8] = TTF_RenderText_Blended(police, "Thon", Couleur_Thon);
+    Legendes_Surface[9] = TTF_RenderText_Blended(police, "Requin", Couleur_Requin);
+    Legendes_Surface[10] = TTF_RenderText_Blended(police, "Pyranha", Couleur_Pyranha);
+
+    if (selected==2)
+    Legendes_Surface[2] = TTF_RenderText_Blended(police_underline, "Baleine", Couleur_Baleine);
+    if (selected==3)
+    Legendes_Surface[3] = TTF_RenderText_Blended(police_underline, "Bar", Couleur_Bar);
+    if (selected==4)
+    Legendes_Surface[4] = TTF_RenderText_Blended(police_underline, "Corail", Couleur_Corail);
+    if (selected==5)
+    Legendes_Surface[5] = TTF_RenderText_Blended(police_underline, "Orque", Couleur_Orque);
+    if (selected==6)
+    Legendes_Surface[6] = TTF_RenderText_Blended(police_underline, "Plancton", Couleur_Plancton);
+    if (selected==7)
+    Legendes_Surface[7] = TTF_RenderText_Blended(police_underline, "Pollution", Couleur_Pollution);
+    if (selected==8)
+    Legendes_Surface[8] = TTF_RenderText_Blended(police_underline, "Thon", Couleur_Thon);
+    if (selected==9)
+    Legendes_Surface[9] = TTF_RenderText_Blended(police_underline, "Requin", Couleur_Requin);
+    if (selected==10)
+    Legendes_Surface[10] = TTF_RenderText_Blended(police_underline, "Pyranha", Couleur_Pyranha);
 
 
     return Legendes_Surface;
