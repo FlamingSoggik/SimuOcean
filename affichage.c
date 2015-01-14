@@ -1,20 +1,22 @@
-#include "affichage.h"
+﻿#include "affichage.h"
 
 
-void SDL_Print(struct Grille *grill){
+struct Grille* SDL_Print(struct Grille *grill){
 
 	const long PROP_FENETRE=95; // (1-100) Proportion de la grille par rapport à la fenetre du jeu.
 	const int NBR_CASES=grill->Taille; // Largeur de la grille
 
 	/* Initialisation des variables nécessaires */
-	SDL_Surface **Selected_Type_Case=NULL, *plus=NULL, *moins=NULL, *Dev_Icone=NULL,  *ecran = NULL ,*fenetre = NULL, *curseur1 = NULL, *curseur2 = NULL, *boite = NULL;
+	SDL_Surface **Selected_Type_Case=NULL, *plusIcone=NULL, *moinsIcone=NULL,  *ecran = NULL ,*fenetre = NULL, *curseur1 = NULL, *curseur2 = NULL, *boite = NULL, *graphique=NULL;
 	TTF_Font *police=NULL, *police_underline=NULL;
 	SDL_Event event;
 	int continuer=1;
 	int select_curseur2=0;
 	int i=0; int j=0;
 	int Est_Un_Dev =0;
-	int Refresh_Timer=1;
+	int Compteur_Tours=0, Refresh_Timer=1;
+	ElementAnimal_Constantes *C_Selected;
+	int nbr_espece[11]={0,0,0,0,0,0,0,0,0,0,0};
 
 
 
@@ -29,10 +31,6 @@ void SDL_Print(struct Grille *grill){
 		for(j=0; j<NBR_CASES; ++j){
 			carre[i][j]= malloc(sizeof(SDLCase));
 			carre[i][j]->srf= NULL;
-			carre[i][j]->pos.x=0;
-			carre[i][j]->pos.y=0;
-			carre[i][j]->pos.h=0;
-			carre[i][j]->pos.w=0;
 		}
 	}
 
@@ -46,7 +44,7 @@ void SDL_Print(struct Grille *grill){
 	/* Initialisation de la SDL */
 	SDL_Init(SDL_INIT_VIDEO);
 	TTF_Init();
-	putenv("SDL_VIDEO_WINDOW_POS=center"); // Centrage
+//	putenv("SDL_VIDEO_WINDOW_POS=center"); // Centrage
 
 	/* On récupère la taille de l'écran */
 	const SDL_VideoInfo *videoInfo;
@@ -82,7 +80,7 @@ void SDL_Print(struct Grille *grill){
 	SDL_Surface** Legendes_Surface;
 	Legendes_Surface=(SDL_Surface**)malloc(sizeof(SDL_Surface*)*11);
 
-	Legendes_Surface=Legendes_Print(Legendes_Surface, police);
+	C_Selected=Select_Legende(Legendes_Surface, police, police_underline, 0);
 
 
 
@@ -102,7 +100,7 @@ void SDL_Print(struct Grille *grill){
 	pos_fenetre.x=(ScreenH-taille_fenetre)/2;
 	pos_fenetre.y=(ScreenH-taille_fenetre)/2;
 	/*Curseur1*/
-	curseur1 = SDL_CreateRGBSurface(SDL_HWSURFACE, 100/*Attentionsiçachange, changer position PARTOUT*/, 2, 32, 0, 0, 0, 0);
+	curseur1 = SDL_CreateRGBSurface(SDL_HWSURFACE, 100, 2, 32, 0, 0, 0, 0);
 	SDL_FillRect(curseur1, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
 	SDL_Rect pos_curseur1;
 	pos_curseur1.x=ScreenH + (ScreenW-ScreenH)/2 - 50;
@@ -114,7 +112,14 @@ void SDL_Print(struct Grille *grill){
 	pos_curseur2.x=pos_curseur1.x-6;
 	pos_curseur2.y=pos_curseur1.y-15;
 	/*DevMode*/
-	Dev_Icone=Charger_Image("ICONE_moins.bmp", ecran);
+	moinsIcone=Charger_Image("ICONE_moins.bmp", ecran);
+	plusIcone=Charger_Image("ICONE_plus.bmp", ecran);
+	/*Graphique*/
+	graphique=SDL_CreateRGBSurface(SDL_HWSURFACE, ScreenH-50, (ScreenH-50)/1.6, 32, 0, 0, 0, 0);
+	SDL_FillRect(graphique, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
+
+
+
 
 
 
@@ -150,21 +155,23 @@ void SDL_Print(struct Grille *grill){
 						case SDLK_ESCAPE:
 							continuer = 0;
 							break;
-						case SDLK_F5:
+						case SDLK_F2: // Nettoie le graphique
+							if (Est_Un_Dev==2) SDL_FillRect(graphique, NULL, SDL_MapRGB(ecran->format,255,255,255));
+							break;
+						case SDLK_F5: // Reset la grille
 							i=grill->Taille;
 							grill->Free(grill);
 							grill=New_Grille(i);
+							Compteur_Tours=0;
+							Init_Tab(nbr_espece);
+							break;
+						case SDLK_F4: // Reset la grille
 							break;
 						case SDLK_SPACE:
 							if (Refresh_Timer>=95) pos_curseur2.x=pos_curseur1.x+50-6;
 							else if (pos_curseur2.x == (pos_curseur1.x+50-6)) pos_curseur2.x=pos_curseur1.x-6;
 							else pos_curseur2.x=pos_curseur1.x+100-6;
 							break;
-
-
-							//SDL_Surface** Select_Legende(SDL_Surface** Legendes_Surface, TTF_Font* police, int selected)
-							//    for (i=0; i<11; i++)
-							//       Blit_Image(ecran, Legendes_Surface[i], (ScreenH-40), (140+40*i));
 						default: break;
 					}
 					break;
@@ -173,10 +180,24 @@ void SDL_Print(struct Grille *grill){
 					if ((pos_curseur2.x<=event.button.x) && (event.button.x<=pos_curseur2.x+12) && (pos_curseur2.y<=event.button.y) && (event.button.y<=pos_curseur2.y+32))
 						select_curseur2=1;
 					if ((ScreenW-45<=event.button.x) && (event.button.x<=ScreenW-45+30) && (15<=event.button.y) && (event.button.y<=15+30))
-					{ Est_Un_Dev++; Est_Un_Dev=Est_Un_Dev%2; }
+					{
+						if(Est_Un_Dev==0)
+							Est_Un_Dev=1;
+						else {
+							Est_Un_Dev=0;
+						}
+					}
+					if ((ScreenW-45<=event.button.x) && (event.button.x<=ScreenW-45+30) && (ScreenH-45<=event.button.y) && (event.button.y<=ScreenH-15))
+					{ if(Est_Un_Dev==1) Est_Un_Dev=2; else if(Est_Un_Dev==2) Est_Un_Dev=1; }
 					if (Est_Un_Dev)
-						if (((ScreenH-40)<=event.button.x) && (event.button.x<=(ScreenH-40+300)) && ((180)<=event.button.y) && (event.button.y<=585))
-							Legendes_Surface=Select_Legende(Legendes_Surface, police, police_underline, ((event.button.y)-140)/((580-140)/11));
+						if (((ScreenH-40)<=event.button.x) && (event.button.x<=(ScreenH-40+100)) && ((180)<=event.button.y) && (event.button.y<=585))
+							C_Selected=Select_Legende(Legendes_Surface, police, police_underline, ((event.button.y)-140)/((580-140)/11));
+
+					if (((ScreenH +(ScreenW-ScreenH)/2-15)-100<=event.button.x) && (event.button.x<=(ScreenH +(ScreenW-ScreenH)/2-15)-70) && ((ScreenH/2 - 100)<=event.button.y) && (event.button.y<=(ScreenH/2 - 100)+330))
+						C_Selected=Edit_Constantes(0, (event.button.y - (ScreenH/2 - 100)), C_Selected);
+					if (((ScreenH +(ScreenW-ScreenH)/2-15)+100<=event.button.x) && (event.button.x<=(ScreenH +(ScreenW-ScreenH)/2-15)+130) && ((ScreenH/2 - 100)<=event.button.y) && (event.button.y<=(ScreenH/2 - 100)+330))
+						C_Selected=Edit_Constantes(1, (event.button.y - (ScreenH/2 - 100)), C_Selected);
+
 					break;
 
 				case SDL_MOUSEBUTTONUP:
@@ -184,11 +205,12 @@ void SDL_Print(struct Grille *grill){
 					break;
 
 				case SDL_MOUSEMOTION:
+					//printf(" Curseur x : %d\n Curseur y: %d\n", (event.motion.x), (event.motion.y));
 					if (select_curseur2 && (event.motion.x >= pos_curseur1.x) && (event.motion.x <= pos_curseur1.x+100)) // Movement du curseur2.
 					{
 						pos_curseur2.x=event.motion.x-6;
 					}
-					printf("%d\n", event.motion.y);
+
 					break;
 
 
@@ -198,35 +220,62 @@ void SDL_Print(struct Grille *grill){
 		}
 
 		/* On efface l'écran */
+
 		SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format,0,0,0));
+
+		Init_Tab(nbr_espece);
 
 		/* Tous les BLIT */
 		SDL_BlitSurface(fenetre, NULL, ecran, &pos_fenetre);
 		SDL_BlitSurface(curseur1, NULL, ecran, &pos_curseur1);
 		SDL_BlitSurface(curseur2, NULL, ecran, &pos_curseur2);
-		Blit_Image(ecran, Dev_Icone, ScreenW-45, 15);
+		Blit_Image(ecran, moinsIcone, ScreenW-45, 15);
+
 
 		/* Opérations */
 
 		if(Est_Un_Dev)
 		{
-			plus=Spinner_Print(ecran, 0, ScreenH, ScreenW);
-			moins=Spinner_Print(ecran, 1, ScreenH, ScreenW);
+			Spinner_Print(ecran, 0, ScreenH, ScreenW, plusIcone);
+			Spinner_Print(ecran, 1, ScreenH, ScreenW, moinsIcone);
+			Print_Constantes( ecran, C_Selected, police);
+			Blit_Image(ecran, moinsIcone, ScreenW-45, ScreenH-45);
 		}
 
-		for(i=0; i<NBR_CASES; i++)
-			for(j=0; j<NBR_CASES; j++){
-				Selected_Type_Case=Select_Type(grill, Tab_Type, i, j);
-				Actualiser(carre[i][j], Selected_Type_Case, (j*taille_case+j+pos_fenetre.x), (i*taille_case+i+pos_fenetre.y));
-				SDL_BlitSurface((carre[i][j]->srf), NULL, ecran, &(carre[i][j]->pos));
-			}
+
+		if(Est_Un_Dev!=2)
+		{
+			for(i=0; i<NBR_CASES; i++)
+				for(j=0; j<NBR_CASES; j++)
+				{
+					Selected_Type_Case=Select_Type(grill, Tab_Type, i, j, nbr_espece);
+					Actualiser(carre[i][j], Selected_Type_Case, (j*taille_case+j+pos_fenetre.x), (i*taille_case+i+pos_fenetre.y));
+					SDL_BlitSurface((carre[i][j]->srf), NULL, ecran, &(carre[i][j]->pos));
+				}
+		}
+
+		///ScreenH-50, (ScreenH-50)/1.6
+		if(Est_Un_Dev==2) // Mode Graphique
+		{
+			for(i=0; i<NBR_CASES; i++)
+				for(j=0; j<NBR_CASES; j++)
+					Selected_Type_Case=Select_Type(grill, Tab_Type, i, j, nbr_espece); // Permet d'actualiser le tableau des nombres d'espèce.
+
+			Blit_Image(ecran, graphique, 25, (ScreenH/2)-((ScreenH-50)/1.6)/2);
+			Print_Graphique(graphique, ScreenH-50, (ScreenH-50)/1.6, nbr_espece, NBR_CASES, grill);
+
+		}
+
+
+
+
 
 
 		/*Legendes*/
 
 
 		for (i=0; i<11; i++)
-			Blit_Image(ecran, Legendes_Surface[i], (ScreenH-40), (140+40*i));
+			Blit_Image(ecran, Legendes_Surface[i], (ScreenH), (140+40*i));
 
 
 
@@ -242,19 +291,15 @@ void SDL_Print(struct Grille *grill){
 		Refresh_Timer=((pos_curseur2.x - pos_curseur1.x)+7); // La différence varie entre -6 et 94.
 
 
-		if ((grill->TourCourant%Refresh_Timer==0) && (Refresh_Timer<=95))
+		if ((Compteur_Tours%Refresh_Timer==0) && (Refresh_Timer<=95))
 		{
 			grill->faireTour(grill);
-			system("clear");
 		}
 
 		//usleep(100000);
 
-		++grill->TourCourant;
-
+		Compteur_Tours++;
 	} // End of while
-
-
 
 
 	/*Fermeture de l'affichage*/
@@ -263,9 +308,9 @@ void SDL_Print(struct Grille *grill){
 	SDL_FreeSurface(curseur1);
 	SDL_FreeSurface(curseur2);
 	SDL_FreeSurface(boite);
-	SDL_FreeSurface(plus);
-	SDL_FreeSurface(moins);
-	SDL_FreeSurface(Dev_Icone);
+	SDL_FreeSurface(plusIcone);
+	SDL_FreeSurface(moinsIcone);
+	SDL_FreeSurface(graphique);
 
 	for(i=0; i<11; i++){
 		SDL_FreeSurface(Tab_Type[i]);
@@ -274,12 +319,11 @@ void SDL_Print(struct Grille *grill){
 	free(Tab_Type);
 	free(Legendes_Surface);
 
-
-	for(i=0;i<NBR_CASES; ++i){
-		for(j=0; j<NBR_CASES; ++j){
+	for(i=0;i<NBR_CASES; ++i)
+		for(j=0; j<NBR_CASES; ++j)
 			free(carre[i][j]);
-		}
-	}
+
+
 	for(k=0;k<grill->Taille;++k)
 		free(carre[k]);
 	free(carre);
@@ -287,6 +331,7 @@ void SDL_Print(struct Grille *grill){
 	TTF_CloseFont(police);
 	SDL_Quit();
 	TTF_Quit();
+	return grill;
 }
 
 
@@ -350,45 +395,56 @@ void Actualiser( SDLCase *Case_Tab, SDL_Surface **Case_Type, int absisse, int or
 
 }
 
-SDL_Surface** Select_Type(struct Grille *grill, SDL_Surface **Tab_Type, int i, int j)
+SDL_Surface** Select_Type(struct Grille *grill, SDL_Surface **Tab_Type, int i, int j, int *tab)
 {
 
 
 
 	if (grill->tab[i][j].liste->HasAPont(grill->tab[i][j].liste)){
+		tab[1]=tab[1]+1;
 		return &Tab_Type[1];
 	}
 	else if (grill->tab[i][j].liste->HasAnAnimal(grill->tab[i][j].liste)){
 
 		switch(grill->tab[i][j].liste->getAnimal(grill->tab[i][j].liste)->type){
 			case BALEINE:
+				tab[2]=tab[2]+1;
 				return &Tab_Type[2];
 				break;
 			case BAR:
+				tab[3]=tab[3]+1;
 				return &Tab_Type[3];
 				break;
 			case CORAIL:
+				tab[4]=tab[4]+1;
 				return &Tab_Type[4];
 				break;
 			case ORQUE:
+				tab[5]=tab[5]+1;
 				return &Tab_Type[5];
 				break;
 			case PLANCTON:
+				tab[6]=tab[6]+1;
 				return &Tab_Type[6];
 				break;
 			case POLLUTION:
+				tab[7]=tab[7]+1;
 				return &Tab_Type[7];
 				break;
 			case PYRANHA:
+				tab[8]=tab[8]+1;
 				return &Tab_Type[8];
 				break;
 			case REQUIN:
+				tab[9]=tab[9]+1;
 				return &Tab_Type[9];
 				break;
 			case THON:
+				tab[10]=tab[10]+1;
 				return &Tab_Type[10];
 				break;
 			default:
+				tab[0]=tab[0]+1;
 				return &Tab_Type[0];
 				break;
 		}}
@@ -398,27 +454,22 @@ SDL_Surface** Select_Type(struct Grille *grill, SDL_Surface **Tab_Type, int i, i
 
 }
 
-SDL_Surface* Spinner_Print(SDL_Surface *ecran, int Plus_Ou_Moins, int ScreenH, int ScreenW)
+void Spinner_Print(SDL_Surface *ecran, int Plus_Ou_Moins, int ScreenH, int ScreenW, SDL_Surface *srf)
 {
 	int i;
 	int Centre_Commandes=(ScreenH +(ScreenW-ScreenH)/2-15); // Le 15 correspond à la largeur des images bmp !
-	SDL_Surface *srf;
 
 	if(Plus_Ou_Moins==0)
 	{
-		srf=Charger_Image("ICONE_plus.bmp", ecran);
 		for(i=0; i<7; i++)
 			Blit_Image(ecran, srf, (Centre_Commandes + 100), (ScreenH/2 - 100 + 50*i));
+
 	}
 	else
 	{
-		srf=Charger_Image("ICONE_moins.bmp", ecran);
 		for(i=0; i<7; i++)
 			Blit_Image(ecran, srf, (Centre_Commandes - 100), (ScreenH/2 -100 + 50*i));
 	}
-
-
-	return srf;
 }
 
 SDL_Surface* Charger_Image(const char* fic, SDL_Surface* ecran)
@@ -451,39 +502,22 @@ void Blit_Image(SDL_Surface* ecran,SDL_Surface* srf,int x,int y)
 	SDL_BlitSurface(srf,NULL,ecran,&R);
 }
 
-SDL_Surface** Legendes_Print(SDL_Surface** Legendes_Surface, TTF_Font* police)
+
+
+ElementAnimal_Constantes *Select_Legende(SDL_Surface** Legendes_Surface, TTF_Font* police, TTF_Font *police_underline, int selected)
 {
-	SDL_Color Couleur_Mer = {204, 255, 229,0};
-	SDL_Color Couleur_Pont = {96, 96, 96,0};
-	SDL_Color Couleur_Baleine = {254, 255, 255,0};
-	SDL_Color Couleur_Bar = {0, 114, 45,0};
-	SDL_Color Couleur_Corail = {255, 102, 0,0 };
-	SDL_Color Couleur_Orque = {15, 14, 20,0};
-	SDL_Color Couleur_Plancton = {253, 190, 1,0};
-	SDL_Color Couleur_Pollution = {80, 24, 69,0};
-	SDL_Color Couleur_Thon = {236, 68, 155,0};
-	SDL_Color Couleur_Requin = {55, 49, 33,0};
-	SDL_Color Couleur_Pyranha = {209, 0, 57, 0};
+	static int premierPassage = 1;
+	int i;
 
-	Legendes_Surface[0] = TTF_RenderText_Blended(police, "Mer", Couleur_Mer);
-	Legendes_Surface[1] = TTF_RenderText_Blended(police, "Pont", Couleur_Pont);
-	Legendes_Surface[2] = TTF_RenderText_Blended(police, "Baleine", Couleur_Baleine);
-	Legendes_Surface[3] = TTF_RenderText_Blended(police, "Bar", Couleur_Bar);
-	Legendes_Surface[4] = TTF_RenderText_Blended(police, "Corail", Couleur_Corail);
-	Legendes_Surface[5] = TTF_RenderText_Blended(police, "Orque", Couleur_Orque);
-	Legendes_Surface[6] = TTF_RenderText_Blended(police, "Plancton", Couleur_Plancton);
-	Legendes_Surface[7] = TTF_RenderText_Blended(police, "Pollution", Couleur_Pollution);
-	Legendes_Surface[8] = TTF_RenderText_Blended(police, "Thon", Couleur_Thon);
-	Legendes_Surface[9] = TTF_RenderText_Blended(police, "Requin", Couleur_Requin);
-	Legendes_Surface[10] = TTF_RenderText_Blended(police, "Pyranha", Couleur_Pyranha);
-
-
-	return Legendes_Surface;
-}
-
-
-SDL_Surface** Select_Legende(SDL_Surface** Legendes_Surface, TTF_Font* police, TTF_Font *police_underline, int selected)
-{
+	if (premierPassage == 1){
+		premierPassage=0;
+	}
+	else {
+		for(i=0; i<11; ++i){
+			SDL_FreeSurface(Legendes_Surface[i]);
+		}
+	}
+	ElementAnimal_Constantes *selected_animal=&C_Vide;
 
 	SDL_Color Couleur_Mer = {204, 255, 229,0};
 	SDL_Color Couleur_Pont = {96, 96, 96,0};
@@ -495,10 +529,9 @@ SDL_Surface** Select_Legende(SDL_Surface** Legendes_Surface, TTF_Font* police, T
 	SDL_Color Couleur_Pollution = {80, 24, 69,0};
 	SDL_Color Couleur_Thon = {236, 68, 155,0};
 	SDL_Color Couleur_Requin = {55, 49, 33,0};
-	SDL_Color Couleur_Pyranha = {209, 0, 57, 0};
+	SDL_Color Couleur_Pyranha = {209, 0, 57,0};
 
-
-	Legendes_Surface[0] = TTF_RenderText_Blended(police, "Mer", Couleur_Mer);
+	Legendes_Surface[0] = TTF_RenderText_Blended(police, "Pont", Couleur_Mer);
 	Legendes_Surface[1] = TTF_RenderText_Blended(police, "Pont", Couleur_Pont);
 	Legendes_Surface[2] = TTF_RenderText_Blended(police, "Baleine", Couleur_Baleine);
 	Legendes_Surface[3] = TTF_RenderText_Blended(police, "Bar", Couleur_Bar);
@@ -511,24 +544,218 @@ SDL_Surface** Select_Legende(SDL_Surface** Legendes_Surface, TTF_Font* police, T
 	Legendes_Surface[10] = TTF_RenderText_Blended(police, "Pyranha", Couleur_Pyranha);
 
 	if (selected==2)
+	{
+		SDL_FreeSurface(Legendes_Surface[2]);
 		Legendes_Surface[2] = TTF_RenderText_Blended(police_underline, "Baleine", Couleur_Baleine);
+		selected_animal=&C_Baleine;
+	}
+
 	if (selected==3)
+	{
+		SDL_FreeSurface(Legendes_Surface[3]);
 		Legendes_Surface[3] = TTF_RenderText_Blended(police_underline, "Bar", Couleur_Bar);
+		selected_animal=&C_Bar;
+	}
+
 	if (selected==4)
+	{
+		SDL_FreeSurface(Legendes_Surface[4]);
 		Legendes_Surface[4] = TTF_RenderText_Blended(police_underline, "Corail", Couleur_Corail);
+		selected_animal=&C_Corail;
+	}
+
 	if (selected==5)
+	{
+		SDL_FreeSurface(Legendes_Surface[5]);
 		Legendes_Surface[5] = TTF_RenderText_Blended(police_underline, "Orque", Couleur_Orque);
+		selected_animal=&C_Orque;
+	}
+
 	if (selected==6)
+	{
+		SDL_FreeSurface(Legendes_Surface[6]);
 		Legendes_Surface[6] = TTF_RenderText_Blended(police_underline, "Plancton", Couleur_Plancton);
+		selected_animal=&C_Plancton;
+	}
+
 	if (selected==7)
+	{
+		SDL_FreeSurface(Legendes_Surface[7]);
 		Legendes_Surface[7] = TTF_RenderText_Blended(police_underline, "Pollution", Couleur_Pollution);
+		selected_animal=&C_Vide;
+	}
+
 	if (selected==8)
+	{
+		SDL_FreeSurface(Legendes_Surface[8]);
 		Legendes_Surface[8] = TTF_RenderText_Blended(police_underline, "Thon", Couleur_Thon);
+		selected_animal=&C_Thon;
+	}
+
 	if (selected==9)
+	{
+		SDL_FreeSurface(Legendes_Surface[9]);
 		Legendes_Surface[9] = TTF_RenderText_Blended(police_underline, "Requin", Couleur_Requin);
+		selected_animal=&C_Requin;
+	}
+
 	if (selected==10)
+	{
+		SDL_FreeSurface(Legendes_Surface[10]);
 		Legendes_Surface[10] = TTF_RenderText_Blended(police_underline, "Pyranha", Couleur_Pyranha);
+		selected_animal=&C_Pyranha;
+	}
 
+	return selected_animal;
 
-	return Legendes_Surface;
 }
+
+
+void Print_Constantes(SDL_Surface *ecran, ElementAnimal_Constantes *Selected, TTF_Font *police)
+{
+	char texte[30]="";
+
+
+	sprintf(texte, "Survie=%d", Selected->dureeSurvie);
+	SDL_Surface *Surface_texte;
+	SDL_Color Blanc = {254, 255, 255,0};
+	Surface_texte=TTF_RenderText_Blended(police, texte, Blanc );
+	Blit_Image(ecran, Surface_texte, 900,245);
+	SDL_FreeSurface(Surface_texte);
+
+	sprintf(texte, "Taille=%d", Selected->taille);
+	Surface_texte=TTF_RenderText_Blended(police, texte, Blanc );
+	Blit_Image(ecran, Surface_texte, 900,295);
+	SDL_FreeSurface(Surface_texte);
+
+	sprintf(texte, "Bide=%d", Selected->tailleDuBide);
+	Surface_texte=TTF_RenderText_Blended(police, texte, Blanc );
+	Blit_Image(ecran, Surface_texte, 900,345);
+	SDL_FreeSurface(Surface_texte);
+
+	sprintf(texte, "Saut=%d", Selected->sautMax);
+	Surface_texte=TTF_RenderText_Blended(police, texte, Blanc );
+	Blit_Image(ecran, Surface_texte, 900,395);
+	SDL_FreeSurface(Surface_texte);
+
+	sprintf(texte, "Metab=%d", Selected->metabolisme);
+	Surface_texte=TTF_RenderText_Blended(police, texte, Blanc );
+	Blit_Image(ecran, Surface_texte, 900,445);
+	SDL_FreeSurface(Surface_texte);
+
+	sprintf(texte, "Gestation=%d", Selected->gestation);
+	Surface_texte=TTF_RenderText_Blended(police, texte, Blanc );
+	Blit_Image(ecran, Surface_texte, 900,495);
+	SDL_FreeSurface(Surface_texte);
+
+	sprintf(texte, "Repro=%d", Selected->frequenceReproduction);
+	Surface_texte=TTF_RenderText_Blended(police, texte, Blanc );
+	Blit_Image(ecran, Surface_texte, 900,545);
+	SDL_FreeSurface(Surface_texte);
+
+	return;
+}
+
+ElementAnimal_Constantes *Edit_Constantes(int Plus_Ou_Moins, int position, ElementAnimal_Constantes *Selected)
+{
+	if (Plus_Ou_Moins==0) Plus_Ou_Moins=-1;
+
+	if (position<=30)
+		Selected->dureeSurvie=Selected->dureeSurvie+Plus_Ou_Moins;
+
+	if ((position>=50) && (position<=80))
+		Selected->taille=Selected->taille+Plus_Ou_Moins;
+
+	if ((position>=100) && (position<=130))
+		Selected->tailleDuBide=Selected->tailleDuBide+Plus_Ou_Moins;
+
+	if ((position>=150) && (position<=180)){
+		if (Selected->sautMax != 0 || Plus_Ou_Moins != -1) // Saut max ne peut pas etre negatif
+			Selected->sautMax=Selected->sautMax+Plus_Ou_Moins;
+	}
+
+	if ((position>=200) && (position<=230))
+		Selected->metabolisme=Selected->metabolisme+Plus_Ou_Moins;
+
+	if ((position>=250) && (position<=280))
+		Selected->gestation=Selected->gestation+Plus_Ou_Moins;
+
+	if ((position>=300) && (position<=330))
+		Selected->frequenceReproduction=Selected->frequenceReproduction+Plus_Ou_Moins;
+
+	return Selected;
+
+
+}
+
+void Init_Tab(int *tab)
+{
+	int i=0;
+	for (i=0; i<11; i++)
+		tab[i]=0;
+	return;
+
+}
+
+//void Print_Graphique(graphique, ScreenH-50, (ScreenH-50)/1.6, nbr_espece, NBR_CASES, Compteur_Tours, grill)
+void Print_Graphique(SDL_Surface *graph, int GraphW, int GraphH, int *nbr_espece, int NBR_CASES, Grille *grill)
+{
+
+
+
+	SDL_Surface *Gros_Pixel=NULL;
+	Gros_Pixel=SDL_CreateRGBSurface(SDL_HWSURFACE, 2, 2, 32, 0, 0, 0, 0);
+
+
+	SDL_FillRect(Gros_Pixel, NULL, SDL_MapRGB(graph->format, 204, 255, 0));
+	Blit_Image(graph,Gros_Pixel,(grill->TourCourant), GraphH-((nbr_espece[6]*GraphH)/(NBR_CASES*NBR_CASES)));
+
+	SDL_FillRect(Gros_Pixel, NULL, SDL_MapRGB(graph->format, 254, 255, 255));//Baleine
+	Blit_Image(graph,Gros_Pixel,(grill->TourCourant), GraphH-((nbr_espece[2]*GraphH)/(NBR_CASES*NBR_CASES)));
+
+	SDL_FillRect(Gros_Pixel, NULL, SDL_MapRGB(graph->format, 0, 114, 45));//Bar
+	Blit_Image(graph,Gros_Pixel,(grill->TourCourant), GraphH-((nbr_espece[3]*GraphH)/(NBR_CASES*NBR_CASES)));
+
+	SDL_FillRect(Gros_Pixel, NULL, SDL_MapRGB(graph->format, 255, 102, 0));//Corail
+	Blit_Image(graph,Gros_Pixel,(grill->TourCourant), GraphH-((nbr_espece[4]*GraphH)/(NBR_CASES*NBR_CASES)));
+
+	SDL_FillRect(Gros_Pixel, NULL, SDL_MapRGB(graph->format, 15, 14, 20));//Orque
+	Blit_Image(graph,Gros_Pixel,(grill->TourCourant), GraphH-((nbr_espece[5]*GraphH)/(NBR_CASES*NBR_CASES)));
+
+	SDL_FillRect(Gros_Pixel, NULL, SDL_MapRGB(graph->format, 223, 190, 1));//Plancton
+	Blit_Image(graph,Gros_Pixel,(grill->TourCourant), GraphH-((nbr_espece[6]*GraphH)/(NBR_CASES*NBR_CASES)));
+
+	SDL_FillRect(Gros_Pixel, NULL, SDL_MapRGB(graph->format, 80, 24, 69));//Pollution
+	Blit_Image(graph,Gros_Pixel,(grill->TourCourant), GraphH-((nbr_espece[7]*GraphH)/(NBR_CASES*NBR_CASES)));
+
+	SDL_FillRect(Gros_Pixel, NULL, SDL_MapRGB(graph->format, 236, 68, 155));//Thon
+	Blit_Image(graph,Gros_Pixel,(grill->TourCourant), GraphH-((nbr_espece[8]*GraphH)/(NBR_CASES*NBR_CASES)));
+
+	SDL_FillRect(Gros_Pixel, NULL, SDL_MapRGB(graph->format, 55, 49, 33));//Requin
+	Blit_Image(graph,Gros_Pixel,(grill->TourCourant), GraphH-((nbr_espece[9]*GraphH)/(NBR_CASES*NBR_CASES)));
+
+	SDL_FillRect(Gros_Pixel, NULL, SDL_MapRGB(graph->format, 209, 0, 57));//Pyranha
+	Blit_Image(graph,Gros_Pixel,(grill->TourCourant), GraphH-((nbr_espece[10]*GraphH)/(NBR_CASES*NBR_CASES)));
+
+	SDL_FreeSurface(Gros_Pixel);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,5 +1,5 @@
-#ifndef ELEMENTPECHEUR_H
-#define ELEMENTPECHEUR_H
+#ifndef ELEMENTPONT_H
+#define ELEMENTPONT_H
 
 #include "element.h"
 #include "Bool.h"
@@ -7,9 +7,9 @@
 
 #define ERR_TYPE_NOT_ANIMAL -1
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+//#ifdef __cplusplus
+//extern "C" {
+//#endif
 
 typedef struct ElementPont
 {
@@ -20,19 +20,19 @@ typedef struct ElementPont
 } ElementPont;
 
 //Constructeurs
-ElementPont* New_ElementPecheur(Case *c);
+ElementPont* New_ElementPont(Case *c);
 
 
 //Initialisateur
-char ElementPecheur_Init(Case *c, ElementPont* This);
+char ElementPont_Init(Case *c, ElementPont* This);
 
 //Destructeurs
 
 //Others
 
 
-#ifdef __cplusplus
-}
-#endif
+//#ifdef __cplusplus
+//}
+//#endif
 
 #endif // ELEMENTPONT_H

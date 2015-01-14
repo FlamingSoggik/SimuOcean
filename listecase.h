@@ -19,7 +19,7 @@ typedef struct ListeCase {
     struct MaillonListeCase *Top;
     void(*Free)();
     int(*Push)(struct ListeCase*, struct Case*);
-    void(*Pop)(struct ListeCase*);
+	struct Case*(*Pop)(struct ListeCase*);
     void(*Clear)(struct ListeCase*);
     int(*Taille)(struct ListeCase*);
 	struct Case*(*getNieme)(struct ListeCase*, unsigned int);

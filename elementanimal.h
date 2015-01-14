@@ -21,6 +21,7 @@ typedef struct ElementAnimal_Constantes{
 		struct ListeType* listePredation;
 }ElementAnimal_Constantes;
 
+extern ElementAnimal_Constantes C_Vide;
 extern ElementAnimal_Constantes C_Plancton;
 extern ElementAnimal_Constantes C_Corail;
 extern ElementAnimal_Constantes C_Bar;

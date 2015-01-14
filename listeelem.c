@@ -16,6 +16,7 @@ void ListeElem_Init(ListeElem* This){
 	This->HasAnAnimal=ListeElem_hasAnAnimal;
 	This->getAnimal=ListeElem_getAnimal;
 	This->getPont=ListeElem_getPont;
+	This->getPecheur=ListeElem_getPecheur;
 	This->remove=ListeElem_remove;
 	This->deleteElement=ListeElem_deleteElement;
 	This->Print=ListeElem_Print;
@@ -189,4 +190,16 @@ void ListeElem_Print(ListeElem * This)
 		tmp=tmp->next;
 	}
 	printf("\n");
+}
+
+
+Element *ListeElem_getPecheur(ListeElem *This)
+{
+	MaillonListeElem *tmp = This->Top;
+	while(tmp != NULL){
+		if (tmp->e->type == PECHEUR)
+			return tmp->e;
+		tmp=tmp->next;
+	}
+	return NULL;
 }

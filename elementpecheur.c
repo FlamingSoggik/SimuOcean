@@ -11,6 +11,7 @@
 #define TAILLE_CANNE_A_PECHE 2
 #define TAILLE_FILET 2
 #define COUT_POSE_PONT 3
+#define DISTANCE_DEPLACEMENT 2
 #define max(a,b) (a>=b?a:b)
 
 ElementPecheur* New_ElementPecheur(Case *c){
@@ -29,23 +30,29 @@ char ElementPecheur_Init(Case *c, ElementPecheur* This){
 		puts("Erreur creation animal case parent vide");
 	}
 	This->listeDePeche=New_ListeType();
+	This->listeDePeche->Push(This->listeDePeche, BAR);
+	This->listeDePeche->Push(This->listeDePeche, THON);
+	This->listeDePeche->Push(This->listeDePeche, PYRANHA);
+	This->listeDePeche->Push(This->listeDePeche, REQUIN);
+	This->listeDePeche->Push(This->listeDePeche, ORQUE);
+	This->listeDePeche->Push(This->listeDePeche, BALEINE);
+
+	This->pecheParCanne=ElementPecheur_pecheParCanne;
+	This->pecheParFilet=ElementPecheur_pecheParFilet;
+	This->peutPecher=ElementPecheur_peutPecher;
 	This->caseParent=c;
 	This->type=PECHEUR;
 	This->Clear = Element_Clear;
 	This->sac = COUT_POSE_PONT*3;
 	This->longueurCanne=TAILLE_CANNE_A_PECHE;
 	This->tailleFilet=TAILLE_FILET;
+	This->distanceDeplacement=DISTANCE_DEPLACEMENT;
 	return 0;
 }
 
 
 void ElementPecheur_pecheParCanne(ElementPecheur *This)
 {
-	static int first = 1;
-	if(first == 1){
-		srand(time(NULL));
-		first = 0;
-	}
 	int i, j;
 	unsigned int index=0;
 	ElementAnimal* e;
@@ -58,6 +65,7 @@ void ElementPecheur_pecheParCanne(ElementPecheur *This)
 			if (MatriceAccessibleReproduction[i][j] != NULL) {
 				if (MatriceAccessibleReproduction[i][j]->liste->HasAnAnimal(MatriceAccessibleReproduction[i][j]->liste)){
 					e=(ElementAnimal*)MatriceAccessibleReproduction[i][j]->liste->getAnimal(MatriceAccessibleReproduction[i][j]->liste);
+					printf("Type de l'animal testé tout de suite : %d\n", e->type);
 					if (This->peutPecher(This, e->type) == True)
 						lc->Push(lc, MatriceAccessibleReproduction[i][j]);
 				}
@@ -68,9 +76,12 @@ void ElementPecheur_pecheParCanne(ElementPecheur *This)
 		index=rand()%lc->Taille(lc);
 		c=lc->getNieme(lc, index);
 		e=(ElementAnimal*)c->liste->getAnimal(c->liste);
+		printf("Element mangé est de type : %d\n", e->type);
 		This->sac+=e->constantes->taille;
 		e->caseParent->liste->deleteElement(e->caseParent->liste, (Element*)e);
 
+	}
+	else {
 	}
 	lc->Free(lc);
 	for (i=0; i<2*This->longueurCanne+1.0;++i){
@@ -91,11 +102,6 @@ Bool ElementPecheur_peutPecher(ElementPecheur *This, Type t)
 
 void ElementPecheur_pecheParFilet(ElementPecheur *This)
 {
-	static int first = 1;
-	if(first == 1){
-		srand(time(NULL));
-		first = 0;
-	}
 	int i, j;
 	ElementAnimal* e;
 	Case*** MatriceAccessibleReproduction= NULL;
@@ -116,5 +122,30 @@ void ElementPecheur_pecheParFilet(ElementPecheur *This)
 	for (i=0; i<2*This->tailleFilet+1.0;++i){
 		free(MatriceAccessibleReproduction[i]);
 	}
-	free(MatriceAccessibleReproduction);;
+	free(MatriceAccessibleReproduction);
 }
+
+
+//void ElementPecheur_deplacement(ElementPecheur *This)
+//{
+//	int i, j;
+//	Case*** MatriceAccessibleReproduction= NULL;
+//	MatriceAccessibleReproduction=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX, This->caseParent->posY, This->distanceDeplacement);
+//	for(i=0;i<2*This->distanceDeplacement+1.0;++i){
+//		for(j=0;j<2*This->distanceDeplacement+1.0;++j){
+//			if (MatriceAccessibleReproduction[i][j] != NULL) {
+//				if (MatriceAccessibleReproduction[i][j]->liste->HasAnPon(MatriceAccessibleReproduction[i][j]->liste)){
+//					e=(ElementAnimal*)MatriceAccessibleReproduction[i][j]->liste->getAnimal(MatriceAccessibleReproduction[i][j]->liste);
+//					if (This->peutPecher(This, e->type) == True){
+//						This->sac+=e->constantes->taille;
+//						e->caseParent->liste->deleteElement(e->caseParent->liste, (Element*)e);
+//					}
+//				}
+//			}
+//		}
+//	}
+//	for (i=0; i<2*This->tailleFilet+1.0;++i){
+//		free(MatriceAccessibleReproduction[i]);
+//	}
+//	free(MatriceAccessibleReproduction);
+//}

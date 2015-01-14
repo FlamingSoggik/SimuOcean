@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "element.h"
 #include "elementanimal.h"
+#include "elementpecheur.h"
+#include "elementpont.h"
 #include "grille.h"
 #include <stdlib.h>
 #include "affichage.h"
@@ -18,25 +20,18 @@ int main(void)
 {
 
 
-	Grille *g = New_Grille(200);
-    SDL_Print(g);
-//	g->Free(g);
-/*
+	Grille *g = New_Grille(20);
+	g=SDL_Print(g);
 
-	g->Print(g);
-	while(g->TourCourant < 100){
-		g->faireTour(g);
-		system("clear");
-		g->Print(g);
-		usleep(100000);
-    }*/
-//	ElementAnimal* e = (ElementAnimal*)g->tab[2][2].liste->getAnimal(g->tab[2][2].liste);
-//	e->reproduction(e);
-//	printf("Reproduction sensée être faite\n");
 //	g->Print(g);
 
-//	e->deplacement(e);
-//	g->Print(g);
+//	sleep(10);
+//	while(g->TourCourant < 1000){
+//		g->faireTour(g);
+//		system("clear");
+//		g->Print(g);
+//		usleep(100000);
+//	}
 	g->Free(g);
 
 
@@ -44,14 +39,21 @@ int main(void)
 //	//Constructction d'un tableau d'élément
 //	Grille *g = New_Grille(10);
 //	g->Print(g);
-//		g->tab[2][2].liste->Push(g->tab[2][2].liste, (Element*)New_ElementAnimal(&(g->tab[2][2]), PYRANHA));
-//		g->tab[1][1].liste->Push(g->tab[1][1].liste, (Element*)New_ElementAnimal(&(g->tab[1][1]), BAR));
-//		g->tab[1][2].liste->Push(g->tab[1][2].liste, (Element*)New_ElementAnimal(&(g->tab[1][2]), PLANCTON));
-//		g->tab[1][3].liste->Push(g->tab[1][3].liste, (Element*)New_ElementAnimal(&(g->tab[1][3]), CORAIL));
-//		g->tab[2][1].liste->Push(g->tab[2][1].liste, (Element*)New_ElementAnimal(&(g->tab[2][1]), THON));
-//		g->tab[3][1].liste->Push(g->tab[3][1].liste, (Element*)New_ElementAnimal(&(g->tab[3][1]), REQUIN));
-//		g->tab[3][2].liste->Push(g->tab[3][2].liste, (Element*)New_ElementAnimal(&(g->tab[3][2]), ORQUE));
-//		g->tab[3][3].liste->Push(g->tab[3][3].liste, (Element*)New_ElementAnimal(&(g->tab[3][3]), BALEINE));
+//	g->tab[2][2].liste->Push(g->tab[2][2].liste, (Element*)New_ElementAnimal(&(g->tab[2][2]), PYRANHA));
+//	g->tab[1][1].liste->Push(g->tab[1][1].liste, (Element*)New_ElementAnimal(&(g->tab[1][1]), BAR));
+//	g->tab[1][2].liste->Push(g->tab[1][2].liste, (Element*)New_ElementAnimal(&(g->tab[1][2]), PLANCTON));
+//	g->tab[1][3].liste->Push(g->tab[1][3].liste, (Element*)New_ElementAnimal(&(g->tab[1][3]), CORAIL));
+//	g->tab[2][1].liste->Push(g->tab[2][1].liste, (Element*)New_ElementAnimal(&(g->tab[2][1]), THON));
+//	g->tab[3][1].liste->Push(g->tab[3][1].liste, (Element*)New_ElementAnimal(&(g->tab[3][1]), REQUIN));
+//	g->tab[3][2].liste->Push(g->tab[3][2].liste, (Element*)New_ElementAnimal(&(g->tab[3][2]), ORQUE));
+//	g->tab[3][3].liste->Push(g->tab[3][3].liste, (Element*)New_ElementAnimal(&(g->tab[3][3]), BALEINE));
+//	g->tab[3][3].liste->Push(g->tab[3][3].liste, (Element*)New_ElementPecheur(&(g->tab[3][3])));
+//	g->tab[3][3].liste->Push(g->tab[3][3].liste, (Element*)New_ElementPont(&(g->tab[3][3])));
+//	ElementPecheur* e = (ElementPecheur*)g->tab[2][2].liste->getPecheur(g->tab[3][3].liste);
+//	g->Print(g);
+
+//	e->pecheParFilet(e);
+//	g->Print(g);
 //	g->Print(g);
 ////Test de la demande de matrice de mouvement
 //	Case*** mattmp;

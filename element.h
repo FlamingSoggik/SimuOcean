@@ -8,7 +8,8 @@ extern "C" {
 #endif
 
 typedef enum Type {
-	VOID, PLANCTON, CORAIL, BAR, THON, POLLUTION, PYRANHA, REQUIN, ORQUE, BALEINE, PECHEUR, PONT
+	//0		 1		  2		 3	   4	   5		 6		  7		 8		 9		 10		 11
+	VOID, PLANCTON, CORAIL, BAR, THON, POLLUTION, PYRANHA, REQUIN, ORQUE, BALEINE, PECHEUR, PONT, MIN=0, MAX=PONT
 }Type;
 
 typedef struct Element

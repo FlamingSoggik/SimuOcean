@@ -29,6 +29,7 @@ typedef struct ListeElem {
 	char (*HasAnAnimal)(struct ListeElem*);
 	struct Element* (*getAnimal)(struct ListeElem*);
 	struct Element* (*getPont)(struct ListeElem*);
+	struct Element* (*getPecheur)(struct ListeElem*);
 	Bool (*remove)(struct ListeElem*, struct Element*);
 	Bool (*deleteElement)(struct ListeElem*, struct Element*);
 	void (*Print)(struct ListeElem*);
@@ -46,6 +47,7 @@ char ListeElem_hasAPont(ListeElem* This);
 char ListeElem_hasAnAnimal(ListeElem* This);
 struct Element* ListeElem_getAnimal(ListeElem* This);
 struct Element* ListeElem_getPont(ListeElem* This);
+struct Element* ListeElem_getPecheur(ListeElem* This);
 Bool ListeElem_deleteElement(ListeElem*, struct Element*);
 Bool ListeElem_remove(ListeElem*, struct Element*);
 void ListeElem_Print(ListeElem*);

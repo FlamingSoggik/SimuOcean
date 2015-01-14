@@ -10,7 +10,7 @@
 
 #define max(a,b) (a>=b?a:b)
 
-
+ElementAnimal_Constantes C_Vide;
 ElementAnimal_Constantes C_Plancton;
 ElementAnimal_Constantes C_Corail;
 ElementAnimal_Constantes C_Bar;
@@ -69,13 +69,21 @@ char lienVersConstantes(ElementAnimal* This, Type t)
 
 void defineConstant()
 {
-	C_Plancton.dureeSurvie=10000;
+    C_Vide.dureeSurvie=0;
+    C_Vide.taille=0;
+    C_Vide.tailleDuBide=0;
+    C_Vide.sautMax=0;
+    C_Vide.metabolisme=0;
+    C_Vide.gestation=0;
+    C_Vide.frequenceReproduction=0;
+
+    C_Plancton.dureeSurvie=10000;
 	C_Plancton.taille=2;
 	C_Plancton.tailleDuBide=1;
 	C_Plancton.sautMax=0;
 	C_Plancton.metabolisme=0;
 	C_Plancton.gestation=0;
-	C_Plancton.frequenceReproduction=40;
+    C_Plancton.frequenceReproduction=40;
 
 	C_Corail.dureeSurvie=30;
 	C_Corail.taille=2;
@@ -85,7 +93,7 @@ void defineConstant()
 	C_Corail.gestation=1;
 	C_Corail.frequenceReproduction=25;
 
-	C_Bar.dureeSurvie=30;
+    C_Bar.dureeSurvie=30;
 	C_Bar.taille=3;
 	C_Bar.tailleDuBide=3;
 	C_Bar.sautMax=3;
@@ -93,7 +101,7 @@ void defineConstant()
 	C_Bar.gestation=1;
 	C_Bar.frequenceReproduction=10;
 
-	C_Thon.dureeSurvie=30;
+    C_Thon.dureeSurvie=30;
 	C_Thon.taille=4;
 	C_Thon.tailleDuBide=3;
 	C_Thon.sautMax=3;
@@ -354,6 +362,19 @@ void ElementAnimal_predation(ElementAnimal *This)
 								plusInteressant=(Element*)current;
 							}
 						}
+						else if(((ElementAnimal*)plusInteressant)->constantes->taille == current->constantes->taille){
+							if (rand()%4 == 0){
+								// L'element semble plus intéressant, il faut maintenant vérifier qu'il ne soit pas sous un pont sans qu'on y ait accès
+								if(This->constantes->taille < This->caseParent->g->TailleMaxSousPont){
+									// Je passe sous un pont, let's go
+									plusInteressant=(Element*)current;
+								}
+								else if (MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == False){
+									//Je passe pas sous les ponts mais de toute façon, il y en a pas
+									plusInteressant=(Element*)current;
+								}
+							}
+						}
 					}
 				}
 			}
@@ -386,13 +407,7 @@ void ElementAnimal_predation(ElementAnimal *This)
 }
 
 void ElementAnimal_deplacement(ElementAnimal *This){
-	static int first = 1;
 	int flag;
-	if (first == 1)
-	{
-		srand (time(NULL));
-		first = 0;
-	}
 	Case*** MatriceAccessibleDeplacement = NULL;
 	MatriceAccessibleDeplacement=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX, This->caseParent->posY, This->constantes->sautMax);
 	int deplX, deplY, isNeg;

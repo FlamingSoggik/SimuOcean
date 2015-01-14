@@ -1,4 +1,4 @@
-#include "grille.h"
+﻿#include "grille.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include "elementanimal.h"
@@ -17,7 +17,7 @@
 #define PORQUE "\033[48;5;27m"		//BLEU CLAIR
 #define PBALEINE "\033[48;5;22m"	//VERT FONCE
 #define PPONT "\033[48;5;130m"		//MARRON
-#define PPECHEUR "\033[00;47m"		//VERT-BLEU
+#define PPECHEUR "\033[48;5;48m"	//VERT-BLEU
 #define NORMAL "\033[00m"			//NOIR
 #define PGRAS "\033[01m"
 
@@ -32,6 +32,7 @@ void Grille_Init(Grille *This, unsigned int Taille){
 	static int premierpassage = 1;
 	if (premierpassage == 1){
 		srand(time(NULL));
+		defineConstant();
 		premierpassage = 0;
 	}
 	unsigned int i,j;
@@ -55,7 +56,6 @@ void Grille_Init(Grille *This, unsigned int Taille){
 		}
 	}
 
-	defineConstant();
 	remplirListePredation(This);
 	int nbrCase = Taille*Taille;
 	int nbrEspece = 0;
@@ -63,6 +63,7 @@ void Grille_Init(Grille *This, unsigned int Taille){
 	Type compteurTypeEspece = PLANCTON;
 
 
+	//Désactivé pour tester le pecheur
 	while (compteurTypeEspece < PONT){
 		comptelemespece = 0;
 		switch(compteurTypeEspece){
@@ -197,11 +198,10 @@ void Grille_Print(struct Grille *This){
 
 void Grille_Free(struct Grille *This){
 	This->Clear(This);
-	puts("Grille detruite\n");
 }
 
 void Grille_New_Free(struct Grille *This){
-	if(This) This->Clear(This);
+	if(This != NULL) This->Clear(This);
 	free(This);
 	puts("Grille detruite\n");
 }

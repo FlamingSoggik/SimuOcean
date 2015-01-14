@@ -13,7 +13,7 @@
 ElementPont* New_ElementPont(Case *c){
 	ElementPont* This = malloc(sizeof(ElementPont));
 	if (!This) return NULL;
-	if (ElementPecheur_Init(c, This) < 0){
+	if (ElementPont_Init(c, This) < 0){
 		free(This);
 		return NULL;
 	}

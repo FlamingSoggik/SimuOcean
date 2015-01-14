@@ -7,6 +7,8 @@ void ListeCase_Init(ListeCase* This){
     This->Clear=ListeCase_Clear;
     This->Taille=ListeCase_Taille;
 	This->getNieme=ListeCase_getNieme;
+	This->Push=ListeCase_Push;
+	This->Pop=ListeCase_Pop;
 }
 
 ListeCase* New_ListeCase(){
