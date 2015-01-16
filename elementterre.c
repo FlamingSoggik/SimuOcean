@@ -1,4 +1,4 @@
-#include "elementpont.h"
+#include "elementterre.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -6,10 +6,10 @@
 
 #define max(a,b) (a>=b?a:b)
 
-ElementPont* New_ElementPont(Case *c){
-	ElementPont* This = malloc(sizeof(ElementPont));
+ElementTerre *New_ElementTerre(Case *c){
+	ElementTerre* This = malloc(sizeof(ElementTerre));
 	if (!This) return NULL;
-	if (ElementPont_Init(c, This) < 0){
+	if (ElementTerre_Init(c, This) < 0){
 		free(This);
 		return NULL;
 	}
@@ -17,12 +17,12 @@ ElementPont* New_ElementPont(Case *c){
 	return This;
 }
 
-char ElementPont_Init(Case *c, ElementPont* This){
+char ElementTerre_Init(Case *c, ElementTerre* This){
 	if (c == NULL){
 		puts("Erreur creation animal case parent vide");
 	}
 	This->caseParent=c;
-	This->type=PONT;
+	This->type=TERRE;
 	This->Clear = Element_Clear;
 	return 0;
 }

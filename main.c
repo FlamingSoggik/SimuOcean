@@ -21,17 +21,18 @@ int main(void)
 
 
 	Grille *g = New_Grille(20);
-	g=SDL_Print(g);
+	//g=SDL_Print(g);
+		g->Print(g);
 
-//	g->Print(g);
+		sleep(5);
+		while(g->TourCourant < 1000){
+			g->faireTour(g);
+			system("clear");
+			g->Print(g);
+			usleep(100000);
+		}
 
-//	sleep(10);
-//	while(g->TourCourant < 1000){
-//		g->faireTour(g);
-//		system("clear");
-//		g->Print(g);
-//		usleep(100000);
-//	}
+
 	g->Free(g);
 
 
@@ -39,20 +40,30 @@ int main(void)
 //	//Constructction d'un tableau d'élément
 //	Grille *g = New_Grille(10);
 //	g->Print(g);
-//	g->tab[2][2].liste->Push(g->tab[2][2].liste, (Element*)New_ElementAnimal(&(g->tab[2][2]), PYRANHA));
-//	g->tab[1][1].liste->Push(g->tab[1][1].liste, (Element*)New_ElementAnimal(&(g->tab[1][1]), BAR));
-//	g->tab[1][2].liste->Push(g->tab[1][2].liste, (Element*)New_ElementAnimal(&(g->tab[1][2]), PLANCTON));
-//	g->tab[1][3].liste->Push(g->tab[1][3].liste, (Element*)New_ElementAnimal(&(g->tab[1][3]), CORAIL));
-//	g->tab[2][1].liste->Push(g->tab[2][1].liste, (Element*)New_ElementAnimal(&(g->tab[2][1]), THON));
-//	g->tab[3][1].liste->Push(g->tab[3][1].liste, (Element*)New_ElementAnimal(&(g->tab[3][1]), REQUIN));
-//	g->tab[3][2].liste->Push(g->tab[3][2].liste, (Element*)New_ElementAnimal(&(g->tab[3][2]), ORQUE));
-//	g->tab[3][3].liste->Push(g->tab[3][3].liste, (Element*)New_ElementAnimal(&(g->tab[3][3]), BALEINE));
-//	g->tab[3][3].liste->Push(g->tab[3][3].liste, (Element*)New_ElementPecheur(&(g->tab[3][3])));
-//	g->tab[3][3].liste->Push(g->tab[3][3].liste, (Element*)New_ElementPont(&(g->tab[3][3])));
-//	ElementPecheur* e = (ElementPecheur*)g->tab[2][2].liste->getPecheur(g->tab[3][3].liste);
+//	g->tab[1][1].liste->Push(g->tab[1][1].liste, (Element*)New_ElementPont(&(g->tab[1][1])));
+//	g->tab[0][0].liste->Push(g->tab[0][0].liste, (Element*)New_ElementPont(&(g->tab[0][0])));
+//	g->tab[0][1].liste->Push(g->tab[0][1].liste, (Element*)New_ElementPont(&(g->tab[0][1])));
+//	g->tab[0][2].liste->Push(g->tab[0][2].liste, (Element*)New_ElementPont(&(g->tab[0][2])));
+//	g->tab[1][0].liste->Push(g->tab[1][0].liste, (Element*)New_ElementPont(&(g->tab[1][0])));
+//	g->tab[2][0].liste->Push(g->tab[2][0].liste, (Element*)New_ElementPont(&(g->tab[2][0])));
+//	g->tab[2][1].liste->Push(g->tab[2][1].liste, (Element*)New_ElementPont(&(g->tab[2][1])));
+//	g->tab[2][2].liste->Push(g->tab[2][2].liste, (Element*)New_ElementPont(&(g->tab[2][2])));
+//	g->tab[1][1].liste->Push(g->tab[1][1].liste, (Element*)New_ElementPecheur(&(g->tab[1][1])));
+//	g->tab[2][2].liste->Push(g->tab[2][2].liste, (Element*)New_ElementPont(&(g->tab[2][2])));
+//	ElementPecheur* e = (ElementPecheur*)g->tab[1][1].liste->getPecheur(g->tab[1][1].liste);
 //	g->Print(g);
 
-//	e->pecheParFilet(e);
+//	e->deplacement(e, 9);
+//	g->Print(g);
+//	e->construirePont(e, 2);
+//	g->Print(g);
+//	//g->tab[2][2].liste->deleteElement(g->tab[2][2].liste, g->tab[2][2].liste->getPont(g->tab[2][2].liste));
+
+//	//g->tab[0][1].liste->Push(g->tab[0][1].liste, (Element*)New_ElementPecheur(&(g->tab[0][1])));
+//	g->tab[1][1].liste->Push(g->tab[1][1].liste, (Element*)New_ElementPecheur(&(g->tab[1][1])));
+//	g->tab[2][1].liste->Push(g->tab[2][1].liste, (Element*)New_ElementPecheur(&(g->tab[2][1])));
+//	g->Print(g);
+//	e->mourir(e);
 //	g->Print(g);
 //	g->Print(g);
 ////Test de la demande de matrice de mouvement

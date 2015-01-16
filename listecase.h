@@ -1,12 +1,13 @@
-#include "case.h"
-
 #ifndef LISTECASE_H
 #define LISTECASE_H
+
+#include "case.h"
 
 #define ERROR_MALLOC_ITEM -1
 #define ERROR_LISTE_VIDE -2
 #define ERROR_BAD_TYPE_CASE -3
 #define ERROR_ONE_PONT_MAX -4
+#define ERROR_ONE_TERRE_MAX -5
 
 
 typedef struct MaillonListeCase{

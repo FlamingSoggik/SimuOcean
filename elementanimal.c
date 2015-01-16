@@ -289,6 +289,8 @@ void ElementAnimal_predation(ElementAnimal *This)
 		for(j=0; j<3  && flag == 0; ++j){
 			if (MatriceAccessiblePredation[i][j] != NULL){
 				//Il y a une Case à cette position
+				if(MatriceAccessiblePredation[i][j]->liste->HasDirt(MatriceAccessiblePredation[i][j]->liste) == 1)
+					continue;
 //				if(MatriceAccessiblePredation[i][j]->liste->HasAPecheur(MatriceAccessiblePredation[i][j]->liste) == 1){
 
 //					// Si il y a un pecheur
@@ -416,7 +418,7 @@ void ElementAnimal_deplacement(ElementAnimal *This){
 	for(i=0;i<2*This->constantes->sautMax+1.0 && flag == 0;++i){
 		for(j=0;j<2*This->constantes->sautMax+1.0 && flag == 0;++j){
 			if (MatriceAccessibleDeplacement[i][j] != NULL)
-				if (MatriceAccessibleDeplacement[i][j]->liste->HasAnAnimal(MatriceAccessibleDeplacement[i][j]->liste) == 0)
+				if (MatriceAccessibleDeplacement[i][j]->liste->HasAnAnimal(MatriceAccessibleDeplacement[i][j]->liste) == 0 && MatriceAccessibleDeplacement[i][j]->liste->HasDirt(MatriceAccessibleDeplacement[i][j]->liste) == 0)
 					if (This->constantes->taille <= This->caseParent->g->TailleMaxSousPont || MatriceAccessibleDeplacement[i][j]->liste->HasAPont(MatriceAccessibleDeplacement[i][j]->liste) == 0)
 						flag=1;
 		}
@@ -479,7 +481,7 @@ void ElementAnimal_reproduction(ElementAnimal *This){
 	ElementAnimal* e = NULL, *amoureux = NULL;
 	for(i=0;i<3 && flag == 0;++i){
 		for(j=0;j<3 && flag == 0;++j){
-			if (MatriceAccessibleReproduction[i][j] != NULL) {
+			if (MatriceAccessibleReproduction[i][j] != NULL && MatriceAccessibleReproduction[i][j]->liste->HasDirt(MatriceAccessibleReproduction[i][j]->liste) == 0) {
 				if (MatriceAccessibleReproduction[i][j]->liste->HasAnAnimal(MatriceAccessibleReproduction[i][j]->liste)){
 					e=(ElementAnimal*)MatriceAccessibleReproduction[i][j]->liste->getAnimal(MatriceAccessibleReproduction[i][j]->liste);
 					if (e->type == This->type)

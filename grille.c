@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "elementanimal.h"
+#include "elementpecheur.h"
+#include "elementpont.h"
+#include "elementterre.h"
 #include "element.h"
 #include <time.h>
 
@@ -16,7 +19,8 @@
 #define PREQUIN "\033[48;5;18m"		//BLEU FONCE
 #define PORQUE "\033[48;5;27m"		//BLEU CLAIR
 #define PBALEINE "\033[48;5;22m"	//VERT FONCE
-#define PPONT "\033[48;5;130m"		//MARRON
+#define PPONT "\033[48;5;136m"		//MARRON CLAIR
+#define PTERRE "\033[48;5;130m"		//MARRON
 #define PPECHEUR "\033[48;5;48m"	//VERT-BLEU
 #define NORMAL "\033[00m"			//NOIR
 #define PGRAS "\033[01m"
@@ -45,7 +49,7 @@ void Grille_Init(Grille *This, unsigned int Taille){
 	This->moveFromTo=Grille_moveFromTo;
 	This->getMatriceVoisins=Grille_getMatriceVoisins;
 	This->faireTour=Grille_faireTour;
-
+	This->reinitPecheur = Grille_reinitPecheur;
 	This->tab=malloc(sizeof(Case*)*Taille);
 	for (i=0;i<Taille;++i){
 		This->tab[i]=malloc(sizeof(Case)*Taille);
@@ -53,6 +57,9 @@ void Grille_Init(Grille *This, unsigned int Taille){
 	for(i=0;i<Taille;++i){
 		for(j=0; j<Taille; ++j){
 			This->tab[i][j]= Case_Create(This, i, j);
+			if (j == 0 || j == Taille-1){
+				This->tab[i][j].liste->Push(This->tab[i][j].liste, (Element*)New_ElementTerre(&This->tab[i][j]));
+			}
 		}
 	}
 
@@ -60,11 +67,10 @@ void Grille_Init(Grille *This, unsigned int Taille){
 	int nbrCase = Taille*Taille;
 	int nbrEspece = 0;
 	int comptelemespece = 0;
-	Type compteurTypeEspece = PLANCTON;
+	Type compteurTypeEspece = TYPEMIN;
 
 
-	//Désactivé pour tester le pecheur
-	while (compteurTypeEspece < PONT){
+	while (compteurTypeEspece < TYPEMAX){
 		comptelemespece = 0;
 		switch(compteurTypeEspece){
 			case PLANCTON:
@@ -98,7 +104,7 @@ void Grille_Init(Grille *This, unsigned int Taille){
 		while (comptelemespece != nbrEspece){
 			i = rand()%Taille;
 			j = rand()%Taille;
-			if (This->tab[i][j].liste->HasAnAnimal(This->tab[i][j].liste) == 0){
+			if (This->tab[i][j].liste->HasAnAnimal(This->tab[i][j].liste) == 0 && This->tab[i][j].liste->HasDirt(This->tab[i][j].liste) == 0){
 				This->tab[i][j].liste->Push(This->tab[i][j].liste, (Element*)New_ElementAnimal(&This->tab[i][j], compteurTypeEspece));
 				++comptelemespece;
 			}
@@ -134,12 +140,18 @@ void Grille_Print(struct Grille *This){
 				if (This->tab[i][j].liste->HasAPont(This->tab[i][j].liste)){
 					printf(" " PPONT " " PPECHEUR " " NORMAL " |");
 				}
+				else if(This->tab[i][j].liste->HasDirt(This->tab[i][j].liste)){
+					printf(" " PTERRE " " PPECHEUR " " NORMAL " |");
+				}
 				else {
 					printf(" " EAU " " PPECHEUR " " NORMAL " |");
 				}
 			}
 			else if (This->tab[i][j].liste->HasAPont(This->tab[i][j].liste)){
 				printf(" " PPONT "  " NORMAL " |");
+			}
+			else if (This->tab[i][j].liste->HasDirt(This->tab[i][j].liste)){
+				printf(" " PTERRE "  " NORMAL " |");
 			}
 			else if (This->tab[i][j].liste->HasAnAnimal(This->tab[i][j].liste)){
 				switch(This->tab[i][j].liste->getAnimal(This->tab[i][j].liste)->type){
@@ -275,6 +287,40 @@ void Grille_moveFromTo(Grille *This, Element *elem, unsigned int posX, unsigned 
 	This->tab[elem->caseParent->posX][elem->caseParent->posY].liste->remove(This->tab[elem->caseParent->posX][elem->caseParent->posY].liste, elem);
 	This->tab[posX][posY].liste->Push(This->tab[posX][posY].liste, elem);
 	elem->caseParent=&(This->tab[posX][posY]);
+}
+
+void Grille_reinitPecheur(Grille *This, Element *elem)
+{
+	ElementPecheur* pecheur = (ElementPecheur*)elem;
+	This->tab[pecheur->caseParent->posX][pecheur->caseParent->posY].liste->remove(This->tab[pecheur->caseParent->posX][pecheur->caseParent->posY].liste, (Element*)pecheur);
+	char sensDeTest = 'b';
+	int depl = 1;
+	Case *caseInitiale = &This->tab[pecheur->PositionInitialeX][pecheur->PositionInitialeY];
+	recommencer:
+	if (caseInitiale->liste->HasAPecheur(caseInitiale->liste) == 1){
+		if (sensDeTest == 'b'){
+			if (pecheur->PositionInitialeX+depl > This->Taille-1){
+				sensDeTest='h';
+				depl=0;
+			}
+			else {
+				caseInitiale=&This->tab[pecheur->PositionInitialeX+1][pecheur->PositionInitialeY];
+				++depl;
+			}
+		}
+		else {
+			if ((double)pecheur->PositionInitialeX-1 < 0){
+				printf("Impossible de placer le pecheur --> perdu !!\n");
+				return;
+			}
+			else {
+				caseInitiale=&This->tab[pecheur->PositionInitialeX-1][pecheur->PositionInitialeY];
+				--depl;
+			}
+		}
+		goto recommencer;
+	}
+	caseInitiale->liste->Push(caseInitiale->liste, (Element*)pecheur);
 }
 
 void Grille_faireTour(Grille *This){

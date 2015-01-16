@@ -12,10 +12,12 @@ void ListeElem_Init(ListeElem* This){
 	This->Clear=ListeElem_Clear;
 	This->Taille=ListeElem_Taille;
 	This->HasAPont=ListeElem_hasAPont;
+	This->HasDirt=ListeElem_hasDirt;
 	This->HasAPecheur=ListeElem_hasAPecheur;
 	This->HasAnAnimal=ListeElem_hasAnAnimal;
 	This->getAnimal=ListeElem_getAnimal;
 	This->getPont=ListeElem_getPont;
+	This->getDirt=ListeElem_getDirt;
 	This->getPecheur=ListeElem_getPecheur;
 	This->remove=ListeElem_remove;
 	This->deleteElement=ListeElem_deleteElement;
@@ -56,6 +58,9 @@ int ListeElem_Push(ListeElem* This, Element *e){
 	if (e->type == PONT && This->HasAPont(This)){
 		return ERROR_ONE_PONT_MAX;
 	}
+	if (e->type == TERRE && This->HasDirt(This)){
+		return ERROR_ONE_TERRE_MAX;
+	}
 	MaillonListeElem *il = malloc(sizeof(MaillonListeElem));
 	if (!il) return ERROR_MALLOC_ITEM;
 	il->next=This->Top;
@@ -80,7 +85,6 @@ int ListeElem_Taille(ListeElem* This){
 	return This->taille;
 }
 
-//Cas non testé : la liste contient un pecheur
 char ListeElem_hasAPecheur(ListeElem* This){
 	MaillonListeElem *tmp = This->Top;
 	while(tmp != NULL){
@@ -91,7 +95,6 @@ char ListeElem_hasAPecheur(ListeElem* This){
 	return 0;
 }
 
-//Cas non testé : pont dans la liste
 char ListeElem_hasAPont(ListeElem* This){
 	MaillonListeElem *tmp = This->Top;
 	while(tmp != NULL){
@@ -102,10 +105,20 @@ char ListeElem_hasAPont(ListeElem* This){
 	return 0;
 }
 
+char ListeElem_hasDirt(ListeElem* This){
+	MaillonListeElem *tmp = This->Top;
+	while(tmp != NULL){
+		if (tmp->e->type == TERRE)
+			return 1;
+		tmp=tmp->next;
+	}
+	return 0;
+}
+
 char ListeElem_hasAnAnimal(ListeElem* This){
 	MaillonListeElem *tmp = This->Top;
 	while(tmp != NULL){
-		if (tmp->e->type != PECHEUR && tmp->e->type != PONT && tmp->e->type != POLLUTION)
+		if (tmp->e->type != PECHEUR && tmp->e->type != PONT && tmp->e->type != POLLUTION && tmp->e->type != TERRE)
 			return 1;
 		tmp=tmp->next;
 	}
@@ -117,7 +130,7 @@ Element* ListeElem_getAnimal(ListeElem *This)
 {
 	MaillonListeElem *tmp = This->Top;
 	while(tmp != NULL){
-		if (tmp->e->type != PECHEUR && tmp->e->type != PONT && tmp->e->type != POLLUTION)
+		if (tmp->e->type != PECHEUR && tmp->e->type != PONT && tmp->e->type != POLLUTION && tmp->e->type != TERRE)
 			return tmp->e;
 		tmp=tmp->next;
 	}
@@ -130,6 +143,18 @@ Element *ListeElem_getPont(ListeElem *This)
 	MaillonListeElem *tmp = This->Top;
 	while(tmp != NULL){
 		if (tmp->e->type == PONT)
+			return tmp->e;
+		tmp=tmp->next;
+	}
+	return NULL;
+}
+
+//Renvoie un pointeur sur un Terre et le garde dans la liste
+Element *ListeElem_getDirt(ListeElem *This)
+{
+	MaillonListeElem *tmp = This->Top;
+	while(tmp != NULL){
+		if (tmp->e->type == TERRE)
 			return tmp->e;
 		tmp=tmp->next;
 	}

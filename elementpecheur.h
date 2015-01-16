@@ -23,11 +23,13 @@ typedef struct ElementPecheur
 		unsigned int tailleFilet;
 		unsigned int distanceDeplacement;
 		struct ListeType* listeDePeche;
+		unsigned int PositionInitialeX;
+		unsigned int PositionInitialeY;
 		void (*pecheParCanne)(struct ElementPecheur*); //--> fait
 		void (*pecheParFilet)(struct ElementPecheur*); //--> fait
-		void (*deplacement)(struct ElementPecheur*);
-		void (*construirePont)(struct ElementPecheur*);
-		void (*mourir)(struct ElementPecheur*);
+		void (*deplacement)(struct ElementPecheur*, char); //--> fait
+		void (*construirePont)(struct ElementPecheur*, char); // --> fait
+		void (*mourir)(struct ElementPecheur*); // --> fait
 		void (*lancerpoisson)(struct ElementPecheur*);
 		Bool (*peutPecher)(struct ElementPecheur*, Type);  //--> fait
 } ElementPecheur;
@@ -44,8 +46,8 @@ char ElementPecheur_Init(Case *c, ElementPecheur* This);
 //Others
 void ElementPecheur_pecheParCanne(ElementPecheur* This);
 void ElementPecheur_pecheParFilet(ElementPecheur* This);
-void ElementPecheur_deplacement(ElementPecheur* This);
-void ElementPecheur_construirePont(ElementPecheur* This);
+void ElementPecheur_deplacement(ElementPecheur* This, char direction);
+void ElementPecheur_construirePont(ElementPecheur* This, char direction);
 void ElementPecheur_mourir(ElementPecheur* This);
 void ElementPecheur_lancerpoisson(ElementPecheur* This);
 Bool ElementPecheur_peutPecher(ElementPecheur* This, Type t);

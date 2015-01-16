@@ -8,7 +8,8 @@
 #define ERROR_LISTE_VIDE -2
 #define ERROR_BAD_TYPE_ELEMENT -3
 #define ERROR_ONE_PONT_MAX -4
-#define ERROR_ELEMENT_PASSED_NULL -5
+#define ERROR_ONE_TERRE_MAX -5
+#define ERROR_ELEMENT_PASSED_NULL -6
 
 
 typedef struct MaillonListeElem{
@@ -25,10 +26,12 @@ typedef struct ListeElem {
 	void(*Clear)(struct ListeElem*);
 	int(*Taille)(struct ListeElem*);
 	char (*HasAPont)(struct ListeElem*);
+	char (*HasDirt)(struct ListeElem*);
 	char (*HasAPecheur)(struct ListeElem*);
 	char (*HasAnAnimal)(struct ListeElem*);
 	struct Element* (*getAnimal)(struct ListeElem*);
 	struct Element* (*getPont)(struct ListeElem*);
+	struct Element* (*getDirt)(struct ListeElem*);
 	struct Element* (*getPecheur)(struct ListeElem*);
 	Bool (*remove)(struct ListeElem*, struct Element*);
 	Bool (*deleteElement)(struct ListeElem*, struct Element*);
@@ -45,8 +48,10 @@ void ListeElem_Init(ListeElem* This);
 char ListeElem_hasAPecheur(ListeElem* This);
 char ListeElem_hasAPont(ListeElem* This);
 char ListeElem_hasAnAnimal(ListeElem* This);
+char ListeElem_hasDirt(ListeElem* This);
 struct Element* ListeElem_getAnimal(ListeElem* This);
 struct Element* ListeElem_getPont(ListeElem* This);
+struct Element* ListeElem_getDirt(ListeElem* This);
 struct Element* ListeElem_getPecheur(ListeElem* This);
 Bool ListeElem_deleteElement(ListeElem*, struct Element*);
 Bool ListeElem_remove(ListeElem*, struct Element*);
