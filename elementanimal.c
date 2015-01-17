@@ -433,6 +433,7 @@ void ElementAnimal_deplacement(ElementAnimal *This){
 	}
 
 	flag = 0;
+	Case* caseDeDeplacement;
 	while (flag == 0){
 		deplX = 0;
 		deplY = 0;
@@ -448,9 +449,11 @@ void ElementAnimal_deplacement(ElementAnimal *This){
 		if(isNeg){
 			deplY*=-1;
 		}
-		if (MatriceAccessibleDeplacement[This->constantes->sautMax+deplX][This->constantes->sautMax+deplY] != NULL){
-			if (MatriceAccessibleDeplacement[This->constantes->sautMax+deplX][This->constantes->sautMax+deplY]->liste->HasAnAnimal(MatriceAccessibleDeplacement[This->constantes->sautMax+deplX][This->constantes->sautMax+deplY]->liste) == 0){
-				flag = 1;
+		caseDeDeplacement=MatriceAccessibleDeplacement[This->constantes->sautMax+deplX][This->constantes->sautMax+deplY];
+		if (caseDeDeplacement != NULL){
+			if (caseDeDeplacement->liste->HasAnAnimal(caseDeDeplacement->liste) == 0 && caseDeDeplacement->liste->HasDirt(caseDeDeplacement->liste) == 0){
+				if (This->constantes->taille <= This->caseParent->g->TailleMaxSousPont || caseDeDeplacement->liste->HasAPont(caseDeDeplacement->liste) == 0)
+					flag=1;
 			}
 		}
 	}
