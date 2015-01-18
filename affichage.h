@@ -23,7 +23,7 @@ void Spinner_Print(SDL_Surface *ecran, int Plus_Ou_Moins, int ScreenH, int Scree
 SDL_Surface* Charger_Image(const char* fic, SDL_Surface *ecran);
 void Blit_Image(SDL_Surface* ecran,SDL_Surface* srf,int x,int y);
 ElementAnimal_Constantes *Select_Legende(SDL_Surface** Legendes_Surface, TTF_Font* police, TTF_Font *police_underline, int selected);
-void Print_Constantes( SDL_Surface *ecran, ElementAnimal_Constantes *Selected, TTF_Font *police);
+void Print_Constantes(SDL_Surface *ecran, ElementAnimal_Constantes *Selected, TTF_Font *police, int ScreenH, int ScreenW);
 ElementAnimal_Constantes *Edit_Constantes(int Plus_Ou_Moins, int position, ElementAnimal_Constantes *Selected);
 void Init_Tab(int *tab);
 void Print_Graphique(SDL_Surface *graph, int GraphW, int GraphH, int *nbr_espece, int NBR_CASES, Grille *grill);

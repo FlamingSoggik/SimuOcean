@@ -20,10 +20,10 @@ int main(void)
 {
 
 
-	Grille *g = New_Grille(20);
-	//g=SDL_Print(g);
-		g->Print(g);
-
+    Grille *g = New_Grille(80);
+    g=SDL_Print(g);
+//		g->Print(g);
+/*
 		sleep(5);
 		while(g->TourCourant < 1000){
 			g->faireTour(g);
@@ -32,7 +32,7 @@ int main(void)
 			usleep(100000);
 		}
 
-
+*/
 	g->Free(g);
 
 

@@ -238,7 +238,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 		{
 			Spinner_Print(ecran, 0, ScreenH, ScreenW, plusIcone);
 			Spinner_Print(ecran, 1, ScreenH, ScreenW, moinsIcone);
-			Print_Constantes( ecran, C_Selected, police);
+            Print_Constantes( ecran, C_Selected, police, ScreenH, ScreenW);
 			Blit_Image(ecran, moinsIcone, ScreenW-45, ScreenH-45);
 		}
 
@@ -611,46 +611,55 @@ ElementAnimal_Constantes *Select_Legende(SDL_Surface** Legendes_Surface, TTF_Fon
 }
 
 
-void Print_Constantes(SDL_Surface *ecran, ElementAnimal_Constantes *Selected, TTF_Font *police)
+void Print_Constantes(SDL_Surface *ecran, ElementAnimal_Constantes *Selected, TTF_Font *police, int ScreenH, int ScreenW)
 {
 	char texte[30]="";
+    int i;
+    int Centre_Commandes=(ScreenH +(ScreenW-ScreenH)/2-15); // Le 15 correspond à la largeur des images bmp !
+
+
+
+    //            Blit_Image(ecran, srf, (Centre_Commandes - 100), (ScreenH/2 -100 + 50*i));
+
+
+
 
 
 	sprintf(texte, "Survie=%d", Selected->dureeSurvie);
 	SDL_Surface *Surface_texte;
 	SDL_Color Blanc = {254, 255, 255,0};
 	Surface_texte=TTF_RenderText_Blended(police, texte, Blanc );
-	Blit_Image(ecran, Surface_texte, 900,245);
+    Blit_Image(ecran, Surface_texte, Centre_Commandes - 45 , ScreenH/2 - 100);
 	SDL_FreeSurface(Surface_texte);
 
 	sprintf(texte, "Taille=%d", Selected->taille);
 	Surface_texte=TTF_RenderText_Blended(police, texte, Blanc );
-	Blit_Image(ecran, Surface_texte, 900,295);
+    Blit_Image(ecran, Surface_texte, Centre_Commandes - 45, ScreenH/2 - 50);
 	SDL_FreeSurface(Surface_texte);
 
 	sprintf(texte, "Bide=%d", Selected->tailleDuBide);
 	Surface_texte=TTF_RenderText_Blended(police, texte, Blanc );
-	Blit_Image(ecran, Surface_texte, 900,345);
+    Blit_Image(ecran, Surface_texte, Centre_Commandes - 45, ScreenH/2);
 	SDL_FreeSurface(Surface_texte);
 
 	sprintf(texte, "Saut=%d", Selected->sautMax);
 	Surface_texte=TTF_RenderText_Blended(police, texte, Blanc );
-	Blit_Image(ecran, Surface_texte, 900,395);
+    Blit_Image(ecran, Surface_texte, Centre_Commandes - 45, ScreenH/2 + 50);
 	SDL_FreeSurface(Surface_texte);
 
 	sprintf(texte, "Metab=%d", Selected->metabolisme);
 	Surface_texte=TTF_RenderText_Blended(police, texte, Blanc );
-	Blit_Image(ecran, Surface_texte, 900,445);
+    Blit_Image(ecran, Surface_texte, Centre_Commandes - 45, ScreenH/2 + 100);
 	SDL_FreeSurface(Surface_texte);
 
 	sprintf(texte, "Gestation=%d", Selected->gestation);
 	Surface_texte=TTF_RenderText_Blended(police, texte, Blanc );
-	Blit_Image(ecran, Surface_texte, 900,495);
+    Blit_Image(ecran, Surface_texte, Centre_Commandes - 45, ScreenH/2 + 150 );
 	SDL_FreeSurface(Surface_texte);
 
 	sprintf(texte, "Repro=%d", Selected->frequenceReproduction);
 	Surface_texte=TTF_RenderText_Blended(police, texte, Blanc );
-	Blit_Image(ecran, Surface_texte, 900,545);
+    Blit_Image(ecran, Surface_texte, Centre_Commandes - 45, ScreenH/2 + 200);
 	SDL_FreeSurface(Surface_texte);
 
 	return;
