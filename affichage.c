@@ -16,7 +16,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 	int Est_Un_Dev =0;
 	int Compteur_Tours=0, Refresh_Timer=1;
 	ElementAnimal_Constantes *C_Selected;
-	int nbr_espece[11]={0,0,0,0,0,0,0,0,0,0,0};
+    int nbr_espece[12]={0,0,0,0,0,0,0,0,0,0,0,0};
 
 
 
@@ -36,7 +36,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 
 
 	SDL_Surface** Tab_Type;
-	Tab_Type=(SDL_Surface**)malloc(sizeof(SDL_Surface*)*11);
+    Tab_Type=(SDL_Surface**)malloc(sizeof(SDL_Surface*)*12);
 
 
 
@@ -127,7 +127,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 	/* Initialisation des cases */
 
 
-	for(i=0; i<11; i++)
+    for(i=0; i<12; i++)
 	{
 		Tab_Type[i]=Charger(taille_case, ecran, i);
 	}
@@ -274,7 +274,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 		/*Legendes*/
 
 
-		for (i=0; i<11; i++)
+        for (i=0; i<11; i++)
 			Blit_Image(ecran, Legendes_Surface[i], (ScreenH), (140+40*i));
 
 
@@ -312,10 +312,13 @@ struct Grille* SDL_Print(struct Grille *grill){
 	SDL_FreeSurface(moinsIcone);
 	SDL_FreeSurface(graphique);
 
-	for(i=0; i<11; i++){
-		SDL_FreeSurface(Tab_Type[i]);
-		SDL_FreeSurface(Legendes_Surface[i]);
+    for(i=0; i<12; i++){
+        SDL_FreeSurface(Tab_Type[i]);
 	}
+    for(i=0; i<11; i++){
+        SDL_FreeSurface(Legendes_Surface[i]);
+    }
+
 	free(Tab_Type);
 	free(Legendes_Surface);
 
@@ -349,7 +352,7 @@ SDL_Surface* Charger(int taille_case, SDL_Surface *ecran, int type)
 			SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 96, 96, 96)); // Pont gris
 			break;
 		case 2:
-			SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 254, 255, 255)); //Baleine blanche
+            SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 0, 0, 255)); //Baleine blanche
 			break;
 		case 3:
 			SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 0, 114, 45)); // Bar Vert
@@ -375,8 +378,11 @@ SDL_Surface* Charger(int taille_case, SDL_Surface *ecran, int type)
 		case 10:
 			SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 209, 0, 57)); // Pyranha rose
 			break;
+        case 11:
+            SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 91, 60, 17)); // Terre Marron
+            break;
 		default:
-			SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 204, 255, 229)); // Mer
+            SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 254, 255, 255)); // Mer
 			break;
 	}
 
@@ -404,6 +410,10 @@ SDL_Surface** Select_Type(struct Grille *grill, SDL_Surface **Tab_Type, int i, i
 		tab[1]=tab[1]+1;
 		return &Tab_Type[1];
 	}
+    else if (grill->tab[i][j].liste->HasDirt(grill->tab[i][j].liste)){
+        tab[11]=tab[11]+1;
+        return &Tab_Type[11];
+    }
 	else if (grill->tab[i][j].liste->HasAnAnimal(grill->tab[i][j].liste)){
 
 		switch(grill->tab[i][j].liste->getAnimal(grill->tab[i][j].liste)->type){
@@ -519,9 +529,9 @@ ElementAnimal_Constantes *Select_Legende(SDL_Surface** Legendes_Surface, TTF_Fon
 	}
 	ElementAnimal_Constantes *selected_animal=&C_Vide;
 
-	SDL_Color Couleur_Mer = {204, 255, 229,0};
+    SDL_Color Couleur_Mer = {254, 255, 255,0};
 	SDL_Color Couleur_Pont = {96, 96, 96,0};
-	SDL_Color Couleur_Baleine = {254, 255, 255,0};
+    SDL_Color Couleur_Baleine = {0, 0, 255,0};
 	SDL_Color Couleur_Bar = {0, 114, 45,0};
 	SDL_Color Couleur_Corail = {255, 102, 0,0 };
 	SDL_Color Couleur_Orque = {15, 14, 20,0};
@@ -531,7 +541,7 @@ ElementAnimal_Constantes *Select_Legende(SDL_Surface** Legendes_Surface, TTF_Fon
 	SDL_Color Couleur_Requin = {55, 49, 33,0};
 	SDL_Color Couleur_Pyranha = {209, 0, 57,0};
 
-	Legendes_Surface[0] = TTF_RenderText_Blended(police, "Pont", Couleur_Mer);
+    Legendes_Surface[0] = TTF_RenderText_Blended(police, "Mer", Couleur_Mer);
 	Legendes_Surface[1] = TTF_RenderText_Blended(police, "Pont", Couleur_Pont);
 	Legendes_Surface[2] = TTF_RenderText_Blended(police, "Baleine", Couleur_Baleine);
 	Legendes_Surface[3] = TTF_RenderText_Blended(police, "Bar", Couleur_Bar);
