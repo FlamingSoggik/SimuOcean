@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "elementanimal.h"
+#include "elementpecheur.h"
 #include "math.h"
 #include "Bool.h"
 
@@ -69,21 +70,21 @@ char lienVersConstantes(ElementAnimal* This, Type t)
 
 void defineConstant()
 {
-    C_Vide.dureeSurvie=0;
-    C_Vide.taille=0;
-    C_Vide.tailleDuBide=0;
-    C_Vide.sautMax=0;
-    C_Vide.metabolisme=0;
-    C_Vide.gestation=0;
-    C_Vide.frequenceReproduction=0;
+	C_Vide.dureeSurvie=0;
+	C_Vide.taille=0;
+	C_Vide.tailleDuBide=0;
+	C_Vide.sautMax=0;
+	C_Vide.metabolisme=0;
+	C_Vide.gestation=0;
+	C_Vide.frequenceReproduction=0;
 
-    C_Plancton.dureeSurvie=10000;
+	C_Plancton.dureeSurvie=10000;
 	C_Plancton.taille=2;
 	C_Plancton.tailleDuBide=1;
 	C_Plancton.sautMax=0;
 	C_Plancton.metabolisme=0;
 	C_Plancton.gestation=0;
-    C_Plancton.frequenceReproduction=40;
+	C_Plancton.frequenceReproduction=40;
 
 	C_Corail.dureeSurvie=30;
 	C_Corail.taille=2;
@@ -93,7 +94,7 @@ void defineConstant()
 	C_Corail.gestation=1;
 	C_Corail.frequenceReproduction=25;
 
-    C_Bar.dureeSurvie=30;
+	C_Bar.dureeSurvie=30;
 	C_Bar.taille=3;
 	C_Bar.tailleDuBide=3;
 	C_Bar.sautMax=3;
@@ -101,7 +102,7 @@ void defineConstant()
 	C_Bar.gestation=1;
 	C_Bar.frequenceReproduction=10;
 
-    C_Thon.dureeSurvie=30;
+	C_Thon.dureeSurvie=30;
 	C_Thon.taille=4;
 	C_Thon.tailleDuBide=3;
 	C_Thon.sautMax=3;
@@ -277,13 +278,142 @@ void ElementAnimal_tour(struct ElementAnimal *This){
 	This->sasiete=max(This->sasiete-This->constantes->metabolisme, 0);
 }
 
+//void ElementAnimal_predation(ElementAnimal *This)
+//{
+//	Case***MatriceAccessiblePredation = NULL;
+//	int i, j;
+//	MatriceAccessiblePredation=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX, This->caseParent->posY, 1);
+//	Element* plusInteressant = NULL;
+//	char flag = 0;
+//	for(i=0; i<3 && flag == 0; ++i){
+//		for(j=0; j<3  && flag == 0; ++j){
+//			if (MatriceAccessiblePredation[i][j] != NULL){
+//				//Il y a une Case à cette position
+//				if(MatriceAccessiblePredation[i][j]->liste->HasDirt(MatriceAccessiblePredation[i][j]->liste) == 1)
+//					continue;
+////				if(MatriceAccessiblePredation[i][j]->liste->HasAPecheur(MatriceAccessiblePredation[i][j]->liste) == 1){
+
+////					// Si il y a un pecheur
+////					if(MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == 1){
+////						//sur un pont
+////						if(This->peutManger(This, PONT) == True){
+////							plusInteressant= MatriceAccessiblePredation[i][j]->liste->getPont(MatriceAccessiblePredation[i][j]->liste);
+////							flag = 1;
+////						}
+////					} else {
+
+////						//seul dans l'eau
+////						if(This->peutManger(This, PECHEUR) == True){
+////							plusInteressant = (Element*)MatriceAccessiblePredation[i][j]->liste->getPont(MatriceAccessiblePredation[i][j]->liste);
+////							flag=1;
+////						}
+////					}
+////				}
+////				///Necessaire ou non ?
+////				if (flag == 1){
+////					continue;
+////				}
+////				if(MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == 1){
+
+////					//Cas ou la case ciblée à un pont
+////					if(This->peutManger(This, PONT) == True){
+////						plusInteressant = (Element*)MatriceAccessiblePredation[i][j]->liste->getPont(MatriceAccessiblePredation[i][j]->liste);
+////						flag=1;
+////					}
+
+
+////				}
+////				///Necessaire ou non ?
+////				if (flag == 1){
+////					continue;
+////				}
+//				if(MatriceAccessiblePredation[i][j]->liste->HasAnAnimal(MatriceAccessiblePredation[i][j]->liste) == 1){
+
+//					//Elle contient un animal
+//					ElementAnimal* current = (ElementAnimal*)MatriceAccessiblePredation[i][j]->liste->getAnimal(MatriceAccessiblePredation[i][j]->liste);
+//					if (This->peutManger(This, current->type) == True && This->sasiete+current->constantes->taille < This->constantes->tailleDuBide){
+//						//L'élément est mangeable mais est-ce le plus intéressant ?
+//						if (plusInteressant == NULL){
+
+//							//C'est le seul ou le premioer testé donc oui, il est plus intéressant que rien
+//							//Mais est-il accessible?
+//							if(This->constantes->taille < This->caseParent->g->TailleMaxSousPont){
+
+//								//Je peux passer sous un pont donc oui, je vais le bouffer !
+//								plusInteressant=(Element*)current;
+//							}
+//							else {
+
+//								//Je ne passe pas sous un pont, merde, est-ce que je vais pouvoir le bouffer ?
+//								if (MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == False){
+
+//									// Ouf, il y a pas de pont je peux le bouffer
+//									plusInteressant=(Element*)current;
+//								}
+//							}
+//						}
+//						else if(((ElementAnimal*)plusInteressant)->constantes->taille < current->constantes->taille){
+
+//							// L'element semble plus intéressant, il faut maintenant vérifier qu'il ne soit pas sous un pont sans qu'on y ait accès
+//							if(This->constantes->taille < This->caseParent->g->TailleMaxSousPont){
+//								// Je passe sous un pont, let's go
+//								plusInteressant=(Element*)current;
+//							}
+//							else if (MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == False){
+//								//Je passe pas sous les ponts mais de toute façon, il y en a pas
+//								plusInteressant=(Element*)current;
+//							}
+//						}
+//						else if(((ElementAnimal*)plusInteressant)->constantes->taille == current->constantes->taille){
+//							if (rand()%4 == 0){
+//								// L'element semble plus intéressant, il faut maintenant vérifier qu'il ne soit pas sous un pont sans qu'on y ait accès
+//								if(This->constantes->taille < This->caseParent->g->TailleMaxSousPont){
+//									// Je passe sous un pont, let's go
+//									plusInteressant=(Element*)current;
+//								}
+//								else if (MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == False){
+//									//Je passe pas sous les ponts mais de toute façon, il y en a pas
+//									plusInteressant=(Element*)current;
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+//	}
+
+//	// On a plus besoin de la matrice temporaire donc on peux la supprimer :
+//	for (i=0; i<3;++i){
+//		free(MatriceAccessiblePredation[i]);
+//	}
+//	free(MatriceAccessiblePredation);
+
+
+//	if(plusInteressant == NULL){
+//		return;
+//	}
+
+
+//	if(plusInteressant->type==PECHEUR){
+//		This->caseParent->g->moveFromTo(This->caseParent->g, (Element*)This, plusInteressant->caseParent->posX, plusInteressant->caseParent->posY);
+//		This->caseParent->liste->deleteElement(This->caseParent->liste, (Element*)This);
+//	} else if (plusInteressant->type == PONT){
+
+//	} else {
+//		This->dernierRepas=This->caseParent->g->TourCourant;
+//		This->sasiete=This->sasiete+((ElementAnimal*)plusInteressant)->constantes->taille;
+//		This->caseParent->g->moveFromTo(This->caseParent->g, (Element*)This, plusInteressant->caseParent->posX, plusInteressant->caseParent->posY);
+//		plusInteressant->caseParent->liste->deleteElement(plusInteressant->caseParent->liste, plusInteressant);
+//	}
+//}
 
 void ElementAnimal_predation(ElementAnimal *This)
 {
 	Case***MatriceAccessiblePredation = NULL;
 	int i, j;
 	MatriceAccessiblePredation=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX, This->caseParent->posY, 1);
-	Element* plusInteressant = NULL;
+	ListeElem *le = New_ListeElem();
 	char flag = 0;
 	for(i=0; i<3 && flag == 0; ++i){
 		for(j=0; j<3  && flag == 0; ++j){
@@ -291,56 +421,52 @@ void ElementAnimal_predation(ElementAnimal *This)
 				//Il y a une Case à cette position
 				if(MatriceAccessiblePredation[i][j]->liste->HasDirt(MatriceAccessiblePredation[i][j]->liste) == 1)
 					continue;
-//				if(MatriceAccessiblePredation[i][j]->liste->HasAPecheur(MatriceAccessiblePredation[i][j]->liste) == 1){
+				//				if(MatriceAccessiblePredation[i][j]->liste->HasAPecheur(MatriceAccessiblePredation[i][j]->liste) == 1){
 
-//					// Si il y a un pecheur
-//					if(MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == 1){
-//						//sur un pont
-//						if(This->peutManger(This, PONT) == True){
-//							plusInteressant= MatriceAccessiblePredation[i][j]->liste->getPont(MatriceAccessiblePredation[i][j]->liste);
-//							flag = 1;
-//						}
-//					} else {
+				//					// Si il y a un pecheur
+				//					if(MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == 1){
+				//						//sur un pont
+				//						if(This->peutManger(This, PONT) == True){
+				//							le->Vider(le);
+				//							le->Push(le, MatriceAccessiblePredation[i][j]->liste->getPont(MatriceAccessiblePredation[i][j]->liste));
+				//							flag = 1;
+				//							continue;
+				//						}
+				//					} else {
 
-//						//seul dans l'eau
-//						if(This->peutManger(This, PECHEUR) == True){
-//							plusInteressant = (Element*)MatriceAccessiblePredation[i][j]->liste->getPont(MatriceAccessiblePredation[i][j]->liste);
-//							flag=1;
-//						}
-//					}
-//				}
-//				///Necessaire ou non ?
-//				if (flag == 1){
-//					continue;
-//				}
-//				if(MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == 1){
+				//						//seul dans l'eau
+				//						if(This->peutManger(This, PECHEUR) == True){
+				//							le->Vider(le);
+				//							le->Push(le, MatriceAccessiblePredation[i][j]->liste->getPont(MatriceAccessiblePredation[i][j]->liste));
+				//							flag=1;
+				//							continue;
+				//						}
+				//					}
+				//				}
+				//				if(MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == 1){
 
-//					//Cas ou la case ciblée à un pont
-//					if(This->peutManger(This, PONT) == True){
-//						plusInteressant = (Element*)MatriceAccessiblePredation[i][j]->liste->getPont(MatriceAccessiblePredation[i][j]->liste);
-//						flag=1;
-//					}
-
-
-//				}
-//				///Necessaire ou non ?
-//				if (flag == 1){
-//					continue;
-//				}
+				//					//Cas ou la case ciblée à un pont
+				//					if(This->peutManger(This, PONT) == True){
+				//						le->Vider(le);
+				//						le->Push(le, MatriceAccessiblePredation[i][j]->liste->getPont(MatriceAccessiblePredation[i][j]->liste));
+				//						flag=1;
+				//						continue;
+				//					}
+				//				}
 				if(MatriceAccessiblePredation[i][j]->liste->HasAnAnimal(MatriceAccessiblePredation[i][j]->liste) == 1){
 
 					//Elle contient un animal
 					ElementAnimal* current = (ElementAnimal*)MatriceAccessiblePredation[i][j]->liste->getAnimal(MatriceAccessiblePredation[i][j]->liste);
 					if (This->peutManger(This, current->type) == True && This->sasiete+current->constantes->taille < This->constantes->tailleDuBide){
 						//L'élément est mangeable mais est-ce le plus intéressant ?
-						if (plusInteressant == NULL){
 
-							//C'est le seul ou le premioer testé donc oui, il est plus intéressant que rien
+						if (le->Taille(le) == 0){
+							//C'est le seul ou le premier testé donc oui, il est plus intéressant que rien
 							//Mais est-il accessible?
 							if(This->constantes->taille < This->caseParent->g->TailleMaxSousPont){
 
 								//Je peux passer sous un pont donc oui, je vais le bouffer !
-								plusInteressant=(Element*)current;
+								le->Push(le, (Element*)current);
 							}
 							else {
 
@@ -348,33 +474,33 @@ void ElementAnimal_predation(ElementAnimal *This)
 								if (MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == False){
 
 									// Ouf, il y a pas de pont je peux le bouffer
-									plusInteressant=(Element*)current;
+									le->Push(le, (Element*)current);
 								}
 							}
 						}
-						else if(((ElementAnimal*)plusInteressant)->constantes->taille < current->constantes->taille){
+						else if (((ElementAnimal*)le->Top->e)->constantes->taille < current->constantes->taille){
+							// L'element semble plus intéressant, il faut maintenant vérifier qu'il ne soit pas sous un pont sans qu'on y ait accès
+							if(This->constantes->taille < This->caseParent->g->TailleMaxSousPont){
+								// Je passe sous un pont, let's go
+								le->Vider(le);
+								le->Push(le, (Element*)current);
+							}
+							else if (MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == False){
+								//Je passe pas sous les ponts mais de toute façon, il y en a pas
+								le->Vider(le);
+								le->Push(le, (Element*)current);
+							}
+						}
+						else if(((ElementAnimal*)le->Top->e)->constantes->taille == current->constantes->taille){
 
 							// L'element semble plus intéressant, il faut maintenant vérifier qu'il ne soit pas sous un pont sans qu'on y ait accès
 							if(This->constantes->taille < This->caseParent->g->TailleMaxSousPont){
 								// Je passe sous un pont, let's go
-								plusInteressant=(Element*)current;
+								le->Push(le, (Element*)current);
 							}
 							else if (MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == False){
 								//Je passe pas sous les ponts mais de toute façon, il y en a pas
-								plusInteressant=(Element*)current;
-							}
-						}
-						else if(((ElementAnimal*)plusInteressant)->constantes->taille == current->constantes->taille){
-							if (rand()%4 == 0){
-								// L'element semble plus intéressant, il faut maintenant vérifier qu'il ne soit pas sous un pont sans qu'on y ait accès
-								if(This->constantes->taille < This->caseParent->g->TailleMaxSousPont){
-									// Je passe sous un pont, let's go
-									plusInteressant=(Element*)current;
-								}
-								else if (MatriceAccessiblePredation[i][j]->liste->HasAPont(MatriceAccessiblePredation[i][j]->liste) == False){
-									//Je passe pas sous les ponts mais de toute façon, il y en a pas
-									plusInteressant=(Element*)current;
-								}
+								le->Push(le, (Element*)current);
 							}
 						}
 					}
@@ -383,29 +509,36 @@ void ElementAnimal_predation(ElementAnimal *This)
 		}
 	}
 
+
 	// On a plus besoin de la matrice temporaire donc on peux la supprimer :
 	for (i=0; i<3;++i){
 		free(MatriceAccessiblePredation[i]);
 	}
 	free(MatriceAccessiblePredation);
 
-
-	if(plusInteressant == NULL){
+	if(le->Taille(le) == 0){
+		le->Free(le);
 		return;
 	}
 
 
-	if(plusInteressant->type==PECHEUR){
-		This->caseParent->g->moveFromTo(This->caseParent->g, (Element*)This, plusInteressant->caseParent->posX, plusInteressant->caseParent->posY);
+	if(le->Top->e->type == PECHEUR){
+		ElementPecheur *p = (ElementPecheur*)le->Top->e;
+		p->mourir(p);
+		This->caseParent->g->moveFromTo(This->caseParent->g, (Element*)This, le->Top->e->caseParent->posX, le->Top->e->caseParent->posY);
 		This->caseParent->liste->deleteElement(This->caseParent->liste, (Element*)This);
-	} else if (plusInteressant->type == PONT){
-
+	} else if (le->Top->e->type == PONT){
+		printf("%s:%d: Cas du pont ? wtf ?\n)", __FUNCTION__, __LINE__);
 	} else {
+		ElementAnimal *ea = (ElementAnimal*)le->getNieme(le, rand()%le->Taille(le));
 		This->dernierRepas=This->caseParent->g->TourCourant;
-		This->sasiete=This->sasiete+((ElementAnimal*)plusInteressant)->constantes->taille;
-		This->caseParent->g->moveFromTo(This->caseParent->g, (Element*)This, plusInteressant->caseParent->posX, plusInteressant->caseParent->posY);
-		plusInteressant->caseParent->liste->deleteElement(plusInteressant->caseParent->liste, plusInteressant);
+		This->sasiete=This->sasiete+((ElementAnimal*)ea)->constantes->taille;
+		This->caseParent->g->moveFromTo(This->caseParent->g, (Element*)This, ea->caseParent->posX, ea->caseParent->posY);
+		ea->caseParent->liste->deleteElement(ea->caseParent->liste, (Element*)ea);
 	}
+	le->Vider(le);
+	le->Free(le);
+
 }
 
 void ElementAnimal_deplacement(ElementAnimal *This){
@@ -466,7 +599,6 @@ void ElementAnimal_deplacement(ElementAnimal *This){
 	}
 	free(MatriceAccessibleDeplacement);
 }
-
 
 void ElementAnimal_reproduction(ElementAnimal *This){
 	if (This->sasiete < This->constantes->gestation*This->constantes->metabolisme){

@@ -63,12 +63,10 @@ int ListeCase_Taille(ListeCase* This){
 
 Case *ListeCase_getNieme(ListeCase *This, unsigned int number)
 {
-	++number;
-	if (number > This->taille){
+	if (number > This->taille-1){
 		return NULL;
 	}
 	MaillonListeCase *tmp = This->Top;
-	--number;
 	while(number != 0){
 		tmp=tmp->next;
 		--number;

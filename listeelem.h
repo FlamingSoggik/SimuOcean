@@ -18,13 +18,14 @@ typedef struct MaillonListeElem{
 }MaillonListeElem;
 
 typedef struct ListeElem {
-	int taille;
+	unsigned int taille;
     struct MaillonListeElem *Top;
 	void(*Free)(struct ListeElem*);
 	int(*Push)(struct ListeElem*, struct Element*);
 	struct Element* (*Pop)(struct ListeElem*);
 	void(*Clear)(struct ListeElem*);
-	int(*Taille)(struct ListeElem*);
+	void(*Vider)(struct ListeElem*);
+	unsigned int(*Taille)(struct ListeElem*);
 	char (*HasAPont)(struct ListeElem*);
 	char (*HasDirt)(struct ListeElem*);
 	char (*HasAPecheur)(struct ListeElem*);
@@ -36,10 +37,12 @@ typedef struct ListeElem {
 	Bool (*remove)(struct ListeElem*, struct Element*);
 	Bool (*deleteElement)(struct ListeElem*, struct Element*);
 	void (*Print)(struct ListeElem*);
+	struct Element* (*getNieme)(struct ListeElem*, unsigned int);
 }ListeElem;
 
-int ListeElem_Taille(ListeElem* This);
+unsigned int ListeElem_Taille(ListeElem* This);
 void ListeElem_Clear(ListeElem *This);
+void ListeElem_Vider(ListeElem *This);
 void ListeElem_New_Free(ListeElem *This);
 int ListeElem_Push(ListeElem* This, struct Element *e);
 struct Element* ListeElem_Pop(ListeElem* This);
@@ -56,5 +59,6 @@ struct Element* ListeElem_getPecheur(ListeElem* This);
 Bool ListeElem_deleteElement(ListeElem*, struct Element*);
 Bool ListeElem_remove(ListeElem*, struct Element*);
 void ListeElem_Print(ListeElem*);
+struct Element *ListeElem_getNieme(ListeElem *This, unsigned int number);
 
 #endif // LISTEELEM_H

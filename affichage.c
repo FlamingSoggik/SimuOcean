@@ -614,7 +614,6 @@ ElementAnimal_Constantes *Select_Legende(SDL_Surface** Legendes_Surface, TTF_Fon
 void Print_Constantes(SDL_Surface *ecran, ElementAnimal_Constantes *Selected, TTF_Font *police, int ScreenH, int ScreenW)
 {
 	char texte[30]="";
-    int i;
     int Centre_Commandes=(ScreenH +(ScreenW-ScreenH)/2-15); // Le 15 correspond à la largeur des images bmp !
 
 

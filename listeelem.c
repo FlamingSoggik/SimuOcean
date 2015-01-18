@@ -22,6 +22,8 @@ void ListeElem_Init(ListeElem* This){
 	This->remove=ListeElem_remove;
 	This->deleteElement=ListeElem_deleteElement;
 	This->Print=ListeElem_Print;
+	This->Vider=ListeElem_Vider;
+	This->getNieme=ListeElem_getNieme;
 }
 
 ListeElem* New_ListeElem(){
@@ -81,7 +83,7 @@ Element* ListeElem_Pop(ListeElem* This){
 	return e;
 }
 
-int ListeElem_Taille(ListeElem* This){
+unsigned int ListeElem_Taille(ListeElem* This){
 	return This->taille;
 }
 
@@ -227,4 +229,27 @@ Element *ListeElem_getPecheur(ListeElem *This)
 		tmp=tmp->next;
 	}
 	return NULL;
+}
+
+void ListeElem_Vider(ListeElem *This){
+	MaillonListeElem *tmp;
+	while(This->Top != NULL){
+		tmp=This->Top;
+		This->Top=tmp->next;
+		free(tmp);
+	}
+	This->taille = 0;
+}
+
+Element *ListeElem_getNieme(ListeElem *This, unsigned int number)
+{
+	if (number > This->taille-1){
+		return NULL;
+	}
+	MaillonListeElem *tmp = This->Top;
+	while(number != 0){
+		tmp=tmp->next;
+		--number;
+	}
+	return tmp->e;
 }
