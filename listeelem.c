@@ -165,6 +165,9 @@ Element *ListeElem_getDirt(ListeElem *This)
 
 Bool ListeElem_deleteElement(ListeElem *This, Element *e)
 {
+	if (e == NULL){
+		return False;
+	}
 	MaillonListeElem *tmp = This->Top;
 	MaillonListeElem *prec = NULL;
 	while(tmp != NULL){

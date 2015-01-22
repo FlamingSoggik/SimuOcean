@@ -380,10 +380,10 @@ void ElementAnimal_predation(ElementAnimal *This)
 		This->caseParent->g->moveFromTo(This->caseParent->g, (Element*)This, l_elementBouffable->Top->e->caseParent->posX, l_elementBouffable->Top->e->caseParent->posY);
 		This->caseParent->liste->deleteElement(This->caseParent->liste, (Element*)This);
 	} else if (l_elementBouffable->Top->e->type == PONT){
-		ElementPont *ep = (ElementPont*)l_elementBouffable->getNieme(l_elementBouffable, rand()%l_elementBouffable->Taille(l_elementBouffable));
-		This->caseParent->g->detruirePont(This->caseParent->g, ep->caseParent);
+		ElementPont *ep = (ElementPont*)l_elementBouffable->Top->e;
+		//l_elementBouffable->getNieme(l_elementBouffable, rand()%l_elementBouffable->Taille(l_elementBouffable));
 		This->caseParent->g->moveFromTo(This->caseParent->g, (Element*)This, ep->caseParent->posX, ep->caseParent->posY);
-		ep->caseParent->liste->deleteElement(ep->caseParent->liste, (Element*)ep);
+		This->caseParent->g->detruirePont(This->caseParent->g, ep->caseParent);
 	} else {
 		ElementAnimal *ea = (ElementAnimal*)l_elementBouffable->getNieme(l_elementBouffable, rand()%l_elementBouffable->Taille(l_elementBouffable));
 		This->dernierRepas=This->caseParent->g->TourCourant;

@@ -48,10 +48,11 @@ char ElementPecheur_Init(Case *c, ElementPecheur* This){
 	This->mourir=ElementPecheur_mourir;
 	This->type=PECHEUR;
 	This->Clear = Element_Clear;
-	This->sac = COUT_POSE_PONT*3;
+	This->sac = COUT_POSE_PONT*200;
 	This->longueurCanne=TAILLE_CANNE_A_PECHE;
 	This->tailleFilet=TAILLE_FILET;
 	This->distanceDeplacement=DISTANCE_DEPLACEMENT;
+	This->estSelectionne=0;
 	return 0;
 }
 
@@ -135,33 +136,33 @@ Bool ElementPecheur_deplacement(ElementPecheur *This, char direction)
 {
 	int deplX = 0, deplY = 0;
 	switch (direction) {
-		case 1:
+		case '1':
 			deplX=1;
 			deplY=-1;
 			break;
-		case 2:
+		case '2':
 			deplX=1;
 			break;
-		case 3:
+		case '3':
 			deplX=1;
 			deplY=1;
 			break;
-		case 4:
+		case '4':
 			deplY=-1;
 			break;
-		case 5:
+		case '5':
 			break;
-		case 6:
+		case '6':
 			deplY=1;
 			break;
-		case 7:
+		case '7':
 			deplX=-1;
 			deplY=-1;
 			break;
-		case 8:
+		case '8':
 			deplX=-1;
 			break;
-		case 9:
+		case '9':
 			deplX=-1;
 			deplY=1;
 			break;
@@ -192,33 +193,33 @@ void ElementPecheur_construirePont(ElementPecheur *This, char direction)
 {
 	int deplX = 0, deplY = 0;
 	switch (direction) {
-		case 1:
+		case '1':
 			deplX=1;
 			deplY=-1;
 			break;
-		case 2:
+		case '2':
 			deplX=1;
 			break;
-		case 3:
+		case '3':
 			deplX=1;
 			deplY=1;
 			break;
-		case 4:
+		case '4':
 			deplY=-1;
 			break;
-		case 5:
+		case '5':
 			break;
-		case 6:
+		case '6':
 			deplY=1;
 			break;
-		case 7:
+		case '7':
 			deplX=-1;
 			deplY=-1;
 			break;
-		case 8:
+		case '8':
 			deplX=-1;
 			break;
-		case 9:
+		case '9':
 			deplX=-1;
 			deplY=1;
 			break;

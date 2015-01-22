@@ -25,6 +25,7 @@ typedef struct ElementPecheur
 		struct ListeType* listeDePeche;
 		unsigned int PositionInitialeX;
 		unsigned int PositionInitialeY;
+		char estSelectionne;
 		void (*pecheParCanne)(struct ElementPecheur*); //--> fait
 		void (*pecheParFilet)(struct ElementPecheur*); //--> fait
 		Bool (*deplacement)(struct ElementPecheur*, char); //--> fait
