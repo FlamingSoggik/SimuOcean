@@ -70,77 +70,77 @@ char lienVersConstantes(ElementAnimal* This, Type t)
 
 void defineConstant()
 {
-	C_Vide.dureeSurvie=0;
-	C_Vide.taille=0;
-	C_Vide.tailleDuBide=0;
-	C_Vide.sautMax=0;
-	C_Vide.metabolisme=0;
-	C_Vide.gestation=0;
-	C_Vide.frequenceReproduction=0;
+    C_Vide.dureeSurvie=0;
+    C_Vide.taille=0;
+    C_Vide.tailleDuBide=0;
+    C_Vide.sautMax=0;
+    C_Vide.metabolisme=0;
+    C_Vide.gestation=0;
+    C_Vide.frequenceReproduction=0;
 
-	C_Plancton.dureeSurvie=10000;
-	C_Plancton.taille=2;
-	C_Plancton.tailleDuBide=1;
-	C_Plancton.sautMax=0;
-	C_Plancton.metabolisme=0;
-	C_Plancton.gestation=0;
-	C_Plancton.frequenceReproduction=40;
+    C_Plancton.dureeSurvie=100;
+    C_Plancton.taille=3;
+    C_Plancton.tailleDuBide=1;
+    C_Plancton.sautMax=0;
+    C_Plancton.metabolisme=0;
+    C_Plancton.gestation=0;
+    C_Plancton.frequenceReproduction=5;
 
-	C_Corail.dureeSurvie=30;
-	C_Corail.taille=2;
-	C_Corail.tailleDuBide=3;
-	C_Corail.sautMax=0;
-	C_Corail.metabolisme=1;
-	C_Corail.gestation=1;
-	C_Corail.frequenceReproduction=25;
+    C_Corail.dureeSurvie=5;
+    C_Corail.taille=4;
+    C_Corail.tailleDuBide=4;
+    C_Corail.sautMax=0;
+    C_Corail.metabolisme=1;
+    C_Corail.gestation=1;
+    C_Corail.frequenceReproduction=3;
 
-	C_Bar.dureeSurvie=30;
-	C_Bar.taille=3;
-	C_Bar.tailleDuBide=3;
-	C_Bar.sautMax=3;
-	C_Bar.metabolisme=1;
-	C_Bar.gestation=1;
-	C_Bar.frequenceReproduction=10;
+    C_Bar.dureeSurvie=13;
+    C_Bar.taille=4;
+    C_Bar.tailleDuBide=4;
+    C_Bar.sautMax=1;
+    C_Bar.metabolisme=1;
+    C_Bar.gestation=1;
+    C_Bar.frequenceReproduction=7;
 
-	C_Thon.dureeSurvie=30;
-	C_Thon.taille=4;
-	C_Thon.tailleDuBide=3;
-	C_Thon.sautMax=3;
-	C_Thon.metabolisme=1;
-	C_Thon.gestation=1;
-	C_Thon.frequenceReproduction=15;
+    C_Thon.dureeSurvie=13;
+    C_Thon.taille=4;
+    C_Thon.tailleDuBide=4;
+    C_Thon.sautMax=3;
+    C_Thon.metabolisme=1;
+    C_Thon.gestation=1;
+    C_Thon.frequenceReproduction=5;
 
-	C_Pyranha.dureeSurvie=60;
-	C_Pyranha.taille=5;
-	C_Pyranha.tailleDuBide=5;
-	C_Pyranha.sautMax=3;
-	C_Pyranha.metabolisme=1;
-	C_Pyranha.gestation=1;
-	C_Pyranha.frequenceReproduction=5;
+    C_Pyranha.dureeSurvie=60;
+    C_Pyranha.taille=5;
+    C_Pyranha.tailleDuBide=5;
+    C_Pyranha.sautMax=3;
+    C_Pyranha.metabolisme=1;
+    C_Pyranha.gestation=1;
+    C_Pyranha.frequenceReproduction=5;
 
-	C_Requin.dureeSurvie=30;
-	C_Requin.taille=6;
-	C_Requin.tailleDuBide=4;
-	C_Requin.sautMax=3;
-	C_Requin.metabolisme=1;
-	C_Requin.gestation=1;
-	C_Requin.frequenceReproduction=2;
+    C_Requin.dureeSurvie=30;
+    C_Requin.taille=6;
+    C_Requin.tailleDuBide=4;
+    C_Requin.sautMax=3;
+    C_Requin.metabolisme=1;
+    C_Requin.gestation=1;
+    C_Requin.frequenceReproduction=2;
 
-	C_Orque.dureeSurvie=60;
-	C_Orque.taille=7;
-	C_Orque.tailleDuBide=9;
-	C_Orque.sautMax=3;
-	C_Orque.metabolisme=1;
-	C_Orque.gestation=2;
-	C_Orque.frequenceReproduction=5;
+    C_Orque.dureeSurvie=60;
+    C_Orque.taille=7;
+    C_Orque.tailleDuBide=9;
+    C_Orque.sautMax=3;
+    C_Orque.metabolisme=1;
+    C_Orque.gestation=2;
+    C_Orque.frequenceReproduction=5;
 
-	C_Baleine.dureeSurvie=30;
-	C_Baleine.taille=8;
-	C_Baleine.tailleDuBide=2;
-	C_Baleine.sautMax=3;
-	C_Baleine.metabolisme=1;
-	C_Baleine.gestation=1;
-	C_Baleine.frequenceReproduction=20;
+    C_Baleine.dureeSurvie=60;
+    C_Baleine.taille=8;
+    C_Baleine.tailleDuBide=8;
+    C_Baleine.sautMax=4;
+    C_Baleine.metabolisme=1;
+    C_Baleine.gestation=5;
+    C_Baleine.frequenceReproduction=36;
 }
 
 void remplirListePredation(Grille* This)
