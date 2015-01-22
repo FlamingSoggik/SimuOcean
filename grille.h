@@ -4,8 +4,12 @@
 #include "case.h"
 #include "listecase.h"
 #include "element.h"
+//#include "elementpecheur.h"
+
+#define NOMBRE_PECHEUR_MAX 6
 
 struct Element;
+struct ElementPecheur;
 
 typedef struct Grille
 {
@@ -14,6 +18,8 @@ typedef struct Grille
 	unsigned int TailleMaxSousPont;
 	unsigned int TourCourant;
 	unsigned char listePredationInitialise;
+	unsigned char nbPecheur;
+	struct ElementPecheur** tabPecheur;
 	void (*Free)(struct Grille *This);
 	void (*Clear)(struct Grille *This);
 	void (*Print)(struct Grille *This);
@@ -21,12 +27,13 @@ typedef struct Grille
 	void (*moveFromTo)(struct Grille*, struct Element*, unsigned int, unsigned int);
 	void (*reinitPecheur)(struct Grille*, struct Element*);
 	void (*faireTour)(struct Grille*);
+	void (*detruirePont)(struct Grille*, struct Case*);
 } Grille;
 
 
 //Grille Grille_Create(int Taille);
-Grille* New_Grille(int Taille);
-void Grille_Init(Grille *This, unsigned int Taille);
+Grille* New_Grille(int Taille, unsigned char nbPecheurs);
+void Grille_Init(Grille *This, unsigned int Taille, unsigned char nbPecheurs);
 void Grille_Clear(struct Grille *This);
 void Grille_Free(struct Grille *This);
 void Grille_Print(struct Grille *This);
@@ -34,5 +41,6 @@ struct Case*** Grille_getMatriceVoisins(struct Grille *This, unsigned int posX, 
 void Grille_moveFromTo(struct Grille*, struct Element*, unsigned int, unsigned int);
 void Grille_reinitPecheur(struct Grille *This, struct Element *elem);
 void Grille_faireTour(Grille *This);
+void Grille_detruirePont(Grille *This, struct Case* c);
 
 #endif // GRILLE_H

@@ -16,25 +16,53 @@
 #define GRAS "\033[01m"
 
 
-int main(void)
+int main(int argc, char **argv)
 {
+	Grille *g;
+	char nbpecheurs;
+	if (argc < 3){
+		printf("Nombre de pecheurs (0 .. 10) : ");
+		scanf("%c%*c", &nbpecheurs);
+	} else {
+		nbpecheurs=atoi(argv[1]);
+	}
 
-
-    Grille *g = New_Grille(80);
-    g=SDL_Print(g);
-//		g->Print(g);
-/*
-		sleep(5);
-		while(g->TourCourant < 1000){
-			g->faireTour(g);
-			system("clear");
-			g->Print(g);
-			usleep(100000);
+	if (nbpecheurs == '0'){
+		if (argc < 3){
+			printf("Interface Graphique avec/sans (a/s) : ");
+			scanf("%c%*c", &nbpecheurs);
 		}
+		else {
+			nbpecheurs=atoi(argv[2]);
+		}
+		switch (nbpecheurs){
+			case 'a' :
+				g = New_Grille(40, nbpecheurs);
+				g=SDL_Print(g);
+				g->Free(g);
+				break;
+			case 's':
+				g = New_Grille(40, 0);
+				g->Print(g);
+				sleep(5);
+				while(g->TourCourant < 1000){
+					g->faireTour(g);
+					system("clear");
+					g->Print(g);
+					usleep(100000);
+				}
+				g->Free(g);
+				break;
+			default:printf("Err\n");
+				return -1;
 
-*/
-	g->Free(g);
-
+		}
+	}
+	else {
+		Grille *g = New_Grille(40, nbpecheurs);
+		g=SDL_Print(g);
+		g->Free(g);
+	}
 
 
 //	//Constructction d'un tableau d'élément

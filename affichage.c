@@ -12,7 +12,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 	SDL_Event event;
 	int continuer=1;
 	int select_curseur2=0;
-	int i=0; int j=0;
+	int i=0; int j=0, nbpecheurs=0;
 	int Est_Un_Dev =0;
 	int Compteur_Tours=0, Refresh_Timer=1;
 	ElementAnimal_Constantes *C_Selected;
@@ -160,8 +160,9 @@ struct Grille* SDL_Print(struct Grille *grill){
 							break;
 						case SDLK_F5: // Reset la grille
 							i=grill->Taille;
+							nbpecheurs = grill->nbPecheur;
 							grill->Free(grill);
-							grill=New_Grille(i);
+							grill=New_Grille(i, nbpecheurs);
 							Compteur_Tours=0;
 							Init_Tab(nbr_espece);
 							break;
@@ -294,11 +295,13 @@ struct Grille* SDL_Print(struct Grille *grill){
 		if ((Compteur_Tours%Refresh_Timer==0) && (Refresh_Timer<=95))
 		{
 			grill->faireTour(grill);
+			printf("%d\n", grill->TourCourant);
 		}
 
 		//usleep(100000);
 
-		Compteur_Tours++;
+		++Compteur_Tours;
+
 	} // End of while
 
 

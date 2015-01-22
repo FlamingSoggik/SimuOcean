@@ -25,14 +25,14 @@
 #define NORMAL "\033[00m"			//NOIR
 #define PGRAS "\033[01m"
 
-Grille Grille_Create(int Taille){
+Grille Grille_Create(int Taille, unsigned char nbPecheur){
 	Grille g;
-	Grille_Init(&g, Taille);
+	Grille_Init(&g, Taille, nbPecheur);
 	g.Free=Grille_Free;
 	return g;
 }
 
-void Grille_Init(Grille *This, unsigned int Taille){
+void Grille_Init(Grille *This, unsigned int Taille, unsigned char nbPecheurs){
 	static int premierpassage = 1;
 	if (premierpassage == 1){
 		srand(time(NULL));
@@ -50,7 +50,10 @@ void Grille_Init(Grille *This, unsigned int Taille){
 	This->getMatriceVoisins=Grille_getMatriceVoisins;
 	This->faireTour=Grille_faireTour;
 	This->reinitPecheur = Grille_reinitPecheur;
+	This->detruirePont=Grille_detruirePont;
+	This->tabPecheur=malloc(This->nbPecheur*sizeof(ElementPecheur*));
 	This->tab=malloc(sizeof(Case*)*Taille);
+	This->nbPecheur = nbPecheurs;
 	for (i=0;i<Taille;++i){
 		This->tab[i]=malloc(sizeof(Case)*Taille);
 	}
@@ -115,6 +118,8 @@ void Grille_Init(Grille *This, unsigned int Taille){
 
 void Grille_Clear(struct Grille *This){
 	unsigned int i, j;
+
+	free(This->tabPecheur);
 	for(i=0;i<This->Taille;++i){
 		for(j=0; j<This->Taille; ++j){
 			This->tab[i][j].Free(&(This->tab[i][j]));
@@ -215,7 +220,6 @@ void Grille_Free(struct Grille *This){
 void Grille_New_Free(struct Grille *This){
 	if(This != NULL) This->Clear(This);
 	free(This);
-	puts("Grille detruite\n");
 }
 
 Case*** Grille_getMatriceVoisins(Grille *This, unsigned int posX, unsigned int posY, unsigned int nbSauts)
@@ -338,7 +342,7 @@ void Grille_faireTour(Grille *This){
 				else {
 					e->reproduction(e);
 					e->predation(e);
-					e->deplacement(e); //<-- Contient le probleme de localisation dans la sous matrice
+					e->deplacement(e);
 					e->tour(e);
 					e->aFaitSonTour(e);
 				}
@@ -358,11 +362,21 @@ void Grille_faireTour(Grille *This){
 	++This->TourCourant;
 }
 
-Grille *New_Grille(int Taille)
+Grille *New_Grille(int Taille, unsigned char nbPecheurs)
 {
 	Grille* This = malloc(sizeof(Grille));
 	if(!This) return NULL;
-	Grille_Init(This, Taille);
+	Grille_Init(This, Taille, nbPecheurs);
 	This->Free=Grille_New_Free;
 	return This;
+}
+
+
+void Grille_detruirePont(Grille *This, struct Case *c)
+{
+	if (This->tab[c->posX][c->posY].liste->HasAPont(This->tab[c->posX][c->posY].liste) == False){
+		return;
+	}
+	Element* p = This->tab[c->posX][c->posY].liste->getPont(This->tab[c->posX][c->posY].liste);
+	This->tab[c->posX][c->posY].liste->deleteElement(This->tab[c->posX][c->posY].liste, p);
 }

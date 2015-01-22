@@ -27,7 +27,7 @@ typedef struct ElementPecheur
 		unsigned int PositionInitialeY;
 		void (*pecheParCanne)(struct ElementPecheur*); //--> fait
 		void (*pecheParFilet)(struct ElementPecheur*); //--> fait
-		void (*deplacement)(struct ElementPecheur*, char); //--> fait
+		Bool (*deplacement)(struct ElementPecheur*, char); //--> fait
 		void (*construirePont)(struct ElementPecheur*, char); // --> fait
 		void (*mourir)(struct ElementPecheur*); // --> fait
 		void (*lancerpoisson)(struct ElementPecheur*);
@@ -46,7 +46,7 @@ char ElementPecheur_Init(Case *c, ElementPecheur* This);
 //Others
 void ElementPecheur_pecheParCanne(ElementPecheur* This);
 void ElementPecheur_pecheParFilet(ElementPecheur* This);
-void ElementPecheur_deplacement(ElementPecheur* This, char direction);
+Bool ElementPecheur_deplacement(ElementPecheur* This, char direction);
 void ElementPecheur_construirePont(ElementPecheur* This, char direction);
 void ElementPecheur_mourir(ElementPecheur* This);
 void ElementPecheur_lancerpoisson(ElementPecheur* This);

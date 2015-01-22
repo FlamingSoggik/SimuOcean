@@ -131,7 +131,7 @@ void ElementPecheur_pecheParFilet(ElementPecheur *This)
 }
 
 
-void ElementPecheur_deplacement(ElementPecheur *This, char direction)
+Bool ElementPecheur_deplacement(ElementPecheur *This, char direction)
 {
 	int deplX = 0, deplY = 0;
 	switch (direction) {
@@ -167,22 +167,23 @@ void ElementPecheur_deplacement(ElementPecheur *This, char direction)
 			break;
 		default:
 			printf("Error, la direction du pecheur doit être un nombre entre 1 et 9 compris\n");
-			return;
+			return False;
 	}
 	if ((double)This->caseParent->posX+deplX < 0 || This->caseParent->posX+deplX > This->caseParent->g->Taille-1 || (double)This->caseParent->posY+deplY < 0 || This->caseParent->posY+deplY > This->caseParent->g->Taille-1){
 		// Le joueur essaie de sortir de la grille
 		// lancer cri de whilem
-		return;
+		return False;
 	}
 	Case *caseDeplacement;
 	caseDeplacement = &This->caseParent->g->tab[This->caseParent->posX+deplX][This->caseParent->posY+deplY];
 	if ((caseDeplacement->liste->HasAPont(caseDeplacement->liste) == 1 || caseDeplacement->liste->HasDirt(caseDeplacement->liste) == 1) && caseDeplacement->liste->HasAPecheur(caseDeplacement->liste) == 0){
 		//Il y a un pond et pas de pecheur sur ce pont, on peut s'y déplacer
 		This->caseParent->g->moveFromTo(This->caseParent->g, (Element*)This, This->caseParent->posX+deplX, This->caseParent->posY+deplY);
+		return True;
 	}
 	else {
 		//pas possible
-		return;
+		return False;
 	}
 }
 
