@@ -613,28 +613,32 @@ void ElementAnimal_reproduction(ElementAnimal *This){
 	int i, j;
 	flag=0;
 	Case *caseNaissance = NULL;
+	ListeCase *lcaseNaissance = New_ListeCase();
 	ElementAnimal* e = NULL, *amoureux = NULL;
-	for(i=0;i<3 && flag == 0;++i){
-		for(j=0;j<3 && flag == 0;++j){
-			if (MatriceAccessibleReproduction[i][j] != NULL && MatriceAccessibleReproduction[i][j]->liste->HasDirt(MatriceAccessibleReproduction[i][j]->liste) == 0) {
-				if (MatriceAccessibleReproduction[i][j]->liste->HasAnAnimal(MatriceAccessibleReproduction[i][j]->liste)){
-					e=(ElementAnimal*)MatriceAccessibleReproduction[i][j]->liste->getAnimal(MatriceAccessibleReproduction[i][j]->liste);
-					if (e->type == This->type)
-						amoureux=e;
-				}
-				else if (This->constantes->taille <= This->caseParent->g->TailleMaxSousPont || MatriceAccessibleReproduction[i][j]->liste->HasAPont(MatriceAccessibleReproduction[i][j]->liste) == 0){
-					caseNaissance=MatriceAccessibleReproduction[i][j];
+		for(i=0;i<3 && flag == 0;++i){
+			for(j=0;j<3 && flag == 0;++j){
+				if (MatriceAccessibleReproduction[i][j] != NULL && MatriceAccessibleReproduction[i][j]->liste->HasDirt(MatriceAccessibleReproduction[i][j]->liste) == 0) {
+					if (MatriceAccessibleReproduction[i][j]->liste->HasAnAnimal(MatriceAccessibleReproduction[i][j]->liste)){
+						e=(ElementAnimal*)MatriceAccessibleReproduction[i][j]->liste->getAnimal(MatriceAccessibleReproduction[i][j]->liste);
+						if (e->type == This->type)
+							amoureux=e;
+					}
+					else if (This->constantes->taille <= This->caseParent->g->TailleMaxSousPont || MatriceAccessibleReproduction[i][j]->liste->HasAPont(MatriceAccessibleReproduction[i][j]->liste) == 0){
+						lcaseNaissance->Push(lcaseNaissance, MatriceAccessibleReproduction[i][j]);
+					}
 				}
 			}
 		}
-	}
-	if (caseNaissance == NULL || amoureux == NULL){
-		for (i=0; i<3;++i){
-			free(MatriceAccessibleReproduction[i]);
+
+		if (lcaseNaissance->Taille(lcaseNaissance) == 0|| amoureux == NULL){
+			for (i=0; i<3;++i){
+				free(MatriceAccessibleReproduction[i]);
+			}
+			free(MatriceAccessibleReproduction);
+			return;
 		}
-		free(MatriceAccessibleReproduction);
-		return;
-	}
+		caseNaissance = lcaseNaissance->getNieme(lcaseNaissance, rand()%lcaseNaissance->Taille(lcaseNaissance));
+
 	This->sasiete-=(This->constantes->gestation*This->constantes->metabolisme);
 	caseNaissance->liste->Push(caseNaissance->liste, (Element*)New_ElementAnimal(caseNaissance, This->type));
 	This->derniereReproduction=This->caseParent->g->TourCourant;
