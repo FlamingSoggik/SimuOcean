@@ -16,7 +16,8 @@ SOURCES += main.c \
     listecase.c \
     elementpecheur.c \
     elementpont.c \
-    elementterre.c
+    elementterre.c \
+    sdl_pecheur.c
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -33,5 +34,6 @@ HEADERS += \
     listecase.h \
     elementpecheur.h \
     elementpont.h \
-    elementterre.h
+    elementterre.h \
+    sdl_pecheur.h
 
