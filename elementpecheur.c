@@ -177,8 +177,9 @@ Bool ElementPecheur_deplacement(ElementPecheur *This, char direction)
 	}
 	Case *caseDeplacement;
 	caseDeplacement = &This->caseParent->g->tab[This->caseParent->posX+deplX][This->caseParent->posY+deplY];
-	if ((caseDeplacement->liste->HasAPont(caseDeplacement->liste) == 1 || caseDeplacement->liste->HasDirt(caseDeplacement->liste) == 1) && caseDeplacement->liste->HasAPecheur(caseDeplacement->liste) == 0){
+	if ((caseDeplacement->liste->HasAPont(caseDeplacement->liste) == 1 || caseDeplacement->liste->HasDirt(caseDeplacement->liste) == 1 || (This->caseParent->liste->HasAPont(This->caseParent->liste) == 0 && This->caseParent->liste->HasDirt(This->caseParent->liste) == 0)) && caseDeplacement->liste->HasAPecheur(caseDeplacement->liste) == 0){
 		//Il y a un pond et pas de pecheur sur ce pont, on peut s'y déplacer
+		// ou alors on est déja dans l'eau donc on peux se déplacer de partout
 		This->caseParent->g->moveFromTo(This->caseParent->g, (Element*)This, This->caseParent->posX+deplX, This->caseParent->posY+deplY);
 		return True;
 	}

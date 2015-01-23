@@ -178,8 +178,8 @@ void Grille_Print(struct Grille *This){
 				}
 				else {
 					if (((ElementPecheur*)This->tab[i][j].liste->getPecheur(This->tab[i][j].liste))->estSelectionne == 1)
-						printf(SELECTIONE " " PTERRE " " PPECHEUR " " SELECTIONE " " NORMAL "|");
-					else printf(" " PTERRE " " PPECHEUR " " NORMAL " |");
+						printf(SELECTIONE " " NORMAL " " PPECHEUR " " SELECTIONE " " NORMAL "|");
+					else printf("  " PPECHEUR " " NORMAL " |");
 				}
 			}
 			else if (This->tab[i][j].liste->HasAPont(This->tab[i][j].liste)){
@@ -335,7 +335,7 @@ void Grille_reinitPecheur(Grille *This, Element *elem)
 		if (sensDeTest == 'b'){
 			if (pecheur->PositionInitialeX+depl > This->Taille-1){
 				sensDeTest='h';
-				depl=0;
+				depl=1;
 			}
 			else {
 				caseInitiale=&This->tab[pecheur->PositionInitialeX+1][pecheur->PositionInitialeY];
@@ -343,13 +343,13 @@ void Grille_reinitPecheur(Grille *This, Element *elem)
 			}
 		}
 		else {
-			if ((double)pecheur->PositionInitialeX-1 < 0){
+			if ((double)pecheur->PositionInitialeX-depl < 0){
 				printf("Impossible de placer le pecheur --> perdu !!\n");
 				return;
 			}
 			else {
 				caseInitiale=&This->tab[pecheur->PositionInitialeX-1][pecheur->PositionInitialeY];
-				--depl;
+				++depl;
 			}
 		}
 		goto recommencer;

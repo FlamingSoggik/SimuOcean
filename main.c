@@ -8,14 +8,6 @@
 #include "affichage.h"
 #include <unistd.h>
 
-#define EAU "\033[00;44m"
-#define ANIMAL "\033[00;41m"
-#define PONT "\033[48;5;130m"
-#define PECHEUR "\033[00;47m"
-#define NORMAL "\033[00m"
-#define GRAS "\033[01m"
-
-
 int main(int argc, char **argv)
 {
 	Grille *g;
@@ -38,7 +30,7 @@ int main(int argc, char **argv)
 			g->Free(g);
 			break;
 		case 's':
-			g = New_Grille(30, nbpecheurs);
+			g = New_Grille(10, nbpecheurs);
 			g->Print(g);
 			sleep(5);
 			while(g->TourCourant < 1000){
