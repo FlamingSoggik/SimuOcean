@@ -42,5 +42,6 @@ void Grille_moveFromTo(struct Grille*, struct Element*, unsigned int, unsigned i
 void Grille_reinitPecheur(struct Grille *This, struct Element *elem);
 void Grille_faireTour(Grille *This, char isSdl);
 void Grille_detruirePont(Grille *This, struct Case* c);
+void Grille_getPtrPecheurs(Grille *This, struct ElementPecheur***donnerPointeurSurTableau);
 
 #endif // GRILLE_H

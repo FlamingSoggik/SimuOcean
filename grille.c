@@ -7,7 +7,7 @@
 #include "elementterre.h"
 #include "element.h"
 #include "changermodeterminal.h"
-
+#include "stringreplace.h"
 #include <time.h>
 
 #define EAU "\033[00m"				//NOIR
@@ -411,18 +411,23 @@ void Grille_faireTour(Grille *This, char isSdl){
 					mode_raw(1);
 					c = getchar();
 					mode_raw(0);
-					fgets(buff, sizeof(buff), stdin);
 					if (c == 'f'){
 						mode_raw(1);
 						c = getchar();
 						mode_raw(0);
 
+//						if (fgets(buff, sizeof(buff), stdin) == NULL){
+//							break;
+//						}
 						p->pecheParFilet(p);
 					}
 					else if (c == 'c'){
 						mode_raw(1);
 						c = getchar();
 						mode_raw(0);
+//						if (fgets(buff, sizeof(buff), stdin) == NULL){
+//							break;
+//						}
 						p->pecheParCanne(p);
 					}
 				}
@@ -460,4 +465,10 @@ void Grille_detruirePont(Grille *This, struct Case *c)
 	}
 	Element* p = This->tab[c->posX][c->posY].liste->getPont(This->tab[c->posX][c->posY].liste);
 	This->tab[c->posX][c->posY].liste->deleteElement(This->tab[c->posX][c->posY].liste, p);
+}
+
+
+void Grille_getPtrPecheurs(Grille *This, ElementPecheur *** donnerPointeurSurTableau)
+{
+	*donnerPointeurSurTableau=This->tabPecheur;
 }

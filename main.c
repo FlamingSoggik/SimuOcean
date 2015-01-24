@@ -12,11 +12,6 @@ int main(int argc, char **argv)
 {
 	Grille *g;
 
-//	g = New_Grille(30, 1);
-//	g=SDL_Print(g);
-//	g->Free(g);
-//	return 0;
-
 	int nbpecheurs = 0;
 	char interface = -1;
 	if (argc < 3){
