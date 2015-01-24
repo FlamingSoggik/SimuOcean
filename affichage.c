@@ -158,14 +158,14 @@ struct Grille* SDL_Print(struct Grille *grill){
 						case SDLK_F2: // Nettoie le graphique
 							if (Est_Un_Dev==2) SDL_FillRect(graphique, NULL, SDL_MapRGB(ecran->format,255,255,255));
 							break;
-						case SDLK_F5: // Reset la grille
-							i=grill->Taille;
-							nbpecheurs = grill->nbPecheur;
-							grill->Free(grill);
-							grill=New_Grille(i, nbpecheurs);
-							Compteur_Tours=0;
-							Init_Tab(nbr_espece);
-							break;
+//						case SDLK_F5: // Reset la grille
+//							i=grill->Taille;
+//							nbpecheurs = grill->nbPecheur;
+//							grill->Free(grill);
+//							grill=New_Grille(i, nbpecheurs);
+//							Compteur_Tours=0;
+//							Init_Tab(nbr_espece);
+//							break;
 						case SDLK_F4: // Reset la grille
 							break;
 						case SDLK_SPACE:
@@ -544,7 +544,7 @@ ElementAnimal_Constantes *Select_Legende(SDL_Surface** Legendes_Surface, TTF_Fon
 	SDL_Color Couleur_Requin = {55, 49, 33,0};
 	SDL_Color Couleur_Pyranha = {209, 0, 57,0};
 
-    Legendes_Surface[0] = TTF_RenderText_Blended(police, "Mer", Couleur_Mer);
+	Legendes_Surface[0] = TTF_RenderText_Blended(police, "Mer", Couleur_Mer);
 	Legendes_Surface[1] = TTF_RenderText_Blended(police, "Pont", Couleur_Pont);
 	Legendes_Surface[2] = TTF_RenderText_Blended(police, "Baleine", Couleur_Baleine);
 	Legendes_Surface[3] = TTF_RenderText_Blended(police, "Bar", Couleur_Bar);

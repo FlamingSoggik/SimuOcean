@@ -375,6 +375,7 @@ void ElementAnimal_predation(ElementAnimal *This)
 	}
 
 	if(l_elementBouffable->Top->e->type == PECHEUR){
+
 		ElementPecheur *p = (ElementPecheur*)l_elementBouffable->Top->e;
 		p->mourir(p);
 		This->caseParent->g->moveFromTo(This->caseParent->g, (Element*)This, l_elementBouffable->Top->e->caseParent->posX, l_elementBouffable->Top->e->caseParent->posY);
