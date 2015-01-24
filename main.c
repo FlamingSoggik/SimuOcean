@@ -8,61 +8,43 @@
 #include "affichage.h"
 #include <unistd.h>
 
-#define EAU "\033[00;44m"
-#define ANIMAL "\033[00;41m"
-#define PONT "\033[48;5;130m"
-#define PECHEUR "\033[00;47m"
-#define NORMAL "\033[00m"
-#define GRAS "\033[01m"
-
-
 int main(int argc, char **argv)
 {
 	Grille *g;
-	char nbpecheurs;
+	int nbpecheurs;
+	char interface = -1;
 	if (argc < 3){
 		printf("Nombre de pecheurs (0 .. 10) : ");
-		scanf("%c%*c", &nbpecheurs);
+		scanf("%d%*c", &nbpecheurs);
+		printf("Interface Graphique avec/sans (a/s) : ");
+		scanf("%c%*c", &interface);
 	} else {
 		nbpecheurs=atoi(argv[1]);
+		interface=argv[2][0];
 	}
 
-	if (nbpecheurs == '0'){
-		if (argc < 3){
-			printf("Interface Graphique avec/sans (a/s) : ");
-			scanf("%c%*c", &nbpecheurs);
-		}
-		else {
-			nbpecheurs=atoi(argv[2]);
-		}
-		switch (nbpecheurs){
-			case 'a' :
-				g = New_Grille(40, nbpecheurs);
-				g=SDL_Print(g);
-				g->Free(g);
-				break;
-			case 's':
-				g = New_Grille(40, 0);
+	switch (interface){
+		case 'a' :
+			g = New_Grille(30, nbpecheurs);
+			g=SDL_Print(g);
+			g->Free(g);
+			break;
+		case 's':
+			g = New_Grille(10, nbpecheurs);
+			g->Print(g);
+			sleep(5);
+			while(g->TourCourant < 1000){
+				g->faireTour(g);
+				system("clear");
 				g->Print(g);
-				sleep(5);
-				while(g->TourCourant < 1000){
-					g->faireTour(g);
-					system("clear");
-					g->Print(g);
-					usleep(100000);
-				}
-				g->Free(g);
-				break;
-			default:printf("Err\n");
-				return -1;
+				usleep(100000);
+			}
+			g->Free(g);
+			break;
+		default:printf("Err %c\n", interface);
+			return -1;
+	}
 
-		}
-	}
-	else {
-		Grille *g = New_Grille(40, nbpecheurs);
-		g=SDL_Print(g);
-		g->Free(g);
-	}
 
 
 //	//Constructction d'un tableau d'élément

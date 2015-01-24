@@ -6,6 +6,8 @@
 #include "elementpont.h"
 #include "elementterre.h"
 #include "element.h"
+#include "changermodeterminal.h"
+
 #include <time.h>
 
 #define EAU "\033[00m"				//NOIR
@@ -23,6 +25,7 @@
 #define PTERRE "\033[48;5;130m"		//MARRON
 #define PPECHEUR "\033[48;5;48m"	//VERT-BLEU
 #define NORMAL "\033[00m"			//NOIR
+#define SELECTIONE "\033[48;5;231m"	//BLANC
 #define PGRAS "\033[01m"
 
 Grille Grille_Create(int Taille, unsigned char nbPecheur){
@@ -39,7 +42,7 @@ void Grille_Init(Grille *This, unsigned int Taille, unsigned char nbPecheurs){
 		defineConstant();
 		premierpassage = 0;
 	}
-	unsigned int i,j;
+	unsigned int i,j, parcours;
 	This->Clear = Grille_Clear;
 	This->Print = Grille_Print;
 	This->Taille=Taille;
@@ -51,7 +54,6 @@ void Grille_Init(Grille *This, unsigned int Taille, unsigned char nbPecheurs){
 	This->faireTour=Grille_faireTour;
 	This->reinitPecheur = Grille_reinitPecheur;
 	This->detruirePont=Grille_detruirePont;
-	This->tabPecheur=malloc(This->nbPecheur*sizeof(ElementPecheur*));
 	This->tab=malloc(sizeof(Case*)*Taille);
 	This->nbPecheur = nbPecheurs;
 	for (i=0;i<Taille;++i){
@@ -64,6 +66,26 @@ void Grille_Init(Grille *This, unsigned int Taille, unsigned char nbPecheurs){
 				This->tab[i][j].liste->Push(This->tab[i][j].liste, (Element*)New_ElementTerre(&This->tab[i][j]));
 			}
 		}
+	}
+	This->tabPecheur=malloc(This->nbPecheur*sizeof(ElementPecheur*));
+	for(parcours=0; parcours<This->nbPecheur; ++parcours){
+		if (parcours%2){
+			//Pecheur impaire --> pop à droite
+			j=This->Taille-1;
+		}
+		else {
+			// Pecheur paire --> pop à gauche
+			j=0;
+		}
+		int flag = 0;
+
+		while (flag == 0){
+			i=rand()%This->Taille;
+			if(This->tab[i][j].liste->HasAPecheur(This->tab[i][j].liste) == 0)
+				flag = 1;
+		}
+		This->tab[i][j].liste->Push(This->tab[i][j].liste, (Element*)New_ElementPecheur(&This->tab[i][j]));
+		This->tabPecheur[parcours]=(ElementPecheur*)This->tab[i][j].liste->getPecheur(This->tab[i][j].liste);
 	}
 
 	remplirListePredation(This);
@@ -143,13 +165,21 @@ void Grille_Print(struct Grille *This){
 		for(j=0; j<This->Taille; ++j){
 			if (This->tab[i][j].liste->HasAPecheur(This->tab[i][j].liste)) {
 				if (This->tab[i][j].liste->HasAPont(This->tab[i][j].liste)){
-					printf(" " PPONT " " PPECHEUR " " NORMAL " |");
+					if (((ElementPecheur*)This->tab[i][j].liste->getPecheur(This->tab[i][j].liste))->estSelectionne == 1)
+						printf(SELECTIONE " " PPONT " " PPECHEUR " " SELECTIONE " " NORMAL "|");
+					else
+						printf(" " PPONT " " PPECHEUR " " NORMAL " |");
 				}
 				else if(This->tab[i][j].liste->HasDirt(This->tab[i][j].liste)){
-					printf(" " PTERRE " " PPECHEUR " " NORMAL " |");
+					if (((ElementPecheur*)This->tab[i][j].liste->getPecheur(This->tab[i][j].liste))->estSelectionne == 1)
+						printf(SELECTIONE " " PTERRE " " PPECHEUR " " SELECTIONE " " NORMAL "|");
+					else
+						printf(" " PTERRE " " PPECHEUR " " NORMAL " |");
 				}
 				else {
-					printf(" " EAU " " PPECHEUR " " NORMAL " |");
+					if (((ElementPecheur*)This->tab[i][j].liste->getPecheur(This->tab[i][j].liste))->estSelectionne == 1)
+						printf(SELECTIONE " " NORMAL " " PPECHEUR " " SELECTIONE " " NORMAL "|");
+					else printf("  " PPECHEUR " " NORMAL " |");
 				}
 			}
 			else if (This->tab[i][j].liste->HasAPont(This->tab[i][j].liste)){
@@ -305,7 +335,7 @@ void Grille_reinitPecheur(Grille *This, Element *elem)
 		if (sensDeTest == 'b'){
 			if (pecheur->PositionInitialeX+depl > This->Taille-1){
 				sensDeTest='h';
-				depl=0;
+				depl=1;
 			}
 			else {
 				caseInitiale=&This->tab[pecheur->PositionInitialeX+1][pecheur->PositionInitialeY];
@@ -313,13 +343,13 @@ void Grille_reinitPecheur(Grille *This, Element *elem)
 			}
 		}
 		else {
-			if ((double)pecheur->PositionInitialeX-1 < 0){
+			if ((double)pecheur->PositionInitialeX-depl < 0){
 				printf("Impossible de placer le pecheur --> perdu !!\n");
 				return;
 			}
 			else {
 				caseInitiale=&This->tab[pecheur->PositionInitialeX-1][pecheur->PositionInitialeY];
-				--depl;
+				++depl;
 			}
 		}
 		goto recommencer;
@@ -330,6 +360,7 @@ void Grille_reinitPecheur(Grille *This, Element *elem)
 void Grille_faireTour(Grille *This){
 	unsigned int i, j;
 	ElementAnimal *e;
+	ElementPecheur *p;
 	for (i=0; i<This->Taille; ++i){
 		for (j=0; j<This->Taille; ++j){
 			if (This->tab[i][j].liste->HasAnAnimal(This->tab[i][j].liste)){
@@ -349,6 +380,49 @@ void Grille_faireTour(Grille *This){
 			}
 			e=NULL;
 //			This->Print(This);
+		}
+	}
+	if (This->TourCourant != 0 && This->TourCourant%5 == 0){
+		for (i=0;i<This->nbPecheur; ++i){
+			p=This->tabPecheur[i];
+			p->estSelectionne=1;
+			system("clear");
+			This->Print(This);
+			mode_raw(1);
+			char c = getchar();
+			mode_raw(0);
+			if (c == 'c'){
+				mode_raw(1);
+				c = getchar();
+				mode_raw(0);
+				p->construirePont(p, c);
+			}
+			else if (c == 'd'){
+				mode_raw(1);
+				c = getchar();
+				mode_raw(0);
+				p->deplacement(p, c);
+			}
+			else if (c == 'p'){
+				mode_raw(1);
+				c = getchar();
+				mode_raw(0);
+				if (c == 'f'){
+					mode_raw(1);
+					c = getchar();
+					mode_raw(0);
+					p->pecheParFilet(p);
+				}
+				else if (c == 'c'){
+					mode_raw(1);
+					c = getchar();
+					mode_raw(0);
+					p->pecheParCanne(p);
+				}
+			}
+			p->estSelectionne=0;
+			system("clear");
+			This->Print(This);
 		}
 	}
 	for (i=0; i<This->Taille; ++i){

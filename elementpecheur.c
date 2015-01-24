@@ -48,10 +48,11 @@ char ElementPecheur_Init(Case *c, ElementPecheur* This){
 	This->mourir=ElementPecheur_mourir;
 	This->type=PECHEUR;
 	This->Clear = Element_Clear;
-	This->sac = COUT_POSE_PONT*3;
+	This->sac = COUT_POSE_PONT*200;
 	This->longueurCanne=TAILLE_CANNE_A_PECHE;
 	This->tailleFilet=TAILLE_FILET;
 	This->distanceDeplacement=DISTANCE_DEPLACEMENT;
+	This->estSelectionne=0;
 	return 0;
 }
 
@@ -135,33 +136,33 @@ Bool ElementPecheur_deplacement(ElementPecheur *This, char direction)
 {
 	int deplX = 0, deplY = 0;
 	switch (direction) {
-		case 1:
+		case '1':
 			deplX=1;
 			deplY=-1;
 			break;
-		case 2:
+		case '2':
 			deplX=1;
 			break;
-		case 3:
+		case '3':
 			deplX=1;
 			deplY=1;
 			break;
-		case 4:
+		case '4':
 			deplY=-1;
 			break;
-		case 5:
+		case '5':
 			break;
-		case 6:
+		case '6':
 			deplY=1;
 			break;
-		case 7:
+		case '7':
 			deplX=-1;
 			deplY=-1;
 			break;
-		case 8:
+		case '8':
 			deplX=-1;
 			break;
-		case 9:
+		case '9':
 			deplX=-1;
 			deplY=1;
 			break;
@@ -176,8 +177,9 @@ Bool ElementPecheur_deplacement(ElementPecheur *This, char direction)
 	}
 	Case *caseDeplacement;
 	caseDeplacement = &This->caseParent->g->tab[This->caseParent->posX+deplX][This->caseParent->posY+deplY];
-	if ((caseDeplacement->liste->HasAPont(caseDeplacement->liste) == 1 || caseDeplacement->liste->HasDirt(caseDeplacement->liste) == 1) && caseDeplacement->liste->HasAPecheur(caseDeplacement->liste) == 0){
+	if ((caseDeplacement->liste->HasAPont(caseDeplacement->liste) == 1 || caseDeplacement->liste->HasDirt(caseDeplacement->liste) == 1 || (This->caseParent->liste->HasAPont(This->caseParent->liste) == 0 && This->caseParent->liste->HasDirt(This->caseParent->liste) == 0)) && caseDeplacement->liste->HasAPecheur(caseDeplacement->liste) == 0){
 		//Il y a un pond et pas de pecheur sur ce pont, on peut s'y déplacer
+		// ou alors on est déja dans l'eau donc on peux se déplacer de partout
 		This->caseParent->g->moveFromTo(This->caseParent->g, (Element*)This, This->caseParent->posX+deplX, This->caseParent->posY+deplY);
 		return True;
 	}
@@ -192,33 +194,33 @@ void ElementPecheur_construirePont(ElementPecheur *This, char direction)
 {
 	int deplX = 0, deplY = 0;
 	switch (direction) {
-		case 1:
+		case '1':
 			deplX=1;
 			deplY=-1;
 			break;
-		case 2:
+		case '2':
 			deplX=1;
 			break;
-		case 3:
+		case '3':
 			deplX=1;
 			deplY=1;
 			break;
-		case 4:
+		case '4':
 			deplY=-1;
 			break;
-		case 5:
+		case '5':
 			break;
-		case 6:
+		case '6':
 			deplY=1;
 			break;
-		case 7:
+		case '7':
 			deplX=-1;
 			deplY=-1;
 			break;
-		case 8:
+		case '8':
 			deplX=-1;
 			break;
-		case 9:
+		case '9':
 			deplX=-1;
 			deplY=1;
 			break;
