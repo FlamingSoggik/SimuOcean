@@ -158,14 +158,14 @@ struct Grille* SDL_Print(struct Grille *grill){
 						case SDLK_F2: // Nettoie le graphique
 							if (Est_Un_Dev==2) SDL_FillRect(graphique, NULL, SDL_MapRGB(ecran->format,255,255,255));
 							break;
-//						case SDLK_F5: // Reset la grille
-//							i=grill->Taille;
-//							nbpecheurs = grill->nbPecheur;
-//							grill->Free(grill);
-//							grill=New_Grille(i, nbpecheurs);
-//							Compteur_Tours=0;
-//							Init_Tab(nbr_espece);
-//							break;
+						case SDLK_F5: // Reset la grille
+							i=grill->Taille;
+							nbpecheurs = grill->nbPecheur;
+							grill->Free(grill);
+							grill=New_Grille(i, nbpecheurs);
+							Compteur_Tours=0;
+							Init_Tab(nbr_espece);
+							break;
 						case SDLK_F4: // Reset la grille
 							break;
 						case SDLK_SPACE:
@@ -294,7 +294,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 
 		if ((Compteur_Tours%Refresh_Timer==0) && (Refresh_Timer<=95))
 		{
-			grill->faireTour(grill);
+			grill->faireTour(grill, 1);
 			printf("%d\n", grill->TourCourant);
 		}
 
