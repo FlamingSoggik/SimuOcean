@@ -1,4 +1,5 @@
 ﻿#include "affichage.h"
+#include "elementpecheur.h"
 
 
 struct Grille* SDL_Print(struct Grille *grill){
@@ -17,6 +18,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 	int Compteur_Tours=0, Refresh_Timer=1;
 	ElementAnimal_Constantes *C_Selected;
     int nbr_espece[12]={0,0,0,0,0,0,0,0,0,0,0,0};
+    int TourDuJoueur=0;
 
 
 
@@ -169,14 +171,75 @@ struct Grille* SDL_Print(struct Grille *grill){
 							Compteur_Tours=0;
 							Init_Tab(nbr_espece);
 							break;
-						case SDLK_F4: // Reset la grille
-							break;
+                        case SDLK_KP1: // Pavé numérique
+                            if (TourDuJoueur != -1)
+                            {
+
+                                grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '1');
+                            }
+                        break;
+                        case SDLK_KP2:
+                            if (TourDuJoueur != -1)
+                            {
+                                grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '2');
+                            }
+                        break;
+                        case SDLK_KP3:
+                            if (TourDuJoueur != -1)
+                            {
+
+                                grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '3');
+                            }
+                        break;
+                        case SDLK_KP4:
+                            if (TourDuJoueur != -1)
+                            {
+                                grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '4');
+                            }
+                        break;
+                        case SDLK_KP5:
+
+                            if (TourDuJoueur != -1)
+                            {
+
+                                grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '5');
+                            }
+                        break;
+                        case SDLK_KP6:
+                            if (TourDuJoueur != -1)
+                            {
+
+                                grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '6');
+                            }
+                        break;
+                        case SDLK_KP7:
+                            if (TourDuJoueur != -1)
+                            {
+                                grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '7');
+
+                            }
+                        break;
+                        case SDLK_KP8:
+                            if (TourDuJoueur != -1)
+                             {
+
+                                grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '8');
+
+                            }
+                        break;
+                        case SDLK_KP9:
+                            if (TourDuJoueur != -1)
+                            {
+                                grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '9');
+
+                            }
+                        break;
 						case SDLK_SPACE:
 							if (Refresh_Timer>=95) pos_curseur2.x=pos_curseur1.x+50-6;
 							else if (pos_curseur2.x == (pos_curseur1.x+50-6)) pos_curseur2.x=pos_curseur1.x-6;
 							else pos_curseur2.x=pos_curseur1.x+100-6;
 							break;
-						default: break;
+                        default: break;
 					}
 					break;
 
@@ -272,7 +335,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 
     /* Monsieur le Pécheur */
 
-        Afficher_Pecheurs( ecran, taille_case, grill->tabPecheur, grill->nbPecheur, &pos_fenetre, rouge );
+        Afficher_Pecheurs( ecran, taille_case, grill->tabPecheur, grill->nbPecheur, pos_fenetre, rouge );
 
 
 
@@ -297,10 +360,10 @@ struct Grille* SDL_Print(struct Grille *grill){
 		Refresh_Timer=((pos_curseur2.x - pos_curseur1.x)+7); // La différence varie entre -6 et 94.
 
 
-		if ((Compteur_Tours%Refresh_Timer==0) && (Refresh_Timer<=95))
+        if ((Compteur_Tours%Refresh_Timer==0) && (Refresh_Timer<=95)) // Cette boucle modifie la vitesse d'actualisation de la grille
 		{
 			grill->faireTour(grill, 1);
-			printf("%d\n", grill->TourCourant);
+            printf("%d\n", grill->TourCourant); // AFFICHAGE DU NOMBRE DE TOUR
 		}
 
 		//usleep(100000);
