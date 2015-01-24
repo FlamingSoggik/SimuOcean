@@ -7,12 +7,12 @@ LIBS += -L/usr/lib/x86_64-linux-gnu -lSDL -lSDL_image -lSDL_ttf
 
 SOURCES += main.c \
     element.c \
-	elementanimal.c \
+    elementanimal.c \
     case.c \
     listeelem.c \
     listetype.c \
     grille.c \
-	affichage.c \
+    affichage.c \
     listecase.c \
     elementpecheur.c \
     elementpont.c \
@@ -30,8 +30,8 @@ HEADERS += \
     listeelem.h \
     listetype.h \
     grille.h \
-	Bool.h \
-	affichage.h \
+    Bool.h \
+    affichage.h \
     listecase.h \
     elementpecheur.h \
     elementpont.h \
