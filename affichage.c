@@ -7,7 +7,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 	const int NBR_CASES=grill->Taille; // Largeur de la grille
 
 	/* Initialisation des variables nécessaires */
-	SDL_Surface **Selected_Type_Case=NULL, *plusIcone=NULL, *moinsIcone=NULL,  *ecran = NULL ,*fenetre = NULL, *curseur1 = NULL, *curseur2 = NULL, *boite = NULL, *graphique=NULL;
+    SDL_Surface **Selected_Type_Case=NULL, *rouge=NULL, *plusIcone=NULL, *moinsIcone=NULL,  *ecran = NULL ,*fenetre = NULL, *curseur1 = NULL, *curseur2 = NULL, *boite = NULL, *graphique=NULL;
 	TTF_Font *police=NULL, *police_underline=NULL;
 	SDL_Event event;
 	int continuer=1;
@@ -117,6 +117,9 @@ struct Grille* SDL_Print(struct Grille *grill){
 	/*Graphique*/
 	graphique=SDL_CreateRGBSurface(SDL_HWSURFACE, ScreenH-50, (ScreenH-50)/1.6, 32, 0, 0, 0, 0);
 	SDL_FillRect(graphique, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
+    /*Monsieur le pécheur*/
+    rouge = SDL_CreateRGBSurface(SDL_HWSURFACE, taille_case, taille_case, 32, 0, 0, 0, 0);
+    SDL_FillRect(rouge, NULL, SDL_MapRGB(ecran->format, 255, 0, 0));
 
 
 
@@ -267,7 +270,9 @@ struct Grille* SDL_Print(struct Grille *grill){
 
 		}
 
+    /* Monsieur le Pécheur */
 
+        Afficher_Pecheurs( ecran, taille_case, grill->tabPecheur, grill->nbPecheur, &pos_fenetre, rouge );
 
 
 
