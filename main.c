@@ -11,7 +11,13 @@
 int main(int argc, char **argv)
 {
 	Grille *g;
-	int nbpecheurs;
+
+	g = New_Grille(30, 1);
+	g=SDL_Print(g);
+	g->Free(g);
+	return 0;
+
+	int nbpecheurs = 0;
 	char interface = -1;
 	if (argc < 3){
 		printf("Nombre de pecheurs (0 .. 10) : ");
@@ -34,7 +40,7 @@ int main(int argc, char **argv)
 			g->Print(g);
 			sleep(5);
 			while(g->TourCourant < 1000){
-				g->faireTour(g);
+				g->faireTour(g, 0);
 				system("clear");
 				g->Print(g);
 				usleep(100000);

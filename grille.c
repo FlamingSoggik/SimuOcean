@@ -36,6 +36,8 @@ Grille Grille_Create(int Taille, unsigned char nbPecheur){
 }
 
 void Grille_Init(Grille *This, unsigned int Taille, unsigned char nbPecheurs){
+	if (nbPecheurs > 2* Taille)
+		nbPecheurs = 0;
 	static int premierpassage = 1;
 	if (premierpassage == 1){
 		srand(time(NULL));
@@ -357,7 +359,7 @@ void Grille_reinitPecheur(Grille *This, Element *elem)
 	caseInitiale->liste->Push(caseInitiale->liste, (Element*)pecheur);
 }
 
-void Grille_faireTour(Grille *This){
+void Grille_faireTour(Grille *This, char isSdl){
 	unsigned int i, j;
 	ElementAnimal *e;
 	ElementPecheur *p;
@@ -382,47 +384,52 @@ void Grille_faireTour(Grille *This){
 //			This->Print(This);
 		}
 	}
-	if (This->TourCourant != 0 && This->TourCourant%5 == 0){
-		for (i=0;i<This->nbPecheur; ++i){
-			p=This->tabPecheur[i];
-			p->estSelectionne=1;
-			system("clear");
-			This->Print(This);
-			mode_raw(1);
-			char c = getchar();
-			mode_raw(0);
-			if (c == 'c'){
+	if (isSdl == 1){
+		if (This->TourCourant != 0 && This->TourCourant%5 == 0){
+			for (i=0;i<This->nbPecheur; ++i){
+				char buff[10]={'\0'};
+				p=This->tabPecheur[i];
+				p->estSelectionne=1;
+				system("clear");
+				This->Print(This);
 				mode_raw(1);
-				c = getchar();
+				char c = getchar();
 				mode_raw(0);
-				p->construirePont(p, c);
-			}
-			else if (c == 'd'){
-				mode_raw(1);
-				c = getchar();
-				mode_raw(0);
-				p->deplacement(p, c);
-			}
-			else if (c == 'p'){
-				mode_raw(1);
-				c = getchar();
-				mode_raw(0);
-				if (c == 'f'){
+				if (c == 'c'){
 					mode_raw(1);
 					c = getchar();
 					mode_raw(0);
-					p->pecheParFilet(p);
+					p->construirePont(p, c);
 				}
-				else if (c == 'c'){
+				else if (c == 'd'){
 					mode_raw(1);
 					c = getchar();
 					mode_raw(0);
-					p->pecheParCanne(p);
+					p->deplacement(p, c);
 				}
+				else if (c == 'p'){
+					mode_raw(1);
+					c = getchar();
+					mode_raw(0);
+					fgets(buff, sizeof(buff), stdin);
+					if (c == 'f'){
+						mode_raw(1);
+						c = getchar();
+						mode_raw(0);
+
+						p->pecheParFilet(p);
+					}
+					else if (c == 'c'){
+						mode_raw(1);
+						c = getchar();
+						mode_raw(0);
+						p->pecheParCanne(p);
+					}
+				}
+				p->estSelectionne=0;
+				system("clear");
+				This->Print(This);
 			}
-			p->estSelectionne=0;
-			system("clear");
-			This->Print(This);
 		}
 	}
 	for (i=0; i<This->Taille; ++i){
