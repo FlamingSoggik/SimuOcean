@@ -384,7 +384,7 @@ void Grille_faireTour(Grille *This, char isSdl){
 //			This->Print(This);
 		}
 	}
-	if (isSdl == 1){
+	if (isSdl == 0){
 		if (This->TourCourant != 0 && This->TourCourant%5 == 0){
 			for (i=0;i<This->nbPecheur; ++i){
 				char buff[10]={'\0'};
