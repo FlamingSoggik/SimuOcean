@@ -2,7 +2,7 @@
 #include "elementpecheur.h"
 #include "affichage.h"
 
-//Actualiser(carre[i][j], Selected_Type_Case, (j*taille_case+j+pos_fenetre.x), (i*taille_case+i+pos_fenetre.y));
+
 
 void Afficher_Pecheurs( SDL_Surface *ecran, int taille_case, ElementPecheur **pt_Pecheur, int nbrpecheur, SDL_Rect Pos_Fenetre, SDL_Surface *rouge )
 {
@@ -70,13 +70,13 @@ Avancer = TTF_RenderText_Blended(police_underline, "Avancer", Couleur_Commandes)
 Construire = TTF_RenderText_Blended(police, "Construire", Couleur_Commandes);
 Pecher = TTF_RenderText_Blended(police, "Pecher", Couleur_Commandes);
 }
-if (Commande_Selected==0)
+if (Commande_Selected==2)
 {
 Avancer = TTF_RenderText_Blended(police, "Avancer", Couleur_Commandes);
 Construire = TTF_RenderText_Blended(police_underline, "Construire", Couleur_Commandes);
 Pecher = TTF_RenderText_Blended(police, "Pecher", Couleur_Commandes);
 }
-if (Commande_Selected==0)
+if (Commande_Selected==3)
 {
 Avancer = TTF_RenderText_Blended(police, "Avancer", Couleur_Commandes);
 Construire = TTF_RenderText_Blended(police, "Construire", Couleur_Commandes);
