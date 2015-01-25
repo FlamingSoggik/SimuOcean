@@ -15,6 +15,7 @@ void Element_Free(Element *This){
 
 void Element_Clear(Element *This){
 	//Ne fais rien mais fera quelque chose si on a dans notre classe des éléments malloc
+    This=This;
 }
 
 Element* New_Element(Case *c){

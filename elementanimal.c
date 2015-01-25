@@ -87,29 +87,29 @@ void defineConstant()
     C_Plancton.gestation=0;
     C_Plancton.frequenceReproduction=5;
 
-    C_Corail.dureeSurvie=5;
+    C_Corail.dureeSurvie=6;
     C_Corail.taille=4;
     C_Corail.tailleDuBide=4;
     C_Corail.sautMax=0;
     C_Corail.metabolisme=1;
     C_Corail.gestation=1;
-    C_Corail.frequenceReproduction=3;
+    C_Corail.frequenceReproduction=5;
 
-    C_Bar.dureeSurvie=13;
+    C_Bar.dureeSurvie=14;
     C_Bar.taille=4;
     C_Bar.tailleDuBide=4;
     C_Bar.sautMax=1;
     C_Bar.metabolisme=1;
     C_Bar.gestation=1;
-    C_Bar.frequenceReproduction=7;
+    C_Bar.frequenceReproduction=5;
 
-    C_Thon.dureeSurvie=13;
+    C_Thon.dureeSurvie=14;
     C_Thon.taille=4;
     C_Thon.tailleDuBide=4;
-    C_Thon.sautMax=3;
+    C_Thon.sautMax=1;
     C_Thon.metabolisme=1;
     C_Thon.gestation=1;
-    C_Thon.frequenceReproduction=5;
+    C_Thon.frequenceReproduction=6;
 
     C_Pyranha.dureeSurvie=60;
     C_Pyranha.taille=5;
@@ -119,10 +119,10 @@ void defineConstant()
     C_Pyranha.gestation=1;
     C_Pyranha.frequenceReproduction=5;
 
-    C_Requin.dureeSurvie=30;
+    C_Requin.dureeSurvie=10;
     C_Requin.taille=6;
-    C_Requin.tailleDuBide=4;
-    C_Requin.sautMax=3;
+    C_Requin.tailleDuBide=5;
+    C_Requin.sautMax=5;
     C_Requin.metabolisme=1;
     C_Requin.gestation=1;
     C_Requin.frequenceReproduction=2;

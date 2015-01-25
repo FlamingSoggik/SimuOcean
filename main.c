@@ -29,7 +29,7 @@ int main(int argc, char **argv)
 
 	switch (interface){
 		case 'a' :
-			g = New_Grille(30, nbpecheurs);
+            g = New_Grille(20, nbpecheurs);
 			g=SDL_Print(g);
 			g->Free(g);
 			break;
