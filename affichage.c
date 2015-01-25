@@ -182,7 +182,7 @@ struct Grille* SDL_Print(struct Grille *grill){
                                 if (Commande_Selected == 1)
                                 boolean=grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '1');
                                 if (Commande_Selected ==2)
-                                grill->tabPecheur[TourDuJoueur]->construirePont(grill->tabPecheur[TourDuJoueur], '1');
+                                boolean = grill->tabPecheur[TourDuJoueur]->construirePont(grill->tabPecheur[TourDuJoueur], '1');
                                 //if (Commande_Selected ==3)
                                 //grill->tabPecheur[TourDuJoueur]->pecheParCanne(grill->tabPecheur[TourDuJoueur], '1');
 
