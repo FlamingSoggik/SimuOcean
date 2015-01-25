@@ -44,7 +44,9 @@ char ElementPecheur_Init(Case *c, ElementPecheur* This){
 	This->PositionInitialeX=This->caseParent->posX;
 	This->PositionInitialeY=This->caseParent->posY;
 	This->pecheParCanne=ElementPecheur_pecheParCanne;
+	This->pecheParCanneSDL=ElementPecheur_pecheParCanneSDL;
 	This->pecheParFilet=ElementPecheur_pecheParFilet;
+	This->pecheParFiletSDL=ElementPecheur_pecheParFiletSDL;
 	This->peutPecher=ElementPecheur_peutPecher;
 	This->deplacement=ElementPecheur_deplacement;
 	This->construirePont=ElementPecheur_construirePont;
@@ -144,6 +146,28 @@ void ElementPecheur_pecheParCanne(ElementPecheur *This, char *buffer)
 	}
 }
 
+void ElementPecheur_pecheParCanneSDL(ElementPecheur *This, unsigned int x, unsigned int y)
+{
+	int deplX = max(This->caseParent->posX-x, x-This->caseParent->posX);
+	int deplY = max(This->caseParent->posY-y, y-This->caseParent->posY);
+	if (deplX > TAILLE_CANNE_A_PECHE || deplY > TAILLE_CANNE_A_PECHE){
+		return;
+	}
+
+	if ((double)This->caseParent->posX+deplX < 0 || This->caseParent->posX+deplX > This->caseParent->g->Taille-1 || (double)This->caseParent->posY+deplY < 0 || This->caseParent->posY+deplY > This->caseParent->g->Taille-1){
+		return;
+	}
+	ElementAnimal *e;
+	Case *casePeche;
+	casePeche=&This->caseParent->g->tab[This->caseParent->posX+deplX][This->caseParent->posY+deplY];
+	if (casePeche->liste->HasAnAnimal(casePeche->liste)){
+		e=(ElementAnimal*)casePeche->liste->getAnimal(casePeche->liste);
+		if (This->peutPecher(This, e->type) == True){
+			This->sac+=e->constantes->taille;
+			e->caseParent->liste->deleteElement(e->caseParent->liste, (Element*)e);
+		}
+	}
+}
 
 Bool ElementPecheur_peutPecher(ElementPecheur *This, Type t)
 {
@@ -227,7 +251,7 @@ void ElementPecheur_pecheParFilet(ElementPecheur *This, char *buffer)
 	ElementAnimal* e;
 	Case*** MatriceAccessiblePeche= NULL;
 	MatriceAccessiblePeche=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX+deplX, This->caseParent->posY+deplY, This->tailleFilet);
-	MatriceAccessiblePeche[This->tailleFilet][This->tailleFilet]=This->caseParent;
+	MatriceAccessiblePeche[This->tailleFilet][This->tailleFilet]=&(This->caseParent->g->tab[This->caseParent->posX+deplX][This->caseParent->posY+deplX]);
 	for(i=0;i<2*This->tailleFilet+1.0;++i){
 		for(j=0;j<2*This->tailleFilet+1.0;++j){
 			if (MatriceAccessiblePeche[i][j] != NULL) {
@@ -243,6 +267,41 @@ void ElementPecheur_pecheParFilet(ElementPecheur *This, char *buffer)
 	}
 	for (i=0; i<2*This->tailleFilet+1.0;++i){
 		free(MatriceAccessiblePeche[i]);
+	}
+	free(MatriceAccessiblePeche);
+}
+
+void ElementPecheur_pecheParFiletSDL(ElementPecheur *This, unsigned int x, unsigned int y)
+{
+	int deplX = max(This->caseParent->posX-x, x-This->caseParent->posX);
+	int deplY = max(This->caseParent->posY-y, y-This->caseParent->posY);
+	if (deplX > TAILLE_CANNE_A_PECHE || deplY > TAILLE_CANNE_A_PECHE){
+		return;
+	}
+
+	if ((double)This->caseParent->posX+deplX < 0 || This->caseParent->posX+deplX > This->caseParent->g->Taille-1 || (double)This->caseParent->posY+deplY < 0 || This->caseParent->posY+deplY > This->caseParent->g->Taille-1){
+		return;
+	}
+
+	ElementAnimal* e;
+	Case*** MatriceAccessiblePeche= NULL;
+	MatriceAccessiblePeche=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX+deplX, This->caseParent->posY+deplY, This->tailleFilet);
+	MatriceAccessiblePeche[This->tailleFilet][This->tailleFilet]=&(This->caseParent->g->tab[This->caseParent->posX+deplX][This->caseParent->posY+deplY]);
+	for(deplX=0;deplX<2*This->tailleFilet+1.0;++deplX){
+		for(deplY=0;deplY<2*This->tailleFilet+1.0;++deplY){
+			if (MatriceAccessiblePeche[deplX][deplY] != NULL) {
+				if (MatriceAccessiblePeche[deplX][deplY]->liste->HasAnAnimal(MatriceAccessiblePeche[deplX][deplY]->liste)){
+					e=(ElementAnimal*)MatriceAccessiblePeche[deplX][deplY]->liste->getAnimal(MatriceAccessiblePeche[deplX][deplY]->liste);
+					if (This->peutPecher(This, e->type) == True){
+						This->sac+=e->constantes->taille;
+						e->caseParent->liste->deleteElement(e->caseParent->liste, (Element*)e);
+					}
+				}
+			}
+		}
+	}
+	for (deplX=0; deplX<2*This->tailleFilet+1.0;++deplX){
+		free(MatriceAccessiblePeche[deplX]);
 	}
 	free(MatriceAccessiblePeche);
 }
