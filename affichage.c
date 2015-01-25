@@ -1,6 +1,6 @@
 ﻿#include "affichage.h"
 #include "elementpecheur.h"
-
+#include "Bool.h"
 
 struct Grille* SDL_Print(struct Grille *grill){
 
@@ -18,8 +18,9 @@ struct Grille* SDL_Print(struct Grille *grill){
 	int Compteur_Tours=0, Refresh_Timer=1;
 	ElementAnimal_Constantes *C_Selected;
     int nbr_espece[12]={0,0,0,0,0,0,0,0,0,0,0,0};
-    int TourDuJoueur=0;
-
+    int TourDuJoueur=-1;
+    int Commande_Selected=1;
+    Bool boolean=False;
 
 
 	SDLCase ***carre = malloc(sizeof(SDLCase**)*grill->Taille);
@@ -124,6 +125,8 @@ struct Grille* SDL_Print(struct Grille *grill){
     SDL_FillRect(rouge, NULL, SDL_MapRGB(ecran->format, 255, 0, 0));
     blanc = SDL_CreateRGBSurface(SDL_HWSURFACE, taille_case-10, taille_case-10, 32, 0, 0, 0, 0);
     SDL_FillRect(blanc, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
+    /*Actions du pécheur*/
+    SDL_Surface *Avancer=NULL, *Construire=NULL, *Pecher=NULL;
 
 
 
@@ -176,10 +179,18 @@ struct Grille* SDL_Print(struct Grille *grill){
                         case SDLK_KP1: // Pavé numérique
                             if (TourDuJoueur != -1)
                             {
+                                if (Commande_Selected == 1)
+                                boolean=grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '1');
+                                if (Commande_Selected ==2)
+                                grill->tabPecheur[TourDuJoueur]->construirePont(grill->tabPecheur[TourDuJoueur], '1');
+                                //if (Commande_Selected ==3)
+                                //grill->tabPecheur[TourDuJoueur]->pecheParCanne(grill->tabPecheur[TourDuJoueur], '1');
 
-                                grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '1');
+                                if(boolean)
+                                {
                                 TourDuJoueur=TourDuJoueur+1;
                                 if (TourDuJoueur==grill->nbPecheur) TourDuJoueur=-1;
+                                }
 
                             }
 
@@ -278,18 +289,24 @@ struct Grille* SDL_Print(struct Grille *grill){
 					break;
 
 				case SDL_MOUSEBUTTONDOWN: // Moment de pression
+
+                /*Curseur de vitesse*/
 					if ((pos_curseur2.x<=event.button.x) && (event.button.x<=pos_curseur2.x+12) && (pos_curseur2.y<=event.button.y) && (event.button.y<=pos_curseur2.y+32))
 						select_curseur2=1;
+                /*Bouton dév*/
 					if ((ScreenW-45<=event.button.x) && (event.button.x<=ScreenW-45+30) && (15<=event.button.y) && (event.button.y<=15+30))
 					{
-						if(Est_Un_Dev==0)
+                        if(Est_Un_Dev==0 && grill->nbPecheur==0)
 							Est_Un_Dev=1;
 						else {
 							Est_Un_Dev=0;
 						}
 					}
+                /*Bouton graphique*/
 					if ((ScreenW-45<=event.button.x) && (event.button.x<=ScreenW-45+30) && (ScreenH-45<=event.button.y) && (event.button.y<=ScreenH-15))
 					{ if(Est_Un_Dev==1) Est_Un_Dev=2; else if(Est_Un_Dev==2) Est_Un_Dev=1; }
+
+                /*Selection espèce*/
 					if (Est_Un_Dev)
 						if (((ScreenH-40)<=event.button.x) && (event.button.x<=(ScreenH-40+100)) && ((180)<=event.button.y) && (event.button.y<=585))
 							C_Selected=Select_Legende(Legendes_Surface, police, police_underline, ((event.button.y)-140)/((580-140)/11));
@@ -298,6 +315,17 @@ struct Grille* SDL_Print(struct Grille *grill){
 						C_Selected=Edit_Constantes(0, (event.button.y - (ScreenH/2 - 100)), C_Selected);
 					if (((ScreenH +(ScreenW-ScreenH)/2-15)+100<=event.button.x) && (event.button.x<=(ScreenH +(ScreenW-ScreenH)/2-15)+130) && ((ScreenH/2 - 100)<=event.button.y) && (event.button.y<=(ScreenH/2 - 100)+330))
 						C_Selected=Edit_Constantes(1, (event.button.y - (ScreenH/2 - 100)), C_Selected);
+
+                /*Selection Commande Pecheur */
+                    if (!Est_Un_Dev)
+                    {
+                        if (((ScreenH +(ScreenW-ScreenH)/2)-40<=event.button.x) && (event.button.x<=(ScreenH +(ScreenW-ScreenH)/2)+40) && ((ScreenH/2 - 50)<=event.button.y) && (event.button.y<=(ScreenH/2 - 10)))
+                            Commande_Selected=1;
+                        if (((ScreenH +(ScreenW-ScreenH)/2)-40<=event.button.x) && (event.button.x<=(ScreenH +(ScreenW-ScreenH)/2)+45) && ((ScreenH/2)<=event.button.y) && (event.button.y<=(ScreenH/2 + 40)))
+                            Commande_Selected=2;
+                        if (((ScreenH +(ScreenW-ScreenH)/2)-40<=event.button.x) && (event.button.x<=(ScreenH +(ScreenW-ScreenH)/2)+30) && ((ScreenH/2 +50)<=event.button.y) && (event.button.y<=(ScreenH/2 + 90)))
+                            Commande_Selected=3;
+                    }
 
 					break;
 
@@ -344,7 +372,13 @@ struct Grille* SDL_Print(struct Grille *grill){
 		}
 
 
-		if(Est_Un_Dev!=2)
+        if(!Est_Un_Dev)
+        {
+            Commandes_Pecheur(ecran, Avancer, Construire, Pecher, police, police_underline, Commande_Selected, ScreenH, ScreenW);
+        }
+
+
+        if(Est_Un_Dev!=2) // Mode grille
 		{
 			for(i=0; i<NBR_CASES; i++)
 				for(j=0; j<NBR_CASES; j++)
@@ -355,7 +389,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 				}
 		}
 
-		///ScreenH-50, (ScreenH-50)/1.6
+
 		if(Est_Un_Dev==2) // Mode Graphique
 		{
 			for(i=0; i<NBR_CASES; i++)
@@ -369,8 +403,13 @@ struct Grille* SDL_Print(struct Grille *grill){
 
     /* Monsieur le Pécheur */
 
+        if(Est_Un_Dev!=2)
+        {
         Afficher_Pecheurs( ecran, taille_case, grill->tabPecheur, grill->nbPecheur, pos_fenetre, rouge );
 
+        if (TourDuJoueur!=-1 && grill->nbPecheur!=0)
+        Selected_Pecheur(ecran, taille_case, grill->tabPecheur[TourDuJoueur], pos_fenetre, blanc );
+        }
 
 
 
@@ -394,24 +433,27 @@ struct Grille* SDL_Print(struct Grille *grill){
 
         if ((Compteur_Tours%Refresh_Timer==0) && (Refresh_Timer<=95)) // Cette boucle modifie la vitesse d'actualisation de la grille
 		{
-   printf(" Joueur : %d \n", TourDuJoueur);
+
 
             // printf("%d\n", grill->TourCourant); // AFFICHAGE DU NOMBRE DE TOUR
             if (TourDuJoueur==-1)
             {
                 grill->faireTour(grill, 1);
-                if (((grill->TourCourant)%5)==0)
+
+                if ((grill->nbPecheur!=0) && ((grill->TourCourant)%5)==0)
                 {
                     TourDuJoueur=(TourDuJoueur+1)%((grill->nbPecheur)+1);
 
 
                 }
             }
-            else
-                Selected_Pecheur(ecran, taille_case, grill->tabPecheur[TourDuJoueur], pos_fenetre, blanc );
 
 
-		}
+        }
+
+        printf("%d\n", TourDuJoueur);
+
+
 
         /* Mise à jour de l'écran */
         SDL_Flip(ecran);
