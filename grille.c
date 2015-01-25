@@ -394,26 +394,31 @@ void Grille_faireTour(Grille *This, char isSdl){
 				p->estSelectionne=1;
 				system("clear");
 				This->Print(This);
+				printf("Choisisez une action construire (c), deplacement (d) ou pecher(p)\n");
 				mode_raw(1);
 				char c = getchar();
 				mode_raw(0);
 				if (c == 'c'){
+					printf("Choisisez la dirrection (123456789)\n");
 					mode_raw(1);
 					c = getchar();
 					mode_raw(0);
 					p->construirePont(p, c);
 				}
 				else if (c == 'd'){
+					printf("Choisisez la dirrection (123456789)\n");
 					mode_raw(1);
 					c = getchar();
 					mode_raw(0);
 					p->deplacement(p, c);
 				}
 				else if (c == 'p'){
+					printf("Choisisez le type de peche : Peche par canne (c) ou par filet(f)\n");
 					mode_raw(1);
 					c = getchar();
 					mode_raw(0);
 					if (c == 'f'){
+						printf("Entrez le chemin pour la case ou lancer le filet (123456789) et validez avec la touche entrée\n");
 						if (fgets(buff, sizeof(buff), stdin) == NULL){
 							break;
 						}
@@ -425,6 +430,7 @@ void Grille_faireTour(Grille *This, char isSdl){
 						sleep(10);
 					}
 					else if (c == 'c'){
+						printf("Entrez le chemin pour acceder à l'element à pecher (123456789) et validez avec la touche entrée\n");
 						if (fgets(buff, sizeof(buff), stdin) == NULL){
 							break;
 						}

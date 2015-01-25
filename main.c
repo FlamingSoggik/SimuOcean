@@ -15,26 +15,29 @@ int main(int argc, char **argv)
 	Grille *g;
 
 
-	int nbpecheurs = 0;
+	int nbpecheurs = 0, tailleGrille=0;
 	char interface = -1;
-	if (argc < 3){
+	if (argc < 4){
+		printf("Taille d'un coté de la grille carré (30 conseillé): ");
+		scanf("%d%*c", &tailleGrille);
 		printf("Nombre de pecheurs (0 .. 10) : ");
 		scanf("%d%*c", &nbpecheurs);
 		printf("Interface Graphique avec/sans (a/s) : ");
 		scanf("%c%*c", &interface);
 	} else {
-		nbpecheurs=atoi(argv[1]);
-		interface=argv[2][0];
+		tailleGrille=atoi(argv[1]);
+		nbpecheurs=atoi(argv[2]);
+		interface=argv[3][0];
 	}
 
 	switch (interface){
 		case 'a' :
-			g = New_Grille(30, nbpecheurs);
+			g = New_Grille(tailleGrille, nbpecheurs);
 			g=SDL_Print(g);
 			g->Free(g);
 			break;
 		case 's':
-			g = New_Grille(10, nbpecheurs);
+			g = New_Grille(tailleGrille, nbpecheurs);
 			g->Print(g);
 			sleep(5);
 			while(g->TourCourant < 1000){
