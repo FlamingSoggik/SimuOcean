@@ -42,7 +42,7 @@ void Selected_Pecheur(SDL_Surface *ecran, int taille_case, ElementPecheur *pt_Pe
 
 
 
-void Commandes_Pecheur(SDL_Surface *ecran, SDL_Surface *Avancer, SDL_Surface *Construire, SDL_Surface *Pecher, TTF_Font* police, TTF_Font *police_underline, int Commande_Selected, int ScreenH, int ScreenW)
+void Commandes_Pecheur(SDL_Surface *ecran, SDL_Surface *Avancer, SDL_Surface *Construire, SDL_Surface *PecherCanne,  SDL_Surface *PecherFilet, TTF_Font* police, TTF_Font *police_underline, int Commande_Selected, int ScreenH, int ScreenW)
 {
 
 
@@ -54,7 +54,8 @@ if (premierPassage == 1){
 else {
     SDL_FreeSurface(Avancer);
     SDL_FreeSurface(Construire);
-    SDL_FreeSurface(Pecher);
+    SDL_FreeSurface(PecherCanne);
+    SDL_FreeSurface(PecherFilet);
     }
 
 SDL_Color Couleur_Commandes = {193, 205, 193,0};
@@ -63,32 +64,42 @@ if (Commande_Selected==0)
 {
 Avancer = TTF_RenderText_Blended(police, "Avancer", Couleur_Commandes);
 Construire = TTF_RenderText_Blended(police, "Construire", Couleur_Commandes);
-Pecher = TTF_RenderText_Blended(police, "Pecher", Couleur_Commandes);
+PecherCanne = TTF_RenderText_Blended(police, "Pecher (Canne)", Couleur_Commandes);
+PecherFilet = TTF_RenderText_Blended(police, "Pecher (Filet)", Couleur_Commandes);
 }
 if (Commande_Selected==1)
 {
 Avancer = TTF_RenderText_Blended(police_underline, "Avancer", Couleur_Commandes);
 Construire = TTF_RenderText_Blended(police, "Construire", Couleur_Commandes);
-Pecher = TTF_RenderText_Blended(police, "Pecher", Couleur_Commandes);
+PecherCanne = TTF_RenderText_Blended(police, "Pecher (Canne)", Couleur_Commandes);
+PecherFilet = TTF_RenderText_Blended(police, "Pecher (Filet)", Couleur_Commandes);
 }
 if (Commande_Selected==2)
 {
 Avancer = TTF_RenderText_Blended(police, "Avancer", Couleur_Commandes);
 Construire = TTF_RenderText_Blended(police_underline, "Construire", Couleur_Commandes);
-Pecher = TTF_RenderText_Blended(police, "Pecher", Couleur_Commandes);
+PecherCanne = TTF_RenderText_Blended(police, "Pecher (Canne)", Couleur_Commandes);
+PecherFilet = TTF_RenderText_Blended(police, "Pecher (Filet)", Couleur_Commandes);
 }
 if (Commande_Selected==3)
 {
 Avancer = TTF_RenderText_Blended(police, "Avancer", Couleur_Commandes);
 Construire = TTF_RenderText_Blended(police, "Construire", Couleur_Commandes);
-Pecher = TTF_RenderText_Blended(police_underline, "Pecher", Couleur_Commandes);
+PecherCanne = TTF_RenderText_Blended(police_underline, "Pecher (Canne)", Couleur_Commandes);
+PecherFilet = TTF_RenderText_Blended(police, "Pecher (Filet)", Couleur_Commandes);
 }
-
+if (Commande_Selected==4)
+{
+Avancer = TTF_RenderText_Blended(police, "Avancer", Couleur_Commandes);
+Construire = TTF_RenderText_Blended(police, "Construire", Couleur_Commandes);
+PecherCanne = TTF_RenderText_Blended(police, "Pecher (Canne)", Couleur_Commandes);
+PecherFilet = TTF_RenderText_Blended(police_underline, "Pecher (Filet)", Couleur_Commandes);
+}
 
 int Centre_Commandes=(ScreenH +(ScreenW-ScreenH)/2);
 Blit_Image(ecran, Avancer, Centre_Commandes - 40, ScreenH/2 - 50);
 Blit_Image(ecran, Construire, Centre_Commandes - 40, ScreenH/2);
-Blit_Image(ecran, Pecher, Centre_Commandes - 40, ScreenH/2 + 50);
-
+Blit_Image(ecran, PecherCanne, Centre_Commandes - 40, ScreenH/2 + 50);
+Blit_Image(ecran, PecherFilet, Centre_Commandes - 40, ScreenH/2 + 100);
 
 }
