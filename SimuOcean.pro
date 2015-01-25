@@ -18,7 +18,8 @@ SOURCES += main.c \
     elementpont.c \
     elementterre.c \
     changermodeterminal.c \
-    stringreplace.c
+    stringreplace.c \
+    sdl_pecheur.c
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -37,4 +38,5 @@ HEADERS += \
     elementpont.h \
     elementterre.h \
     changermodeterminal.h \
-    stringreplace.h
+    stringreplace.h \
+    sdl_pecheur.h
