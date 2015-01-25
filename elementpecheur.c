@@ -49,9 +49,10 @@ char ElementPecheur_Init(Case *c, ElementPecheur* This){
 	This->deplacement=ElementPecheur_deplacement;
 	This->construirePont=ElementPecheur_construirePont;
 	This->mourir=ElementPecheur_mourir;
+	This->reinitSac=ElementPecheur_reinitSac;
 	This->type=PECHEUR;
 	This->Clear = Element_Clear;
-	This->sac = COUT_POSE_PONT*200;
+	This->sac = COUT_POSE_PONT*5;
 	This->longueurCanne=TAILLE_CANNE_A_PECHE;
 	This->tailleFilet=TAILLE_FILET;
 	This->distanceDeplacement=DISTANCE_DEPLACEMENT;
@@ -305,7 +306,7 @@ Bool ElementPecheur_deplacement(ElementPecheur *This, char direction)
 }
 
 
-void ElementPecheur_construirePont(ElementPecheur *This, char direction)
+Bool ElementPecheur_construirePont(ElementPecheur *This, char direction)
 {
 	int deplX = 0, deplY = 0;
 	switch (direction) {
@@ -341,12 +342,12 @@ void ElementPecheur_construirePont(ElementPecheur *This, char direction)
 			break;
 		default:
 			printf("Error, la direction du pecheur doit être un nombre entre 1 et 9 compris\n");
-			return;
+			return False;
 	}
 	if ((double)This->caseParent->posX+deplX < 0 || This->caseParent->posX+deplX > This->caseParent->g->Taille-1 || (double)This->caseParent->posY+deplY < 0 || This->caseParent->posY+deplY > This->caseParent->g->Taille-1){
 		// Le joueur essaie de construire en dehors de la ligne
 		// lancer cri de whilem
-		return;
+		return False;
 	}
 	Case *caseCreationDuPont;
 	caseCreationDuPont = &This->caseParent->g->tab[This->caseParent->posX+deplX][This->caseParent->posY+deplY];
@@ -354,11 +355,10 @@ void ElementPecheur_construirePont(ElementPecheur *This, char direction)
 		//Il y a un pond et pas de pecheur sur ce pont, on peut s'y déplacer
 		caseCreationDuPont->liste->Push(caseCreationDuPont->liste, (Element*)New_ElementPont(caseCreationDuPont));
 		This->sac-=COUT_POSE_PONT;
+		return True;
 	}
 	else {
-		printf("%d\n", __LINE__);
-		//pas possible
-		return;
+		return False;
 	}
 }
 
@@ -366,4 +366,10 @@ void ElementPecheur_construirePont(ElementPecheur *This, char direction)
 void ElementPecheur_mourir(ElementPecheur *This)
 {
 	This->caseParent->g->reinitPecheur(This->caseParent->g, (Element*)This);
+}
+
+
+void ElementPecheur_reinitSac(ElementPecheur *This)
+{
+	This->sac=COUT_POSE_PONT*5;
 }
