@@ -21,37 +21,100 @@ typedef struct ElementAnimal_Constantes{
 		struct ListeType* listePredation;
 }ElementAnimal_Constantes;
 
+///
+/// \brief C_Vide Constante des elements vides
+///
 extern ElementAnimal_Constantes C_Vide;
+///
+/// \brief C_Plancton Constantes du Plancton
+///
 extern ElementAnimal_Constantes C_Plancton;
+///
+/// \brief C_Corail Constantes du Corail
+///
 extern ElementAnimal_Constantes C_Corail;
+///
+/// \brief C_Bar Constantes du bar
+///
 extern ElementAnimal_Constantes C_Bar;
+///
+/// \brief C_Thon Constantes du Thon
+///
 extern ElementAnimal_Constantes C_Thon;
+///
+/// \brief C_Pyranha Constantes du Pyranha
+///
 extern ElementAnimal_Constantes C_Pyranha;
+///
+/// \brief C_Requin Constantes du Requin
+///
 extern ElementAnimal_Constantes C_Requin;
+///
+/// \brief C_Orque Constantes de l'Orque
+///
 extern ElementAnimal_Constantes C_Orque;
+///
+/// \brief C_Baleine Constantes de la Baleine
+///
 extern ElementAnimal_Constantes C_Baleine;
 
 typedef struct ElementAnimal
 {
-
+/*************************** Partie Héritée de Element ***************************/
+		///
+		/// \brief caseParent Pointeur vers la case dans laquelle on est
+		///
         struct Case* caseParent;
+		///
+		/// \brief type Type de l'animal (bar, plancton ...)
+		///
         Type type;
+		///
+		/// \brief Pointeur sur la fonction de liberation
+		///
 		void (*Free)(struct Element *This);
+		///
+		/// \brief Pointeur sur la fonction de nettoyage
+		///
 		void (*Clear)(struct Element *This);
 
+/*********************************************************************************/
+
+
+/************************* Partie propre à ElementAnimal *************************/
+		///
+		/// \brief dernierRepas Numero du tour du dernier repas de l'animal
+		///
 		unsigned int dernierRepas;
+
+		///
+		/// \brief Pointeur sur fonction getteur de dernierRepas
+		///
 		unsigned int (*GetDernierRepas)(struct ElementAnimal*);
+		///
+		/// \brief Pointeur sur fonction setteur de dernierRepas
+		///
 		void (*SetDernierRepas)(struct ElementAnimal* , unsigned int);
 
+		///
+		/// \brief sasiete Sasiete de l'animal
+		///
 		int sasiete;
 		int (*GetSasiete)(struct ElementAnimal*);
 		void (*SetSasiete)(struct ElementAnimal* , int);
 
+		///
+		/// \brief derniereReproduction Numero du tour de la dernière reproduction de l'animal
+		///
         unsigned int derniereReproduction;
 		unsigned int (*GetDerniereReproduction)(struct ElementAnimal*);
 		void (*SetDerniereReproduction)(struct ElementAnimal* , unsigned int);
 
+		///
+		/// \brief constantes Pointeur vers structure constante correspondant au type de l'ElementAnimal actuel
+		///
 		ElementAnimal_Constantes* constantes;
+
 
         void (*tour)(struct ElementAnimal*);
 		Bool (*survie)(struct ElementAnimal *);
@@ -60,15 +123,25 @@ typedef struct ElementAnimal
 		void (*deplacement)(struct ElementAnimal*);
 		void (*reproduction)(struct ElementAnimal*);
 
-
+		///
+		/// \brief hasAlreadyPlayed Indique si l'animal à déjà "joué" ce tour
+		///
 		char hasAlreadyPlayed;
 		void (*aFaitSonTour)(struct ElementAnimal*);
 		void (*finDuTour)(struct ElementAnimal*);
 		Bool (*doitJouerCeTour)(struct ElementAnimal*);
 
+/*********************************************************************************/
+
 } ElementAnimal;
 
 //Constructeurs
+///
+/// \brief New_ElementAnimal Créé un ElementAnimal de manière dynamique
+/// \param c Case dans laquelle l'animal sera placé
+/// \param t Type de l'animal
+/// \return Pointeur sur l'ElementAnimal nouvellement créé
+///
 ElementAnimal* New_ElementAnimal(Case *c, Type t);
 //ElementAnimal ElementAnimalCreate(Type t);
 
@@ -97,8 +170,21 @@ void ElementAnimal_aFaitSonTour(ElementAnimal* This);
 void ElementAnimal_finDuTour(ElementAnimal *This);
 Bool ElementAnimal_doitJouerCeTour(ElementAnimal *This);
 
+///
+/// \brief defineConstant definis les constantes des différents animaux
+///
 void defineConstant();
+
+///
+/// \brief remplirListePredation Remplis la liste de predation des différents animaux
+/// \param This Pointeur vers la grille
+///
 void remplirListePredation(Grille *This);
+
+///
+/// \brief viderListePredationVide la liste de predation des animaux
+/// \param This
+///
 void viderListePredation(Grille *This);
 
 #ifdef __cplusplus

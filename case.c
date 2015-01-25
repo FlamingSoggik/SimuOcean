@@ -16,7 +16,6 @@ Case Case_Create(Grille *g, unsigned int posX, unsigned int posY)
 
 void Case_Free(Case *This){
 	This->Clear(This);
-	//puts("Suppression de Case statique");
 }
 
 void Case_Clear(Case *This){

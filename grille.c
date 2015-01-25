@@ -359,6 +359,7 @@ void Grille_reinitPecheur(Grille *This, Element *elem)
 		goto recommencer;
 	}
 	caseInitiale->liste->Push(caseInitiale->liste, (Element*)pecheur);
+	pecheur->reinitSac(pecheur);
 }
 
 void Grille_faireTour(Grille *This, char isSdl){
