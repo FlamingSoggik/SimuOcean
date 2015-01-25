@@ -8,9 +8,12 @@
 #include "affichage.h"
 #include <unistd.h>
 
+#include "stringreplace.h"
+
 int main(int argc, char **argv)
 {
 	Grille *g;
+
 
 	int nbpecheurs = 0;
 	char interface = -1;
