@@ -17,6 +17,6 @@ typedef struct SDLPecheur
 
 }SDLPecheur;
 
-
+void Selected_Pecheur(SDL_Surface *ecran, int taille_case, ElementPecheur *pt_Pecheur, SDL_Rect Pos_Fenetre, SDL_Surface *blanc );
 
 #endif // SDL_PECHEUR_H

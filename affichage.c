@@ -8,7 +8,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 	const int NBR_CASES=grill->Taille; // Largeur de la grille
 
 	/* Initialisation des variables nécessaires */
-    SDL_Surface **Selected_Type_Case=NULL, *rouge=NULL, *plusIcone=NULL, *moinsIcone=NULL,  *ecran = NULL ,*fenetre = NULL, *curseur1 = NULL, *curseur2 = NULL, *boite = NULL, *graphique=NULL;
+    SDL_Surface **Selected_Type_Case=NULL, *blanc=NULL, *rouge=NULL, *plusIcone=NULL, *moinsIcone=NULL,  *ecran = NULL ,*fenetre = NULL, *curseur1 = NULL, *curseur2 = NULL, *boite = NULL, *graphique=NULL;
 	TTF_Font *police=NULL, *police_underline=NULL;
 	SDL_Event event;
 	int continuer=1;
@@ -120,9 +120,10 @@ struct Grille* SDL_Print(struct Grille *grill){
 	graphique=SDL_CreateRGBSurface(SDL_HWSURFACE, ScreenH-50, (ScreenH-50)/1.6, 32, 0, 0, 0, 0);
 	SDL_FillRect(graphique, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
     /*Monsieur le pécheur*/
-    rouge = SDL_CreateRGBSurface(SDL_HWSURFACE, taille_case, taille_case, 32, 0, 0, 0, 0);
+    rouge = SDL_CreateRGBSurface(SDL_HWSURFACE, taille_case-6, taille_case-6, 32, 0, 0, 0, 0);
     SDL_FillRect(rouge, NULL, SDL_MapRGB(ecran->format, 255, 0, 0));
-
+    blanc = SDL_CreateRGBSurface(SDL_HWSURFACE, taille_case-10, taille_case-10, 32, 0, 0, 0, 0);
+    SDL_FillRect(blanc, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
 
 
 
@@ -159,7 +160,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 					{
 						case SDLK_ESCAPE:
 							continuer = 0;
-							break;
+                            break;
 						case SDLK_F2: // Nettoie le graphique
 							if (Est_Un_Dev==2) SDL_FillRect(graphique, NULL, SDL_MapRGB(ecran->format,255,255,255));
 							break;
@@ -169,6 +170,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 							grill->Free(grill);
 							grill=New_Grille(i, nbpecheurs);
 							Compteur_Tours=0;
+                            TourDuJoueur=-1;
 							Init_Tab(nbr_espece);
 							break;
                         case SDLK_KP1: // Pavé numérique
@@ -176,26 +178,42 @@ struct Grille* SDL_Print(struct Grille *grill){
                             {
 
                                 grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '1');
+                                TourDuJoueur=TourDuJoueur+1;
+                                if (TourDuJoueur==grill->nbPecheur) TourDuJoueur=-1;
+
                             }
+
                         break;
                         case SDLK_KP2:
                             if (TourDuJoueur != -1)
                             {
                                 grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '2');
+                                TourDuJoueur=TourDuJoueur+1;
+                                if (TourDuJoueur==grill->nbPecheur) TourDuJoueur=-1;
+
                             }
+
                         break;
                         case SDLK_KP3:
                             if (TourDuJoueur != -1)
                             {
 
                                 grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '3');
+                                TourDuJoueur=TourDuJoueur+1;
+                                if (TourDuJoueur==grill->nbPecheur) TourDuJoueur=-1;
+
                             }
+
                         break;
                         case SDLK_KP4:
                             if (TourDuJoueur != -1)
                             {
                                 grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '4');
+                                TourDuJoueur=TourDuJoueur+1;
+                                if (TourDuJoueur==grill->nbPecheur) TourDuJoueur=-1;
+
                             }
+
                         break;
                         case SDLK_KP5:
 
@@ -203,27 +221,40 @@ struct Grille* SDL_Print(struct Grille *grill){
                             {
 
                                 grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '5');
+                                TourDuJoueur=TourDuJoueur+1;
+                                if (TourDuJoueur==grill->nbPecheur) TourDuJoueur=-1;
+
                             }
+
                         break;
                         case SDLK_KP6:
                             if (TourDuJoueur != -1)
                             {
 
                                 grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '6');
+                                TourDuJoueur=TourDuJoueur+1;
+                                if (TourDuJoueur==grill->nbPecheur) TourDuJoueur=-1;
+
                             }
+
                         break;
                         case SDLK_KP7:
                             if (TourDuJoueur != -1)
                             {
                                 grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '7');
+                                TourDuJoueur=TourDuJoueur+1;
+                                if (TourDuJoueur==grill->nbPecheur) TourDuJoueur=-1;
 
                             }
+
                         break;
                         case SDLK_KP8:
                             if (TourDuJoueur != -1)
                              {
 
                                 grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '8');
+                                TourDuJoueur=TourDuJoueur+1;
+                                if (TourDuJoueur==grill->nbPecheur) TourDuJoueur=-1;
 
                             }
                         break;
@@ -231,8 +262,11 @@ struct Grille* SDL_Print(struct Grille *grill){
                             if (TourDuJoueur != -1)
                             {
                                 grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '9');
+                                TourDuJoueur=TourDuJoueur+1;
+                                if (TourDuJoueur==grill->nbPecheur) TourDuJoueur=-1;
 
                             }
+
                         break;
 						case SDLK_SPACE:
 							if (Refresh_Timer>=95) pos_curseur2.x=pos_curseur1.x+50-6;
@@ -272,7 +306,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 					break;
 
 				case SDL_MOUSEMOTION:
-					//printf(" Curseur x : %d\n Curseur y: %d\n", (event.motion.x), (event.motion.y));
+                    //printf(" Curseur x : %d\n Curseur y: %d\n", (event.motion.x), (event.motion.y)); // Affocher la position du curseur en temps réel
 					if (select_curseur2 && (event.motion.x >= pos_curseur1.x) && (event.motion.x <= pos_curseur1.x+100)) // Movement du curseur2.
 					{
 						pos_curseur2.x=event.motion.x-6;
@@ -349,8 +383,6 @@ struct Grille* SDL_Print(struct Grille *grill){
 
 
 
-		/* Mise à jour de l'écran */
-		SDL_Flip(ecran);
 
 
 
@@ -362,9 +394,27 @@ struct Grille* SDL_Print(struct Grille *grill){
 
         if ((Compteur_Tours%Refresh_Timer==0) && (Refresh_Timer<=95)) // Cette boucle modifie la vitesse d'actualisation de la grille
 		{
-			grill->faireTour(grill, 1);
-            printf("%d\n", grill->TourCourant); // AFFICHAGE DU NOMBRE DE TOUR
+   printf(" Joueur : %d \n", TourDuJoueur);
+
+            // printf("%d\n", grill->TourCourant); // AFFICHAGE DU NOMBRE DE TOUR
+            if (TourDuJoueur==-1)
+            {
+                grill->faireTour(grill, 1);
+                if (((grill->TourCourant)%5)==0)
+                {
+                    TourDuJoueur=(TourDuJoueur+1)%((grill->nbPecheur)+1);
+
+
+                }
+            }
+            else
+                Selected_Pecheur(ecran, taille_case, grill->tabPecheur[TourDuJoueur], pos_fenetre, blanc );
+
+
 		}
+
+        /* Mise à jour de l'écran */
+        SDL_Flip(ecran);
 
 		//usleep(100000);
 
@@ -382,7 +432,8 @@ struct Grille* SDL_Print(struct Grille *grill){
 	SDL_FreeSurface(plusIcone);
 	SDL_FreeSurface(moinsIcone);
 	SDL_FreeSurface(graphique);
-
+    SDL_FreeSurface(rouge);
+    SDL_FreeSurface(blanc);
     for(i=0; i<12; i++){
         SDL_FreeSurface(Tab_Type[i]);
 	}
