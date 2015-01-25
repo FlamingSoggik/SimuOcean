@@ -29,8 +29,25 @@ typedef struct ListeCase {
 int ListeCase_Taille(ListeCase* This);
 void ListeCase_Clear(ListeCase *This);
 void ListeCase_New_Free(ListeCase *This);
+///
+/// \brief ListeCase_Push Ajoute une case à la liste
+/// \param This Pointeur sur la liste de case
+/// \param c Pointeur sur la Case à ajouter à la liste
+/// \return
+///
 int ListeCase_Push(ListeCase* This, struct Case *c);
+///
+/// \brief ListeCase_getNieme renvoie le N ieme element de la liste
+/// \param This Pointeur sur la liste de case
+/// \param number Numero de l'élément à retourner
+/// \return
+///
 struct Case* ListeCase_getNieme(ListeCase* This, unsigned int number);
+///
+/// \brief ListeCase_Pop Renvoie le premier element de la liste
+/// \param This Pointeur sur la liste
+/// \return Pointeur sur la premiere case de la liste
+///
 struct Case* ListeCase_Pop(ListeCase* This);
 ListeCase* New_ListeCase();
 void ListeCase_Init(ListeCase* This);

@@ -12,6 +12,9 @@ typedef struct MaillonListeType{
         struct MaillonListeType* next;
 }MaillonListeType;
 
+///
+/// \struct ListeType Liste de type d'animaux, sert pour les prédations
+///
 typedef struct ListeType {
 	int taille;
     struct MaillonListeType *Top;
