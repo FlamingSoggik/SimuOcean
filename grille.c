@@ -9,6 +9,8 @@
 #include "changermodeterminal.h"
 #include "stringreplace.h"
 #include <time.h>
+#include <unistd.h>
+#include <string.h>
 
 #define EAU "\033[00m"				//NOIR
 #define PVOID "\033[48;5;1m"		//ROUGE FONCE
@@ -381,13 +383,12 @@ void Grille_faireTour(Grille *This, char isSdl){
 				}
 			}
 			e=NULL;
-//			This->Print(This);
 		}
 	}
 	if (isSdl == 0){
 		if (This->TourCourant != 0 && This->TourCourant%5 == 0){
 			for (i=0;i<This->nbPecheur; ++i){
-				char buff[10]={'\0'};
+				char buff[20]={'\0'};
 				p=This->tabPecheur[i];
 				p->estSelectionne=1;
 				system("clear");
@@ -412,23 +413,25 @@ void Grille_faireTour(Grille *This, char isSdl){
 					c = getchar();
 					mode_raw(0);
 					if (c == 'f'){
-						mode_raw(1);
-						c = getchar();
-						mode_raw(0);
-
-//						if (fgets(buff, sizeof(buff), stdin) == NULL){
-//							break;
-//						}
-						p->pecheParFilet(p);
+						if (fgets(buff, sizeof(buff), stdin) == NULL){
+							break;
+						}
+						unsigned int longueurChaine=strlen(buff);
+						if (longueurChaine == 0)
+							break;
+						buff[longueurChaine-1]='\0';
+						p->pecheParFilet(p, buff);
+						sleep(10);
 					}
 					else if (c == 'c'){
-						mode_raw(1);
-						c = getchar();
-						mode_raw(0);
-//						if (fgets(buff, sizeof(buff), stdin) == NULL){
-//							break;
-//						}
-						p->pecheParCanne(p);
+						if (fgets(buff, sizeof(buff), stdin) == NULL){
+							break;
+						}
+						unsigned int longueurChaine=strlen(buff);
+						if (longueurChaine == 0)
+							break;
+						buff[longueurChaine-1]='\0';
+						p->pecheParCanne(p, buff);
 					}
 				}
 				p->estSelectionne=0;
@@ -465,10 +468,4 @@ void Grille_detruirePont(Grille *This, struct Case *c)
 	}
 	Element* p = This->tab[c->posX][c->posY].liste->getPont(This->tab[c->posX][c->posY].liste);
 	This->tab[c->posX][c->posY].liste->deleteElement(This->tab[c->posX][c->posY].liste, p);
-}
-
-
-void Grille_getPtrPecheurs(Grille *This, ElementPecheur *** donnerPointeurSurTableau)
-{
-	*donnerPointeurSurTableau=This->tabPecheur;
 }
