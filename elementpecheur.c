@@ -148,6 +148,7 @@ void ElementPecheur_pecheParCanne(ElementPecheur *This, char *buffer)
 
 void ElementPecheur_pecheParCanneSDL(ElementPecheur *This, unsigned int x, unsigned int y)
 {
+                printf("Ici le pecheurSDL. X:%d Y:%d\n", x,y);
 	int deplX = max(This->caseParent->posX-x, x-This->caseParent->posX);
 	int deplY = max(This->caseParent->posY-y, y-This->caseParent->posY);
 	if (deplX > TAILLE_CANNE_A_PECHE || deplY > TAILLE_CANNE_A_PECHE){
