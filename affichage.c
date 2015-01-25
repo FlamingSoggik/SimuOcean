@@ -19,6 +19,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 	ElementAnimal_Constantes *C_Selected;
     int nbr_espece[12]={0,0,0,0,0,0,0,0,0,0,0,0};
     int TourDuJoueur=0;
+    int Commande_Selected=0;
 
 
 
@@ -124,6 +125,8 @@ struct Grille* SDL_Print(struct Grille *grill){
     SDL_FillRect(rouge, NULL, SDL_MapRGB(ecran->format, 255, 0, 0));
     blanc = SDL_CreateRGBSurface(SDL_HWSURFACE, taille_case-10, taille_case-10, 32, 0, 0, 0, 0);
     SDL_FillRect(blanc, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
+    /*Actions du pécheur*/
+    SDL_Surface *Avancer=NULL, *Construire=NULL, *Pecher=NULL;
 
 
 
@@ -344,7 +347,13 @@ struct Grille* SDL_Print(struct Grille *grill){
 		}
 
 
-		if(Est_Un_Dev!=2)
+        if(!Est_Un_Dev)
+        {
+            Commandes_Pecheur(ecran, Avancer, Construire, Pecher, police, police_underline, Commande_Selected, ScreenH, ScreenW);
+        }
+
+
+        if(Est_Un_Dev!=2) // Mode grille
 		{
 			for(i=0; i<NBR_CASES; i++)
 				for(j=0; j<NBR_CASES; j++)
@@ -355,7 +364,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 				}
 		}
 
-		///ScreenH-50, (ScreenH-50)/1.6
+
 		if(Est_Un_Dev==2) // Mode Graphique
 		{
 			for(i=0; i<NBR_CASES; i++)
@@ -407,11 +416,12 @@ struct Grille* SDL_Print(struct Grille *grill){
 
                 }
             }
-            else
-                Selected_Pecheur(ecran, taille_case, grill->tabPecheur[TourDuJoueur], pos_fenetre, blanc );
 
 
-		}
+        }
+
+        if (TourDuJoueur!=-1)
+        Selected_Pecheur(ecran, taille_case, grill->tabPecheur[TourDuJoueur], pos_fenetre, blanc );
 
         /* Mise à jour de l'écran */
         SDL_Flip(ecran);
