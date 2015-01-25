@@ -70,9 +70,34 @@ char ElementPecheur_Init(Case *c, ElementPecheur* This);
 //Destructeurs
 
 //Others
+
+///
+/// \brief ElementPecheur_pecheParCanne Peche du pecheur avec la canne à peche
+/// \param This Pointeur sur le pecheur
+/// \param buffer Chaine de caractere : enchainement de direction à appliquer à partir du pecheur pour trouver la case de lancé
+///
 void ElementPecheur_pecheParCanne(ElementPecheur* This, char *buffer);
+
+///
+/// \brief ElementPecheur_pecheParFilet Peche du pecheur avec un filet
+/// \param This Pointeur sur le pecheur
+/// \param buffer Chaine de caractere : enchainement de direction à appliquer à partir du pecheur pour trouver la case de lancé
+///
 void ElementPecheur_pecheParFilet(ElementPecheur* This, char *buffer);
+///
+/// \brief ElementPecheur_deplacement Deplacement du pecheur
+/// \param This Pointeur sur le pecheur
+/// \param direction Direction du pecheur : '1' .. '9'
+/// \return
+///
 Bool ElementPecheur_deplacement(ElementPecheur* This, char direction);
+
+///
+/// \brief ElementPecheur_construirePont Construction d'un pont
+/// \param This Pointeur sur le pecheur
+/// \param direction Direction de la construction du pont: '1' .. '9'
+/// \return
+///
 Bool ElementPecheur_construirePont(ElementPecheur* This, char direction);
 
 ///
@@ -82,6 +107,10 @@ Bool ElementPecheur_construirePont(ElementPecheur* This, char direction);
 void ElementPecheur_mourir(ElementPecheur* This);
 void ElementPecheur_lancerpoisson(ElementPecheur* This); // Non implementé, implémentation prévue pour le mode multijoueur
 Bool ElementPecheur_peutPecher(ElementPecheur* This, Type t);
+///
+/// \brief ElementPecheur_reinitSac Remet le sac du pecheur à la taille originale
+/// \param This Pointeur sur le pecheur
+///
 void ElementPecheur_reinitSac(ElementPecheur* This);
 
 #ifdef __cplusplus
