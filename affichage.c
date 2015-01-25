@@ -22,6 +22,8 @@ struct Grille* SDL_Print(struct Grille *grill){
     int TourDuJoueur=-1;
     int Commande_Selected=1;
     Bool boolean=False;
+    int pointeurX, pointeurY;
+    int Actif_Peche=0;
 
 
 	SDLCase ***carre = malloc(sizeof(SDLCase**)*grill->Taille);
@@ -402,12 +404,51 @@ struct Grille* SDL_Print(struct Grille *grill){
                         if (((ScreenH +(ScreenW-ScreenH)/2)-40<=event.button.x) && (event.button.x<=(ScreenH +(ScreenW-ScreenH)/2)+30) && ((ScreenH/2 +50)<=event.button.y) && (event.button.y<=(ScreenH/2 + 90)))
                             Commande_Selected=3;
                     }
-
 					break;
+
+                /*Peche 2.0*/
+                    if (Commande_Selected==3 || Commande_Selected==4)
+                    {
+                        if (event.button.x<=ScreenH && (event.button.y<=ScreenH))
+                        {
+                            pointeurX=event.button.x;
+                            pointeurY=event.button.y;
+                            Actif_Peche=1; // Voir relachement du bouton ci-dessous
+                        }
+
+
+
+
+                    }
+
 
 				case SDL_MOUSEBUTTONUP:
 					select_curseur2=0;
-					break;
+
+                    /*Peche 2.0*/
+                        if (Commande_Selected==3 || Commande_Selected==4)
+                        {
+                            if (Actif_Peche==1 && event.button.x<=ScreenH && (event.button.y<=ScreenH))
+                            {
+                                pointeurX=pointeurX-event.button.x;
+                                pointeurY=pointeurY-event.button.y;
+                                Actif_Peche=0;
+                                printf("X: %d Y: %d\n", pointeurX, pointeurY);
+
+//                                Pos_Pecheur.x=pt_Pecheur->caseParent->posY; //Position sur la grille, pas sur l'écran
+//                                Pos_Pecheur.y=pt_Pecheur->caseParent->posX;
+
+//                                Pos_Pecheur.x=(Pos_Fenetre.x)+(Pos_Pecheur.x)*taille_case + (Pos_Pecheur.x) + (taille_case-(0.5*taille_case))/2; // Position sur l'écran
+//                                Pos_Pecheur.y=(Pos_Fenetre.y)+(Pos_Pecheur.y)*taille_case + (Pos_Pecheur.y) + (taille_case-(0.5*taille_case))/2; // Position de la grille + position du pecheur + le grillage + la marge du peucheur.
+
+
+
+
+
+//                                grill->tabPecheur[TourDuJoueur]->pecheParCanne(grill->tabPecheur[TourDuJoueur], '9');
+                            }
+                        }
+                    break;
 
 				case SDL_MOUSEMOTION:
                     //printf(" Curseur x : %d\n Curseur y: %d\n", (event.motion.x), (event.motion.y)); // Affocher la position du curseur en temps réel
@@ -527,7 +568,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 
         }
 
-        printf("%d\n", TourDuJoueur);
+
 
 
 
