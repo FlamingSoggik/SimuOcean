@@ -3,22 +3,23 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 
-LIBS += -L/usr/lib/x86_64-linux-gnu -lSDL -lSDL_image -lSDL_ttf
+LIBS += -L/usr/lib/x86_64-linux-gnu -lSDL -lSDL_ttf
 
 SOURCES += main.c \
     element.c \
-	elementanimal.c \
+    elementanimal.c \
     case.c \
     listeelem.c \
     listetype.c \
     grille.c \
-	affichage.c \
+    affichage.c \
     listecase.c \
     elementpecheur.c \
     elementpont.c \
     elementterre.c \
     changermodeterminal.c \
-    stringreplace.c
+    stringreplace.c \
+    sdl_pecheur.c
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -30,12 +31,12 @@ HEADERS += \
     listeelem.h \
     listetype.h \
     grille.h \
-	Bool.h \
-	affichage.h \
+    Bool.h \
+    affichage.h \
     listecase.h \
     elementpecheur.h \
     elementpont.h \
     elementterre.h \
     changermodeterminal.h \
-    stringreplace.h
-
+    stringreplace.h \
+    sdl_pecheur.h
