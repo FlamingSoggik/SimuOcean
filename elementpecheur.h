@@ -36,9 +36,9 @@ typedef struct ElementPecheur
 		unsigned int PositionInitialeY;
 		char estSelectionne;
 		void (*pecheParCanne)(struct ElementPecheur*, char*);
-		void (*pecheParCanneSDL)(struct ElementPecheur*, unsigned int, unsigned int);
+		void (*pecheParCanneSDL)(struct ElementPecheur*, int, int);
 		void (*pecheParFilet)(struct ElementPecheur*, char*);
-		void (*pecheParFiletSDL)(struct ElementPecheur*, unsigned int, unsigned int);
+		void (*pecheParFiletSDL)(struct ElementPecheur*, int, int);
 		Bool (*deplacement)(struct ElementPecheur*, char);
 		Bool (*construirePont)(struct ElementPecheur*, char);
 		void (*mourir)(struct ElementPecheur*); // --> fait
@@ -79,7 +79,7 @@ char ElementPecheur_Init(Case *c, ElementPecheur* This);
 /// \param buffer Chaine de caractere : enchainement de direction à appliquer à partir du pecheur pour trouver la case de lancé
 ///
 void ElementPecheur_pecheParCanne(ElementPecheur* This, char *buffer);
-void ElementPecheur_pecheParCanneSDL(ElementPecheur *This, unsigned int x, unsigned int y);
+void ElementPecheur_pecheParCanneSDL(ElementPecheur *This, int x, int y);
 
 ///
 /// \brief ElementPecheur_pecheParFilet Peche du pecheur avec un filet
@@ -87,7 +87,7 @@ void ElementPecheur_pecheParCanneSDL(ElementPecheur *This, unsigned int x, unsig
 /// \param buffer Chaine de caractere : enchainement de direction à appliquer à partir du pecheur pour trouver la case de lancé
 ///
 void ElementPecheur_pecheParFilet(ElementPecheur* This, char *buffer);
-void ElementPecheur_pecheParFiletSDL(ElementPecheur *This, unsigned int x, unsigned int y);
+void ElementPecheur_pecheParFiletSDL(ElementPecheur *This, int x, int y);
 ///
 /// \brief ElementPecheur_deplacement Deplacement du pecheur
 /// \param This Pointeur sur le pecheur

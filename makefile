@@ -7,7 +7,7 @@ all: ${EXEC}
 
 ${EXEC}:
 	gcc `sdl-config --cflags` -g -Wall -Wextra -c *.c
-	gcc `sdl-config --cflags --libs` -g -lSDL_ttf -o TestSDL01 *.o
+	gcc `sdl-config --cflags --libs` -lm -g -lSDL_ttf -o TestSDL01 *.o
 
 
 

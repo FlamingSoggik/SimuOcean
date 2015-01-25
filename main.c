@@ -29,7 +29,10 @@ int main(int argc, char **argv)
 		nbpecheurs=atoi(argv[2]);
 		interface=argv[3][0];
 	}
-
+	if (tailleGrille > 80){
+		tailleGrille = 80;
+		printf("La taille maximum de la grille est 80\n");
+	}
 	switch (interface){
 		case 'a' :
 			g = New_Grille(tailleGrille, nbpecheurs);

@@ -1,6 +1,9 @@
 ﻿#include "affichage.h"
+#include "sdl_pecheur.h"
 #include "elementpecheur.h"
 #include "Bool.h"
+#include <math.h>
+
 
 struct Grille* SDL_Print(struct Grille *grill){
 
@@ -21,7 +24,9 @@ struct Grille* SDL_Print(struct Grille *grill){
     int TourDuJoueur=-1;
     int Commande_Selected=1;
     Bool boolean=False;
-
+    int pointeurX, pointeurY;
+    int Actif_Peche=0;
+    double Arrondivision=0;
 
 	SDLCase ***carre = malloc(sizeof(SDLCase**)*grill->Taille);
 	unsigned int k;
@@ -115,15 +120,15 @@ struct Grille* SDL_Print(struct Grille *grill){
 	pos_curseur2.x=pos_curseur1.x-6;
 	pos_curseur2.y=pos_curseur1.y-15;
 	/*DevMode*/
-	moinsIcone=Charger_Image("ICONE_moins.bmp", ecran);
-	plusIcone=Charger_Image("ICONE_plus.bmp", ecran);
+    moinsIcone=Charger_Image("ICONE_moins.bmp");
+    plusIcone=Charger_Image("ICONE_plus.bmp");
 	/*Graphique*/
 	graphique=SDL_CreateRGBSurface(SDL_HWSURFACE, ScreenH-50, (ScreenH-50)/1.6, 32, 0, 0, 0, 0);
 	SDL_FillRect(graphique, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
     /*Monsieur le pécheur*/
-    rouge = SDL_CreateRGBSurface(SDL_HWSURFACE, taille_case-6, taille_case-6, 32, 0, 0, 0, 0);
+    rouge = SDL_CreateRGBSurface(SDL_HWSURFACE, 0.8*taille_case, 0.8*taille_case, 32, 0, 0, 0, 0);
     SDL_FillRect(rouge, NULL, SDL_MapRGB(ecran->format, 255, 0, 0));
-    blanc = SDL_CreateRGBSurface(SDL_HWSURFACE, taille_case-10, taille_case-10, 32, 0, 0, 0, 0);
+    blanc = SDL_CreateRGBSurface(SDL_HWSURFACE, 0.5*taille_case, 0.5*taille_case, 32, 0, 0, 0, 0);
     SDL_FillRect(blanc, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
     /*Actions du pécheur*/
     SDL_Surface *Avancer=NULL, *Construire=NULL, *Pecher=NULL;
@@ -184,7 +189,7 @@ struct Grille* SDL_Print(struct Grille *grill){
                                 if (Commande_Selected ==2)
                                 boolean = grill->tabPecheur[TourDuJoueur]->construirePont(grill->tabPecheur[TourDuJoueur], '1');
                                 //if (Commande_Selected ==3)
-                                //grill->tabPecheur[TourDuJoueur]->pecheParCanne(grill->tabPecheur[TourDuJoueur], '1');
+                                //grill->tabPecheur[TourDuJoueur]->pecheParCanneSDL(grill->tabPecheur[TourDuJoueur], '1');
 
                                 if(boolean)
                                 {
@@ -198,9 +203,18 @@ struct Grille* SDL_Print(struct Grille *grill){
                         case SDLK_KP2:
                             if (TourDuJoueur != -1)
                             {
-                                grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '2');
+                                if (Commande_Selected == 1)
+                                boolean=grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '2');
+                                if (Commande_Selected ==2)
+                                boolean = grill->tabPecheur[TourDuJoueur]->construirePont(grill->tabPecheur[TourDuJoueur], '2');
+                                //if (Commande_Selected ==3)
+                                //grill->tabPecheur[TourDuJoueur]->pecheParCanne(grill->tabPecheur[TourDuJoueur], '2');
+
+                                if(boolean)
+                                {
                                 TourDuJoueur=TourDuJoueur+1;
                                 if (TourDuJoueur==grill->nbPecheur) TourDuJoueur=-1;
+                                }
 
                             }
 
@@ -209,9 +223,18 @@ struct Grille* SDL_Print(struct Grille *grill){
                             if (TourDuJoueur != -1)
                             {
 
-                                grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '3');
+                                if (Commande_Selected == 1)
+                                boolean=grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '3');
+                                if (Commande_Selected ==2)
+                                boolean = grill->tabPecheur[TourDuJoueur]->construirePont(grill->tabPecheur[TourDuJoueur], '3');
+                                //if (Commande_Selected ==3)
+                                //grill->tabPecheur[TourDuJoueur]->pecheParCanne(grill->tabPecheur[TourDuJoueur], '3');
+
+                                if(boolean)
+                                {
                                 TourDuJoueur=TourDuJoueur+1;
                                 if (TourDuJoueur==grill->nbPecheur) TourDuJoueur=-1;
+                                }
 
                             }
 
@@ -219,9 +242,19 @@ struct Grille* SDL_Print(struct Grille *grill){
                         case SDLK_KP4:
                             if (TourDuJoueur != -1)
                             {
-                                grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '4');
+
+                                if (Commande_Selected == 1)
+                                boolean=grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '4');
+                                if (Commande_Selected ==2)
+                                boolean = grill->tabPecheur[TourDuJoueur]->construirePont(grill->tabPecheur[TourDuJoueur], '4');
+                                //if (Commande_Selected ==3)
+                                //grill->tabPecheur[TourDuJoueur]->pecheParCanne(grill->tabPecheur[TourDuJoueur], '4');
+
+                                if(boolean)
+                                {
                                 TourDuJoueur=TourDuJoueur+1;
                                 if (TourDuJoueur==grill->nbPecheur) TourDuJoueur=-1;
+                                }
 
                             }
 
@@ -231,9 +264,18 @@ struct Grille* SDL_Print(struct Grille *grill){
                             if (TourDuJoueur != -1)
                             {
 
-                                grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '5');
+                                if (Commande_Selected == 1)
+                                boolean=grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '5');
+                                if (Commande_Selected ==2)
+                                boolean = grill->tabPecheur[TourDuJoueur]->construirePont(grill->tabPecheur[TourDuJoueur], '5');
+                                //if (Commande_Selected ==3)
+                                //grill->tabPecheur[TourDuJoueur]->pecheParCanne(grill->tabPecheur[TourDuJoueur], '5');
+
+                                if(boolean)
+                                {
                                 TourDuJoueur=TourDuJoueur+1;
                                 if (TourDuJoueur==grill->nbPecheur) TourDuJoueur=-1;
+                                }
 
                             }
 
@@ -242,9 +284,18 @@ struct Grille* SDL_Print(struct Grille *grill){
                             if (TourDuJoueur != -1)
                             {
 
-                                grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '6');
+                                if (Commande_Selected == 1)
+                                boolean=grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '6');
+                                if (Commande_Selected ==2)
+                                boolean = grill->tabPecheur[TourDuJoueur]->construirePont(grill->tabPecheur[TourDuJoueur], '6');
+                                //if (Commande_Selected ==3)
+                                //grill->tabPecheur[TourDuJoueur]->pecheParCanne(grill->tabPecheur[TourDuJoueur], '6');
+
+                                if(boolean)
+                                {
                                 TourDuJoueur=TourDuJoueur+1;
                                 if (TourDuJoueur==grill->nbPecheur) TourDuJoueur=-1;
+                                }
 
                             }
 
@@ -252,9 +303,19 @@ struct Grille* SDL_Print(struct Grille *grill){
                         case SDLK_KP7:
                             if (TourDuJoueur != -1)
                             {
-                                grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '7');
+
+                                if (Commande_Selected == 1)
+                                boolean=grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '7');
+                                if (Commande_Selected ==2)
+                                boolean = grill->tabPecheur[TourDuJoueur]->construirePont(grill->tabPecheur[TourDuJoueur], '7');
+                                //if (Commande_Selected ==3)
+                                //grill->tabPecheur[TourDuJoueur]->pecheParCanne(grill->tabPecheur[TourDuJoueur], '7');
+
+                                if(boolean)
+                                {
                                 TourDuJoueur=TourDuJoueur+1;
                                 if (TourDuJoueur==grill->nbPecheur) TourDuJoueur=-1;
+                                }
 
                             }
 
@@ -263,18 +324,37 @@ struct Grille* SDL_Print(struct Grille *grill){
                             if (TourDuJoueur != -1)
                              {
 
-                                grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '8');
+                                if (Commande_Selected == 1)
+                                boolean=grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '8');
+                                if (Commande_Selected ==2)
+                                boolean = grill->tabPecheur[TourDuJoueur]->construirePont(grill->tabPecheur[TourDuJoueur], '8');
+                                //if (Commande_Selected ==3)
+                                //grill->tabPecheur[TourDuJoueur]->pecheParCanne(grill->tabPecheur[TourDuJoueur], '8');
+
+                                if(boolean)
+                                {
                                 TourDuJoueur=TourDuJoueur+1;
                                 if (TourDuJoueur==grill->nbPecheur) TourDuJoueur=-1;
+                                }
 
                             }
                         break;
                         case SDLK_KP9:
                             if (TourDuJoueur != -1)
                             {
-                                grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '9');
+
+                                if (Commande_Selected == 1)
+                                boolean=grill->tabPecheur[TourDuJoueur]->deplacement(grill->tabPecheur[TourDuJoueur], '9');
+                                if (Commande_Selected ==2)
+                                boolean = grill->tabPecheur[TourDuJoueur]->construirePont(grill->tabPecheur[TourDuJoueur], '9');
+                                //if (Commande_Selected ==3)
+                                //grill->tabPecheur[TourDuJoueur]->pecheParCanne(grill->tabPecheur[TourDuJoueur], '9');
+
+                                if(boolean)
+                                {
                                 TourDuJoueur=TourDuJoueur+1;
                                 if (TourDuJoueur==grill->nbPecheur) TourDuJoueur=-1;
+                                }
 
                             }
 
@@ -327,11 +407,61 @@ struct Grille* SDL_Print(struct Grille *grill){
                             Commande_Selected=3;
                     }
 
-					break;
+
+                /*Peche 2.0*/
+
+                    if (Commande_Selected==3)
+                    {
+
+                        if (event.button.x<=ScreenH && (event.button.y<=ScreenH))
+                        {
+                            pointeurX=event.button.x;
+                            pointeurY=event.button.y;
+                            Actif_Peche=1; // Voir relachement du bouton ci-dessous
+
+                        }
+                    }
+                    break;
 
 				case SDL_MOUSEBUTTONUP:
 					select_curseur2=0;
-					break;
+
+                    /*Peche 2.0*/
+                        if (Commande_Selected==3 || Commande_Selected==4)
+                        {
+                            if (Actif_Peche==1 && event.button.x<=ScreenH && (event.button.y<=ScreenH))
+                            {
+                                pointeurX=event.button.x-pointeurX;
+                                pointeurY=event.button.y-pointeurY;
+                                Actif_Peche=0;
+
+                                Arrondivision=(pointeurX/taille_case)*1.0;
+                                if(Arrondivision>=0.5)
+                                {
+                                    pointeurX=ceil(Arrondivision);
+                                }
+                                else pointeurX=floor(Arrondivision);
+
+                                Arrondivision=(pointeurY/taille_case)*1.0;
+                                if(Arrondivision>=0.5)
+                                {
+                                    pointeurY=ceil(Arrondivision);
+                                }
+                                else pointeurY=floor(Arrondivision);
+printf("X:%d Y:%d\n", (grill->tabPecheur[TourDuJoueur]->caseParent->posY)+pointeurX, grill->tabPecheur[TourDuJoueur]->caseParent->posX+pointeurY);
+
+                                if (Commande_Selected==3)
+                                {
+                                    grill->tabPecheur[TourDuJoueur]->pecheParCanneSDL(grill->tabPecheur[TourDuJoueur], ((grill->tabPecheur[TourDuJoueur]->caseParent->posX)+pointeurY), (grill->tabPecheur[TourDuJoueur]->caseParent->posY)+pointeurX);
+                                    TourDuJoueur=TourDuJoueur+1;
+                                    if (TourDuJoueur==grill->nbPecheur) TourDuJoueur=-1;
+                                }
+                                else if (Commande_Selected==4)
+                                    grill->tabPecheur[TourDuJoueur]->pecheParFiletSDL(grill->tabPecheur[TourDuJoueur],  pointeurX, pointeurY);
+
+                            }
+                        }
+                    break;
 
 				case SDL_MOUSEMOTION:
                     //printf(" Curseur x : %d\n Curseur y: %d\n", (event.motion.x), (event.motion.y)); // Affocher la position du curseur en temps réel
@@ -397,7 +527,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 					Selected_Type_Case=Select_Type(grill, Tab_Type, i, j, nbr_espece); // Permet d'actualiser le tableau des nombres d'espèce.
 
 			Blit_Image(ecran, graphique, 25, (ScreenH/2)-((ScreenH-50)/1.6)/2);
-			Print_Graphique(graphique, ScreenH-50, (ScreenH-50)/1.6, nbr_espece, NBR_CASES, grill);
+            Print_Graphique(graphique, (ScreenH-50)/1.6, nbr_espece, NBR_CASES, grill);
 
 		}
 
@@ -451,7 +581,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 
         }
 
-        printf("%d\n", TourDuJoueur);
+
 
 
 
@@ -646,7 +776,7 @@ void Spinner_Print(SDL_Surface *ecran, int Plus_Ou_Moins, int ScreenH, int Scree
 	}
 }
 
-SDL_Surface* Charger_Image(const char* fic, SDL_Surface* ecran)
+SDL_Surface* Charger_Image(const char* fic)
 {
 	SDL_Surface* res;
 	SDL_Surface* tmp = SDL_LoadBMP(fic);
@@ -879,8 +1009,8 @@ void Init_Tab(int *tab)
 
 }
 
-//void Print_Graphique(graphique, ScreenH-50, (ScreenH-50)/1.6, nbr_espece, NBR_CASES, Compteur_Tours, grill)
-void Print_Graphique(SDL_Surface *graph, int GraphW, int GraphH, int *nbr_espece, int NBR_CASES, Grille *grill)
+
+void Print_Graphique(SDL_Surface *graph, int GraphH, int *nbr_espece, int NBR_CASES, Grille *grill)
 {
 
 
