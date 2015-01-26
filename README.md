@@ -3,8 +3,11 @@ SimuOcean
 
 Simulation d'un océan en C
 
-Utilisation :
+Compilation :
 Un makefile est à votre disposition, faites en bon usage.
+Librarie utilisé : SLD en version 1.2 et sdl ttf
+
+Utilisation :
 Le programme généré s'appelle LifeGame et peut être lancé avec ou sans arguments.
 * Le premier argument correspond à la taille de la grille
 * Le second argument correspond au nombre de pecheurs en jeux
@@ -46,3 +49,7 @@ Le joueur qui doit jouer est acculé d'un point blanc
 		- pecher canne
 			Pour pecher il faut cliquer sur le pecheur et relacher sur la case ou l'on souhaite lancer le filet
 			La selection se fait automatiquement si l'action est réalisée avec un clic gauche
+
+La touche f2 permet d'effacer le graph des espèces
+La touche f5 permet de recommencer la partie
+La touche Echap quitte le jeu

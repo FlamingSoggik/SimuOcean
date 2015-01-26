@@ -11,7 +11,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 	const int NBR_CASES=grill->Taille; // Largeur de la grille
 
 	/* Initialisation des variables nécessaires */
-    SDL_Surface **Selected_Type_Case=NULL, *blanc=NULL, *rouge=NULL, *plusIcone=NULL, *moinsIcone=NULL,  *ecran = NULL ,*fenetre = NULL, *curseur1 = NULL, *curseur2 = NULL, *boite = NULL, *graphique=NULL;
+	SDL_Surface **Selected_Type_Case=NULL, *blanc=NULL, *rouge=NULL, *plusIcone=NULL, *moinsIcone=NULL, *graphIcone=NULL,*paramIcone=NULL,*ecran = NULL ,*fenetre = NULL, *curseur1 = NULL, *curseur2 = NULL, *boite = NULL, *graphique=NULL;
 	TTF_Font *police=NULL, *police_underline=NULL;
 	SDL_Event event;
 	int continuer=1;
@@ -120,8 +120,10 @@ struct Grille* SDL_Print(struct Grille *grill){
 	pos_curseur2.x=pos_curseur1.x-6;
 	pos_curseur2.y=pos_curseur1.y-15;
 	/*DevMode*/
-    moinsIcone=Charger_Image("ICONE_moins.bmp");
-    plusIcone=Charger_Image("ICONE_plus.bmp");
+	moinsIcone=Charger_Image("ICONE_moins.bmp");
+	plusIcone=Charger_Image("ICONE_plus.bmp");
+	paramIcone=Charger_Image("parametre.bmp");
+	graphIcone=Charger_Image("graph.bmp");
 	/*Graphique*/
 	graphique=SDL_CreateRGBSurface(SDL_HWSURFACE, ScreenH-50, (ScreenH-50)/1.6, 32, 0, 0, 0, 0);
 	SDL_FillRect(graphique, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
@@ -488,7 +490,7 @@ printf("X:%d Y:%d\n", (grill->tabPecheur[TourDuJoueur]->caseParent->posY)+pointe
 		SDL_BlitSurface(fenetre, NULL, ecran, &pos_fenetre);
 		SDL_BlitSurface(curseur1, NULL, ecran, &pos_curseur1);
 		SDL_BlitSurface(curseur2, NULL, ecran, &pos_curseur2);
-		Blit_Image(ecran, moinsIcone, ScreenW-45, 15);
+		Blit_Image(ecran, paramIcone, ScreenW-45, 15);
 
 
 		/* Opérations */
@@ -498,7 +500,7 @@ printf("X:%d Y:%d\n", (grill->tabPecheur[TourDuJoueur]->caseParent->posY)+pointe
 			Spinner_Print(ecran, 0, ScreenH, ScreenW, plusIcone);
 			Spinner_Print(ecran, 1, ScreenH, ScreenW, moinsIcone);
             Print_Constantes( ecran, C_Selected, police, ScreenH, ScreenW);
-			Blit_Image(ecran, moinsIcone, ScreenW-45, ScreenH-45);
+			Blit_Image(ecran, graphIcone, ScreenW-45, ScreenH-45);
 		}
 
 
@@ -603,6 +605,8 @@ printf("X:%d Y:%d\n", (grill->tabPecheur[TourDuJoueur]->caseParent->posY)+pointe
 	SDL_FreeSurface(boite);
 	SDL_FreeSurface(plusIcone);
 	SDL_FreeSurface(moinsIcone);
+	SDL_FreeSurface(paramIcone);
+	SDL_FreeSurface(graphIcone);
 	SDL_FreeSurface(graphique);
     SDL_FreeSurface(rouge);
     SDL_FreeSurface(blanc);
