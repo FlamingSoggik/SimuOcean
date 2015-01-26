@@ -397,7 +397,7 @@ struct Grille* SDL_Print(struct Grille *grill){
                 /*Peche 2.0*/
 
 
-                        if (event.button.x<=ScreenH && (event.button.y<=ScreenH))
+                        if (event.button.x<=ScreenH && (event.button.y<=ScreenH) && ((grill->nbPecheur>0)))
                         {
 
                             pointeurX=event.button.x;
@@ -416,7 +416,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 					select_curseur2=0;
 
                     /*Peche 2.0*/
-                        if (Commande_Selected==3 || Commande_Selected==4)
+                        if ((Commande_Selected==3 || Commande_Selected==4) && (grill->nbPecheur>0))
                         {
                             if (Actif_Peche!=0 && event.button.x<=ScreenH && (event.button.y<=ScreenH))
                             {
@@ -485,7 +485,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 		SDL_BlitSurface(curseur1, NULL, ecran, &pos_curseur1);
 		SDL_BlitSurface(curseur2, NULL, ecran, &pos_curseur2);
 		Blit_Image(ecran, paramIcone, ScreenW-45, 15);
-
+        Print_NbTour(ecran, grill, police, ScreenH, ScreenW );
 
 		/* Opérations */
 
@@ -666,13 +666,13 @@ SDL_Surface* Charger(int taille_case, SDL_Surface *ecran, int type)
 			SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 80, 24, 69)); //Polution viollet
 			break;
 		case 8:
-			SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 236, 68, 155)); // Thon rose
+            SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 209, 0, 57)); // Thon rose
 			break;
 		case 9:
 			SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 55, 49, 33)); // Requin marron
 			break;
 		case 10:
-			SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 209, 0, 57)); // Pyranha rose
+            SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 236, 68, 155)); // Pyranha rose
 			break;
         case 11:
             SDL_FillRect(Case, NULL, SDL_MapRGB(ecran->format, 91, 60, 17)); // Terre Marron
@@ -837,6 +837,9 @@ ElementAnimal_Constantes *Select_Legende(SDL_Surface** Legendes_Surface, TTF_Fon
 	SDL_Color Couleur_Requin = {55, 49, 33,0};
 	SDL_Color Couleur_Pyranha = {209, 0, 57,0};
 
+
+
+
 	Legendes_Surface[0] = TTF_RenderText_Blended(police, "Mer", Couleur_Mer);
 	Legendes_Surface[1] = TTF_RenderText_Blended(police, "Pont", Couleur_Pont);
 	Legendes_Surface[2] = TTF_RenderText_Blended(police, "Baleine", Couleur_Baleine);
@@ -921,13 +924,6 @@ void Print_Constantes(SDL_Surface *ecran, ElementAnimal_Constantes *Selected, TT
 {
 	char texte[30]="";
     int Centre_Commandes=(ScreenH +(ScreenW-ScreenH)/2-15); // Le 15 correspond à la largeur des images bmp !
-
-
-
-    //            Blit_Image(ecran, srf, (Centre_Commandes - 100), (ScreenH/2 -100 + 50*i));
-
-
-
 
 
 	sprintf(texte, "Survie=%d", Selected->dureeSurvie);
@@ -1072,7 +1068,6 @@ void Print_NbTour(SDL_Surface *ecran, Grille *grill, TTF_Font* police, int Scree
 
 
 }
-
 
 
 
