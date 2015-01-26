@@ -394,17 +394,20 @@ struct Grille* SDL_Print(struct Grille *grill){
 
                 /*Peche 2.0*/
 
-                    if (Commande_Selected==3)
-                    {
 
                         if (event.button.x<=ScreenH && (event.button.y<=ScreenH))
                         {
+
                             pointeurX=event.button.x;
                             pointeurY=event.button.y;
-                            Actif_Peche=1; // Voir relachement du bouton ci-dessous
+                            if(event.button.button == SDL_BUTTON_LEFT)
+                                Commande_Selected=3;
+                            if(event.button.button == SDL_BUTTON_RIGHT)
+                                Commande_Selected=4;
+                            Actif_Peche=Commande_Selected; // Voir relachement du bouton ci-dessous
 
                         }
-                    }
+
                     break;
 
 				case SDL_MOUSEBUTTONUP:
@@ -413,12 +416,13 @@ struct Grille* SDL_Print(struct Grille *grill){
                     /*Peche 2.0*/
                         if (Commande_Selected==3 || Commande_Selected==4)
                         {
-                            if (Actif_Peche==1 && event.button.x<=ScreenH && (event.button.y<=ScreenH))
+                            if (Actif_Peche!=0 && event.button.x<=ScreenH && (event.button.y<=ScreenH))
                             {
                                 pointeurX=event.button.x-pointeurX;
                                 pointeurY=event.button.y-pointeurY;
-                                Actif_Peche=0;
 
+
+                                /*Calcul de peche*/
                                 Arrondivision=(pointeurX/taille_case)*1.0;
                                 if(Arrondivision>=0.5)
                                 {
@@ -432,17 +436,20 @@ struct Grille* SDL_Print(struct Grille *grill){
                                     pointeurY=ceil(Arrondivision);
                                 }
                                 else pointeurY=floor(Arrondivision);
-printf("X:%d Y:%d\n", (grill->tabPecheur[TourDuJoueur]->caseParent->posY)+pointeurX, grill->tabPecheur[TourDuJoueur]->caseParent->posX+pointeurY);
-
+                                /*Peche*/
                                 if (Commande_Selected==3)
                                 {
                                     grill->tabPecheur[TourDuJoueur]->pecheParCanneSDL(grill->tabPecheur[TourDuJoueur], ((grill->tabPecheur[TourDuJoueur]->caseParent->posX)+pointeurY), (grill->tabPecheur[TourDuJoueur]->caseParent->posY)+pointeurX);
+
+                                }
+                                else if (Commande_Selected==4)
+                                {
+                                    grill->tabPecheur[TourDuJoueur]->pecheParFiletSDL(grill->tabPecheur[TourDuJoueur],  pointeurX, pointeurY);
                                     TourDuJoueur=TourDuJoueur+1;
                                     if (TourDuJoueur==grill->nbPecheur) TourDuJoueur=-1;
                                 }
-                                else if (Commande_Selected==4)
-                                    grill->tabPecheur[TourDuJoueur]->pecheParFiletSDL(grill->tabPecheur[TourDuJoueur],  pointeurX, pointeurY);
 
+                                 Actif_Peche=0;
                             }
                         }
                     break;
@@ -452,9 +459,10 @@ printf("X:%d Y:%d\n", (grill->tabPecheur[TourDuJoueur]->caseParent->posY)+pointe
 					if (select_curseur2 && (event.motion.x >= pos_curseur1.x) && (event.motion.x <= pos_curseur1.x+100)) // Movement du curseur2.
 					{
 						pos_curseur2.x=event.motion.x-6;
-					}
 
+					}
 					break;
+
 
 
 
@@ -489,6 +497,8 @@ printf("X:%d Y:%d\n", (grill->tabPecheur[TourDuJoueur]->caseParent->posY)+pointe
         if(!Est_Un_Dev)
         {
             Commandes_Pecheur(ecran, Avancer, Construire, PecherCanne, PecherFilet, police, police_underline, Commande_Selected, ScreenH, ScreenW);
+            if (TourDuJoueur!=-1)
+            Sac_Pecheur( ecran, police, grill->tabPecheur[TourDuJoueur], ScreenH, ScreenW );
         }
 
 
@@ -590,6 +600,8 @@ printf("X:%d Y:%d\n", (grill->tabPecheur[TourDuJoueur]->caseParent->posY)+pointe
 	SDL_FreeSurface(graphique);
     SDL_FreeSurface(rouge);
     SDL_FreeSurface(blanc);
+
+
     for(i=0; i<12; i++){
         SDL_FreeSurface(Tab_Type[i]);
 	}
