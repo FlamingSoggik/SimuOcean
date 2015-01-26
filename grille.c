@@ -427,7 +427,6 @@ void Grille_faireTour(Grille *This, char isSdl){
 							break;
 						buff[longueurChaine-1]='\0';
 						p->pecheParFilet(p, buff);
-						sleep(10);
 					}
 					else if (c == 'c'){
 						printf("Entrez le chemin pour acceder à l'element à pecher (123456789) et validez avec la touche entrée\n");

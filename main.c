@@ -42,6 +42,7 @@ int main(int argc, char **argv)
 		case 's':
 			g = New_Grille(tailleGrille, nbpecheurs);
 			g->Print(g);
+			printf("Lancement du jeu dans 5 secondes. Si la grille ne s'affiche pas correctement, utilisez ctrl+- pour diminuer la taille ou ctrl+maj++ \n");
 			sleep(5);
 			while(g->TourCourant < 1000){
 				g->faireTour(g, 0);
