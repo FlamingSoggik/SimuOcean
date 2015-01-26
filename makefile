@@ -6,8 +6,8 @@ EXEC=SDL_01  #Nom du programme à modifier
 all: ${EXEC}
 
 ${EXEC}:
-	gcc `sdl-config --cflags` -g -Wall -Wextra -c *.c
-	gcc `sdl-config --cflags --libs` -lm -g -lSDL_ttf -o TestSDL01 *.o
+	gcc `sdl-config --cflags` -Wall -Wextra -c *.c
+	gcc `sdl-config --cflags --libs` -lm -lSDL_ttf -o LifeGame *.o
 
 
 
