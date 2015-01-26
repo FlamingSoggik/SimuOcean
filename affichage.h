@@ -27,6 +27,6 @@ void Print_Constantes(SDL_Surface *ecran, ElementAnimal_Constantes *Selected, TT
 ElementAnimal_Constantes *Edit_Constantes(int Plus_Ou_Moins, int position, ElementAnimal_Constantes *Selected);
 void Init_Tab(int *tab);
 void Print_Graphique(SDL_Surface *graph, int GraphH, int *nbr_espece, int NBR_CASES, Grille *grill);
-
+void Print_NbTour( SDL_Surface *ecran, Grille *grill, TTF_Font* police, int ScreenH, int ScreenW );
 
 #endif // AFFICHAGE_H

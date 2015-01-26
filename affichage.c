@@ -117,7 +117,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 	curseur2 = SDL_CreateRGBSurface(SDL_HWSURFACE, 12, 32, 32, 0, 0, 0, 0);
 	SDL_FillRect(curseur2, NULL, SDL_MapRGB(ecran->format, 104, 111, 140));
 	SDL_Rect pos_curseur2;
-	pos_curseur2.x=pos_curseur1.x-6;
+    pos_curseur2.x=pos_curseur1.x+50-6;
 	pos_curseur2.y=pos_curseur1.y-15;
 	/*DevMode*/
     moinsIcone=Charger_Image("ICONE_moins.bmp");
@@ -440,11 +440,13 @@ struct Grille* SDL_Print(struct Grille *grill){
                                 if (Commande_Selected==3)
                                 {
                                     grill->tabPecheur[TourDuJoueur]->pecheParCanneSDL(grill->tabPecheur[TourDuJoueur], ((grill->tabPecheur[TourDuJoueur]->caseParent->posX)+pointeurY), (grill->tabPecheur[TourDuJoueur]->caseParent->posY)+pointeurX);
+                                    TourDuJoueur=TourDuJoueur+1;
+                                    if (TourDuJoueur==grill->nbPecheur) TourDuJoueur=-1;
 
                                 }
                                 else if (Commande_Selected==4)
                                 {
-                                    grill->tabPecheur[TourDuJoueur]->pecheParFiletSDL(grill->tabPecheur[TourDuJoueur],  pointeurX, pointeurY);
+                                    grill->tabPecheur[TourDuJoueur]->pecheParFiletSDL(grill->tabPecheur[TourDuJoueur],  ((grill->tabPecheur[TourDuJoueur]->caseParent->posX)+pointeurY), (grill->tabPecheur[TourDuJoueur]->caseParent->posY)+pointeurX);
                                     TourDuJoueur=TourDuJoueur+1;
                                     if (TourDuJoueur==grill->nbPecheur) TourDuJoueur=-1;
                                 }
@@ -481,6 +483,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 		SDL_BlitSurface(curseur1, NULL, ecran, &pos_curseur1);
 		SDL_BlitSurface(curseur2, NULL, ecran, &pos_curseur2);
 		Blit_Image(ecran, moinsIcone, ScreenW-45, 15);
+        Print_NbTour(ecran, grill, police, ScreenH, ScreenW );
 
 
 		/* Opérations */
@@ -1049,7 +1052,23 @@ void Print_Graphique(SDL_Surface *graph, int GraphH, int *nbr_espece, int NBR_CA
 }
 
 
+void Print_NbTour(SDL_Surface *ecran, Grille *grill, TTF_Font* police, int ScreenH, int ScreenW )
+{
+    SDL_Surface *NombreTour=NULL;
+    SDL_Color Couleur_Commandes = {193, 205, 193,0};
 
+    char texte[30]="";
+    sprintf(texte, "Tour = %d", grill->TourCourant);
+    NombreTour = TTF_RenderText_Blended(police, texte, Couleur_Commandes);
+
+    int Centre_Commandes=(ScreenH +(ScreenW-ScreenH)/2);
+
+    Blit_Image(ecran, NombreTour, Centre_Commandes-30, ScreenH/2 - 200 );
+
+ SDL_FreeSurface(NombreTour);
+
+
+}
 
 
 
