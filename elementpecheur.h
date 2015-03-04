@@ -117,6 +117,9 @@ Bool ElementPecheur_peutPecher(ElementPecheur* This, Type t);
 ///
 void ElementPecheur_reinitSac(ElementPecheur* This);
 
+void ElementPecheur_Clear(Element *This);
+void ElementPecheur_New_Free(Element* This);
+
 #ifdef __cplusplus
 }
 #endif

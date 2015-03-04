@@ -439,14 +439,14 @@ struct Grille* SDL_Print(struct Grille *grill){
 							}
 							else pointeurY=floor(Arrondivision);
 							/*Peche*/
-							if (Commande_Selected==3)
+							if (Commande_Selected==3 && TourDuJoueur != -1)
 							{
 								grill->tabPecheur[TourDuJoueur]->pecheParCanneSDL(grill->tabPecheur[TourDuJoueur], ((grill->tabPecheur[TourDuJoueur]->caseParent->posX)+pointeurY), (grill->tabPecheur[TourDuJoueur]->caseParent->posY)+pointeurX);
 								TourDuJoueur=TourDuJoueur+1;
 								if (TourDuJoueur==grill->nbPecheur) TourDuJoueur=-1;
 
 							}
-							else if (Commande_Selected==4)
+							else if (Commande_Selected==4 && TourDuJoueur != -1)
 							{
 								grill->tabPecheur[TourDuJoueur]->pecheParFiletSDL(grill->tabPecheur[TourDuJoueur],  ((grill->tabPecheur[TourDuJoueur]->caseParent->posX)+pointeurY), (grill->tabPecheur[TourDuJoueur]->caseParent->posY)+pointeurX);
 								TourDuJoueur=TourDuJoueur+1;
@@ -501,6 +501,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 		if(!Est_Un_Dev)
 		{
 			Commandes_Pecheur(ecran, Avancer, Construire, PecherCanne, PecherFilet, police, police_underline, Commande_Selected, ScreenH, ScreenW);
+
 			if (TourDuJoueur!=-1)
 				Sac_Pecheur( ecran, police, grill->tabPecheur[TourDuJoueur], ScreenH, ScreenW );
 		}
@@ -606,6 +607,10 @@ struct Grille* SDL_Print(struct Grille *grill){
 	SDL_FreeSurface(graphique);
 	SDL_FreeSurface(rouge);
 	SDL_FreeSurface(blanc);
+	SDL_FreeSurface(Avancer);
+	SDL_FreeSurface(Construire);
+	SDL_FreeSurface(PecherCanne);
+	SDL_FreeSurface(PecherFilet);
 
 
 	for(i=0; i<12; i++){
@@ -628,6 +633,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 	free(carre);
 
 	TTF_CloseFont(police);
+	TTF_CloseFont(police_underline);
 	SDL_Quit();
 	TTF_Quit();
 	return grill;
@@ -925,18 +931,7 @@ void Print_Constantes(SDL_Surface *ecran, ElementAnimal_Constantes *Selected, TT
 	char texte[30]="";
 	int Centre_Commandes=(ScreenH +(ScreenW-ScreenH)/2-15); // Le 15 correspond à la largeur des images bmp !
 
-
-	<<<<<<< HEAD
-
-			//            Blit_Image(ecran, srf, (Centre_Commandes - 100), (ScreenH/2 -100 + 50*i));
-
-
-
-
-
-			=======
-			>>>>>>> 899d925d1eba4a6bd37679e3302a752638592f7a
-			  sprintf(texte, "Survie=%d", Selected->dureeSurvie);
+    sprintf(texte, "Survie=%d", Selected->dureeSurvie);
 	SDL_Surface *Surface_texte;
 	SDL_Color Blanc = {254, 255, 255,0};
 	Surface_texte=TTF_RenderText_Blended(police, texte, Blanc );
@@ -1030,7 +1025,7 @@ void Print_Graphique(SDL_Surface *graph, int GraphH, int *nbr_espece, int NBR_CA
 	SDL_FillRect(Gros_Pixel, NULL, SDL_MapRGB(graph->format, 204, 255, 0));
 	Blit_Image(graph,Gros_Pixel,(grill->TourCourant), GraphH-((nbr_espece[6]*GraphH)/(NBR_CASES*NBR_CASES)));
 
-	SDL_FillRect(Gros_Pixel, NULL, SDL_MapRGB(graph->format, 254, 255, 255));//Baleine
+    SDL_FillRect(Gros_Pixel, NULL, SDL_MapRGB(graph->format, 0, 0, 255));//Baleine
 	Blit_Image(graph,Gros_Pixel,(grill->TourCourant), GraphH-((nbr_espece[2]*GraphH)/(NBR_CASES*NBR_CASES)));
 
 	SDL_FillRect(Gros_Pixel, NULL, SDL_MapRGB(graph->format, 0, 114, 45));//Bar

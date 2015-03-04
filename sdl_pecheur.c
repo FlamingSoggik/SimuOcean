@@ -46,17 +46,17 @@ void Commandes_Pecheur(SDL_Surface *ecran, SDL_Surface *Avancer, SDL_Surface *Co
 {
 
 
-static int premierPassage = 1;
+//static int premierPassage = 1;
 
-if (premierPassage == 1){
-    premierPassage=0;
-}
-else {
-    SDL_FreeSurface(Avancer);
-    SDL_FreeSurface(Construire);
-    SDL_FreeSurface(PecherCanne);
-    SDL_FreeSurface(PecherFilet);
-    }
+//if (premierPassage == 1){
+//	premierPassage=0;
+//}
+//else {
+//	SDL_FreeSurface(Avancer);
+//	SDL_FreeSurface(Construire);
+//	SDL_FreeSurface(PecherCanne);
+//	SDL_FreeSurface(PecherFilet);
+//	}
 
 SDL_Color Couleur_Commandes = {193, 205, 193,0};
 
@@ -74,21 +74,21 @@ Construire = TTF_RenderText_Blended(police, "Construire", Couleur_Commandes);
 PecherCanne = TTF_RenderText_Blended(police, "Pecher (Canne)", Couleur_Commandes);
 PecherFilet = TTF_RenderText_Blended(police, "Pecher (Filet)", Couleur_Commandes);
 }
-if (Commande_Selected==2)
+else if (Commande_Selected==2)
 {
 Avancer = TTF_RenderText_Blended(police, "Avancer", Couleur_Commandes);
 Construire = TTF_RenderText_Blended(police_underline, "Construire", Couleur_Commandes);
 PecherCanne = TTF_RenderText_Blended(police, "Pecher (Canne)", Couleur_Commandes);
 PecherFilet = TTF_RenderText_Blended(police, "Pecher (Filet)", Couleur_Commandes);
 }
-if (Commande_Selected==3)
+else if (Commande_Selected==3)
 {
 Avancer = TTF_RenderText_Blended(police, "Avancer", Couleur_Commandes);
 Construire = TTF_RenderText_Blended(police, "Construire", Couleur_Commandes);
 PecherCanne = TTF_RenderText_Blended(police_underline, "Pecher (Canne)", Couleur_Commandes);
 PecherFilet = TTF_RenderText_Blended(police, "Pecher (Filet)", Couleur_Commandes);
 }
-if (Commande_Selected==4)
+else if (Commande_Selected==4)
 {
 Avancer = TTF_RenderText_Blended(police, "Avancer", Couleur_Commandes);
 Construire = TTF_RenderText_Blended(police, "Construire", Couleur_Commandes);
@@ -101,6 +101,12 @@ Blit_Image(ecran, Avancer, Centre_Commandes - 40, ScreenH/2 - 50);
 Blit_Image(ecran, Construire, Centre_Commandes - 40, ScreenH/2);
 Blit_Image(ecran, PecherCanne, Centre_Commandes - 40, ScreenH/2 + 50);
 Blit_Image(ecran, PecherFilet, Centre_Commandes - 40, ScreenH/2 + 100);
+
+SDL_FreeSurface(Avancer);
+SDL_FreeSurface(Construire);
+SDL_FreeSurface(PecherCanne);
+SDL_FreeSurface(PecherFilet);
+
 
 }
 

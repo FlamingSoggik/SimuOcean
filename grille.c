@@ -358,7 +358,8 @@ void Grille_reinitPecheur(Grille *This, Element *elem)
 		}
 		goto recommencer;
 	}
-	caseInitiale->liste->Push(caseInitiale->liste, (Element*)pecheur);
+    This->moveFromTo(This, (Element*)pecheur, caseInitiale->posX, caseInitiale->posY);
+    //caseInitiale->liste->Push(caseInitiale->liste, (Element*)pecheur);
 	pecheur->reinitSac(pecheur);
 }
 

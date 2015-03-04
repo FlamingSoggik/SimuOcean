@@ -25,7 +25,7 @@ ElementPecheur* New_ElementPecheur(Case *c){
 		free(This);
 		return NULL;
 	}
-	This->Free = Element_New_Free;
+	This->Free = ElementPecheur_New_Free;
 	return This;
 }
 
@@ -53,7 +53,7 @@ char ElementPecheur_Init(Case *c, ElementPecheur* This){
 	This->mourir=ElementPecheur_mourir;
 	This->reinitSac=ElementPecheur_reinitSac;
 	This->type=PECHEUR;
-	This->Clear = Element_Clear;
+	This->Clear = ElementPecheur_Clear;
 	This->sac = COUT_POSE_PONT*5;
 	This->longueurCanne=TAILLE_CANNE_A_PECHE;
 	This->tailleFilet=TAILLE_FILET;
@@ -62,6 +62,16 @@ char ElementPecheur_Init(Case *c, ElementPecheur* This){
 	return 0;
 }
 
+void ElementPecheur_Clear(Element *This){
+	ElementPecheur *p = (ElementPecheur*)This;
+	p->listeDePeche->Free(p->listeDePeche);
+}
+
+void ElementPecheur_New_Free(Element* This){
+	ElementPecheur *p = (ElementPecheur*)This;
+	if(p) This->Clear(This);
+	free(p);
+}
 
 void ElementPecheur_pecheParCanne(ElementPecheur *This, char *buffer)
 {
@@ -428,6 +438,7 @@ Bool ElementPecheur_construirePont(ElementPecheur *This, char direction)
 
 void ElementPecheur_mourir(ElementPecheur *This)
 {
+    printf("%s\n", __FUNCTION__);
 	This->caseParent->g->reinitPecheur(This->caseParent->g, (Element*)This);
 }
 

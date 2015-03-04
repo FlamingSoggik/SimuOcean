@@ -95,13 +95,13 @@ void defineConstant()
     C_Corail.gestation=1;
     C_Corail.frequenceReproduction=5;
 
-    C_Bar.dureeSurvie=14;
+    C_Bar.dureeSurvie=24;
     C_Bar.taille=4;
     C_Bar.tailleDuBide=4;
-    C_Bar.sautMax=1;
+    C_Bar.sautMax=2;
     C_Bar.metabolisme=1;
     C_Bar.gestation=1;
-    C_Bar.frequenceReproduction=5;
+    C_Bar.frequenceReproduction=2;
 
     C_Thon.dureeSurvie=14;
     C_Thon.taille=4;
@@ -111,37 +111,37 @@ void defineConstant()
     C_Thon.gestation=1;
     C_Thon.frequenceReproduction=6;
 
-    C_Pyranha.dureeSurvie=60;
+    C_Pyranha.dureeSurvie=15;
     C_Pyranha.taille=5;
     C_Pyranha.tailleDuBide=5;
-    C_Pyranha.sautMax=3;
+    C_Pyranha.sautMax=2;
     C_Pyranha.metabolisme=1;
     C_Pyranha.gestation=1;
-    C_Pyranha.frequenceReproduction=5;
+    C_Pyranha.frequenceReproduction=7;
 
-    C_Requin.dureeSurvie=10;
+    C_Requin.dureeSurvie=20;
     C_Requin.taille=6;
-    C_Requin.tailleDuBide=5;
+    C_Requin.tailleDuBide=12;
     C_Requin.sautMax=5;
     C_Requin.metabolisme=1;
     C_Requin.gestation=1;
-    C_Requin.frequenceReproduction=2;
+    C_Requin.frequenceReproduction=13;
 
-    C_Orque.dureeSurvie=60;
+    C_Orque.dureeSurvie=29;
     C_Orque.taille=7;
-    C_Orque.tailleDuBide=9;
-    C_Orque.sautMax=3;
+    C_Orque.tailleDuBide=7;
+    C_Orque.sautMax=4;
     C_Orque.metabolisme=1;
     C_Orque.gestation=2;
-    C_Orque.frequenceReproduction=5;
+    C_Orque.frequenceReproduction=18;
 
-    C_Baleine.dureeSurvie=60;
+    C_Baleine.dureeSurvie=29;
     C_Baleine.taille=8;
     C_Baleine.tailleDuBide=8;
     C_Baleine.sautMax=4;
     C_Baleine.metabolisme=1;
     C_Baleine.gestation=5;
-    C_Baleine.frequenceReproduction=36;
+    C_Baleine.frequenceReproduction=50;
 }
 
 void remplirListePredation(Grille* This)
@@ -375,11 +375,10 @@ void ElementAnimal_predation(ElementAnimal *This)
 	}
 
 	if(l_elementBouffable->Top->e->type == PECHEUR){
-
-		ElementPecheur *p = (ElementPecheur*)l_elementBouffable->Top->e;
-		p->mourir(p);
+        ElementPecheur *p = (ElementPecheur*)l_elementBouffable->Top->e;
 		This->caseParent->g->moveFromTo(This->caseParent->g, (Element*)This, l_elementBouffable->Top->e->caseParent->posX, l_elementBouffable->Top->e->caseParent->posY);
-		//This->caseParent->liste->deleteElement(This->caseParent->liste, (Element*)This);
+        p->mourir(p);
+        //This->caseParent->liste->deleteElement(This->caseParent->liste, (Element*)This);
 	} else if (l_elementBouffable->Top->e->type == PONT){
 		ElementPont *ep = (ElementPont*)l_elementBouffable->Top->e;
 		//l_elementBouffable->getNieme(l_elementBouffable, rand()%l_elementBouffable->Taille(l_elementBouffable));
