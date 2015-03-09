@@ -75,7 +75,7 @@ void ElementPecheur_New_Free(Element* This){
 
 void ElementPecheur_pecheParCanne(ElementPecheur *This, char *buffer)
 {
-	int k=0;
+	int16_t k=0;
 	char *buf1, *buf2;
 
 	buf1 = str_replace(buffer, "68", "9");
@@ -96,8 +96,8 @@ void ElementPecheur_pecheParCanne(ElementPecheur *This, char *buffer)
 	buf1 = str_replace(buf2, "26", "3");
 	free(buf2);
 
-	int deplX = 0, deplY = 0;
-	int nbrDirrectionDonne = strlen(buf1);
+	int16_t deplX = 0, deplY = 0;
+	int16_t nbrDirrectionDonne = strlen(buf1);
 
 	while (k < nbrDirrectionDonne && k < TAILLE_CANNE_A_PECHE){
 		switch (buf1[k]) {
@@ -156,12 +156,12 @@ void ElementPecheur_pecheParCanne(ElementPecheur *This, char *buffer)
 	}
 }
 
-void ElementPecheur_pecheParCanneSDL(ElementPecheur *This, int x, int y)
+void ElementPecheur_pecheParCanneSDL(ElementPecheur *This, int16_t x, int16_t y)
 {
 	if (x < 0 || x > (double)This->caseParent->g->Taille-1 || y < 0 || y > (double)This->caseParent->g->Taille-1)
 		return;
-	int deplX = (double)This->caseParent->posX-x;
-	int deplY = (double)This->caseParent->posY-y;
+	int16_t deplX = (double)This->caseParent->posX-x;
+	int16_t deplY = (double)This->caseParent->posY-y;
 	if (deplX < 0)
 		deplX*=-1;
 	if (deplY < 0)
@@ -192,8 +192,8 @@ Bool ElementPecheur_peutPecher(ElementPecheur *This, Type t)
 
 void ElementPecheur_pecheParFilet(ElementPecheur *This, char *buffer)
 {
-	int  k = 0;
-	int i, j;
+	int16_t  k = 0;
+	int16_t i, j;
 	char *buf1, *buf2;
 
 	buf1 = str_replace(buffer, "68", "9");
@@ -214,8 +214,8 @@ void ElementPecheur_pecheParFilet(ElementPecheur *This, char *buffer)
 	buf1 = str_replace(buf2, "26", "3");
 	free(buf2);
 
-	int deplX = 0, deplY = 0;
-	int nbrDirrectionDonne = strlen(buf1);
+	int16_t deplX = 0, deplY = 0;
+	int16_t nbrDirrectionDonne = strlen(buf1);
 
 	while (k < nbrDirrectionDonne && k < DISTANCE_LANCE_FILET){
 		switch (buf1[k]) {
@@ -283,12 +283,12 @@ void ElementPecheur_pecheParFilet(ElementPecheur *This, char *buffer)
 	free(MatriceAccessiblePeche);
 }
 
-void ElementPecheur_pecheParFiletSDL(ElementPecheur *This, int x, int y)
+void ElementPecheur_pecheParFiletSDL(ElementPecheur *This, int16_t x, int16_t y)
 {
 	if (x < 0 || x > (double)This->caseParent->g->Taille-1 || y < 0 || y > (double)This->caseParent->g->Taille-1)
 		return;
-	int deplX = (double)This->caseParent->posX-x;
-	int deplY = (double)This->caseParent->posY-y;
+	int16_t deplX = (double)This->caseParent->posX-x;
+	int16_t deplY = (double)This->caseParent->posY-y;
 	if (deplX < 0)
 		deplX*=-1;
 	if (deplY < 0)
@@ -323,7 +323,7 @@ void ElementPecheur_pecheParFiletSDL(ElementPecheur *This, int x, int y)
 
 Bool ElementPecheur_deplacement(ElementPecheur *This, char direction)
 {
-	int deplX = 0, deplY = 0;
+	int16_t deplX = 0, deplY = 0;
 	switch (direction) {
 		case '1':
 			deplX=1;
@@ -381,7 +381,7 @@ Bool ElementPecheur_deplacement(ElementPecheur *This, char direction)
 
 Bool ElementPecheur_construirePont(ElementPecheur *This, char direction)
 {
-	int deplX = 0, deplY = 0;
+	int16_t deplX = 0, deplY = 0;
 	switch (direction) {
 		case '1':
 			deplX=1;

@@ -10,7 +10,7 @@ char *str_replace(const char *str, const char *old, const char *newStr)
 	const char *p, *q;
 	size_t oldlen = strlen(old);
 	size_t count, retlen, newlen = strlen(newStr);
-	int samesize = (oldlen == newlen);
+	int16_t samesize = (oldlen == newlen);
 
 	if (!samesize) {
 		for (count = 0, p = str; (q = strstr(p, old)) != NULL; p = q + oldlen)

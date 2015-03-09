@@ -8,28 +8,28 @@
 struct Grille* SDL_Print(struct Grille *grill){
 
 	const long PROP_FENETRE=95; // (1-100) Proportion de la grille par rapport à la fenetre du jeu.
-	const int NBR_CASES=grill->Taille; // Largeur de la grille
+	const int16_t NBR_CASES=grill->Taille; // Largeur de la grille
 
 	/* Initialisation des variables nécessaires */
 	SDL_Surface **Selected_Type_Case=NULL, *blanc=NULL, *rouge=NULL, *plusIcone=NULL, *moinsIcone=NULL, *graphIcone=NULL,*paramIcone=NULL,*ecran = NULL ,*fenetre = NULL, *curseur1 = NULL, *curseur2 = NULL, *boite = NULL, *graphique=NULL;
 	TTF_Font *police=NULL, *police_underline=NULL;
 	SDL_Event event;
-	int continuer=1;
-	int select_curseur2=0;
-	int i=0; int j=0, nbpecheurs=0;
-	int Est_Un_Dev =0;
-	int Compteur_Tours=0, Refresh_Timer=1;
+	int16_t continuer=1;
+	int16_t select_curseur2=0;
+	int16_t i=0; int16_t j=0, nbpecheurs=0;
+	int16_t Est_Un_Dev =0;
+	int16_t Compteur_Tours=0, Refresh_Timer=1;
 	ElementAnimal_Constantes *C_Selected;
-	int nbr_espece[12]={0,0,0,0,0,0,0,0,0,0,0,0};
-	int TourDuJoueur=-1;
-	int Commande_Selected=1;
+	int16_t nbr_espece[12]={0,0,0,0,0,0,0,0,0,0,0,0};
+	int16_t TourDuJoueur=-1;
+	int16_t Commande_Selected=1;
 	Bool boolean=False;
-	int pointeurX, pointeurY;
-	int Actif_Peche=0;
+	int16_t pointeurX, pointeurY;
+	int16_t Actif_Peche=0;
 	double Arrondivision=0;
 
 	SDLCase ***carre = malloc(sizeof(SDLCase**)*grill->Taille);
-	unsigned int k;
+	uint16_t k;
 	for(k=0;k<grill->Taille;++k){
 		carre[k] = malloc(sizeof(SDLCase*)*grill->Taille);
 	}
@@ -57,8 +57,8 @@ struct Grille* SDL_Print(struct Grille *grill){
 	/* On récupère la taille de l'écran */
 	const SDL_VideoInfo *videoInfo;
 	videoInfo=SDL_GetVideoInfo();
-	int ScreenW=videoInfo->current_w*0.9;
-	int ScreenH=videoInfo->current_h*0.9;
+	int16_t ScreenW=videoInfo->current_w*0.9;
+	int16_t ScreenH=videoInfo->current_h*0.9;
 
 
 	ecran = SDL_SetVideoMode(ScreenW, ScreenH, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
@@ -94,8 +94,8 @@ struct Grille* SDL_Print(struct Grille *grill){
 
 	/* Gestion de la grille */
 
-	int taille_fenetre=ScreenH*PROP_FENETRE/100; //Par défaut
-	int taille_case = taille_fenetre/NBR_CASES;
+	int16_t taille_fenetre=ScreenH*PROP_FENETRE/100; //Par défaut
+	int16_t taille_case = taille_fenetre/NBR_CASES;
 	if (taille_fenetre-taille_case*NBR_CASES <= NBR_CASES-1)
 		taille_case--;
 	taille_fenetre=taille_case*NBR_CASES+NBR_CASES-1;
@@ -640,7 +640,7 @@ struct Grille* SDL_Print(struct Grille *grill){
 }
 
 
-SDL_Surface* Charger(int taille_case, SDL_Surface *ecran, int type)
+SDL_Surface* Charger(int16_t taille_case, SDL_Surface *ecran, int16_t type)
 {
 
 	SDL_Surface *Case;
@@ -693,7 +693,7 @@ SDL_Surface* Charger(int taille_case, SDL_Surface *ecran, int type)
 
 }
 
-void Actualiser( SDLCase *Case_Tab, SDL_Surface **Case_Type, int absisse, int ordonnee)
+void Actualiser( SDLCase *Case_Tab, SDL_Surface **Case_Type, int16_t absisse, int16_t ordonnee)
 {
 
 
@@ -703,7 +703,7 @@ void Actualiser( SDLCase *Case_Tab, SDL_Surface **Case_Type, int absisse, int or
 
 }
 
-SDL_Surface** Select_Type(struct Grille *grill, SDL_Surface **Tab_Type, int i, int j, int *tab)
+SDL_Surface** Select_Type(struct Grille *grill, SDL_Surface **Tab_Type, int16_t i, int16_t j, int16_t *tab)
 {
 
 
@@ -766,10 +766,10 @@ SDL_Surface** Select_Type(struct Grille *grill, SDL_Surface **Tab_Type, int i, i
 
 }
 
-void Spinner_Print(SDL_Surface *ecran, int Plus_Ou_Moins, int ScreenH, int ScreenW, SDL_Surface *srf)
+void Spinner_Print(SDL_Surface *ecran, int16_t Plus_Ou_Moins, int16_t ScreenH, int16_t ScreenW, SDL_Surface *srf)
 {
-	int i;
-	int Centre_Commandes=(ScreenH +(ScreenW-ScreenH)/2-15); // Le 15 correspond à la largeur des images bmp !
+	int16_t i;
+	int16_t Centre_Commandes=(ScreenH +(ScreenW-ScreenH)/2-15); // Le 15 correspond à la largeur des images bmp !
 
 	if(Plus_Ou_Moins==0)
 	{
@@ -806,7 +806,7 @@ SDL_Surface* Charger_Image(const char* fic)
 
 }
 
-void Blit_Image(SDL_Surface* ecran,SDL_Surface* srf,int x,int y)
+void Blit_Image(SDL_Surface* ecran,SDL_Surface* srf,int16_t x,int16_t y)
 {
 	SDL_Rect R;
 	R.x = x;
@@ -816,10 +816,10 @@ void Blit_Image(SDL_Surface* ecran,SDL_Surface* srf,int x,int y)
 
 
 
-ElementAnimal_Constantes *Select_Legende(SDL_Surface** Legendes_Surface, TTF_Font* police, TTF_Font *police_underline, int selected)
+ElementAnimal_Constantes *Select_Legende(SDL_Surface** Legendes_Surface, TTF_Font* police, TTF_Font *police_underline, int16_t selected)
 {
-	static int premierPassage = 1;
-	int i;
+	static int16_t premierPassage = 1;
+	int16_t i;
 
 	if (premierPassage == 1){
 		premierPassage=0;
@@ -926,10 +926,10 @@ ElementAnimal_Constantes *Select_Legende(SDL_Surface** Legendes_Surface, TTF_Fon
 }
 
 
-void Print_Constantes(SDL_Surface *ecran, ElementAnimal_Constantes *Selected, TTF_Font *police, int ScreenH, int ScreenW)
+void Print_Constantes(SDL_Surface *ecran, ElementAnimal_Constantes *Selected, TTF_Font *police, int16_t ScreenH, int16_t ScreenW)
 {
 	char texte[30]="";
-	int Centre_Commandes=(ScreenH +(ScreenW-ScreenH)/2-15); // Le 15 correspond à la largeur des images bmp !
+	int16_t Centre_Commandes=(ScreenH +(ScreenW-ScreenH)/2-15); // Le 15 correspond à la largeur des images bmp !
 
     sprintf(texte, "Survie=%d", Selected->dureeSurvie);
 	SDL_Surface *Surface_texte;
@@ -971,7 +971,7 @@ void Print_Constantes(SDL_Surface *ecran, ElementAnimal_Constantes *Selected, TT
 	return;
 }
 
-ElementAnimal_Constantes *Edit_Constantes(int Plus_Ou_Moins, int position, ElementAnimal_Constantes *Selected)
+ElementAnimal_Constantes *Edit_Constantes(int16_t Plus_Ou_Moins, int16_t position, ElementAnimal_Constantes *Selected)
 {
 	if (Plus_Ou_Moins==0) Plus_Ou_Moins=-1;
 
@@ -1003,9 +1003,9 @@ ElementAnimal_Constantes *Edit_Constantes(int Plus_Ou_Moins, int position, Eleme
 
 }
 
-void Init_Tab(int *tab)
+void Init_Tab(int16_t *tab)
 {
-	int i=0;
+	int16_t i=0;
 	for (i=0; i<11; i++)
 		tab[i]=0;
 	return;
@@ -1013,7 +1013,7 @@ void Init_Tab(int *tab)
 }
 
 
-void Print_Graphique(SDL_Surface *graph, int GraphH, int *nbr_espece, int NBR_CASES, Grille *grill)
+void Print_Graphique(SDL_Surface *graph, int16_t GraphH, int16_t *nbr_espece, int16_t NBR_CASES, Grille *grill)
 {
 
 
@@ -1056,7 +1056,7 @@ void Print_Graphique(SDL_Surface *graph, int GraphH, int *nbr_espece, int NBR_CA
 }
 
 
-void Print_NbTour(SDL_Surface *ecran, Grille *grill, TTF_Font* police, int ScreenH, int ScreenW )
+void Print_NbTour(SDL_Surface *ecran, Grille *grill, TTF_Font* police, int16_t ScreenH, int16_t ScreenW )
 {
 	SDL_Surface *NombreTour=NULL;
 	SDL_Color Couleur_Commandes = {193, 205, 193,0};
@@ -1065,7 +1065,7 @@ void Print_NbTour(SDL_Surface *ecran, Grille *grill, TTF_Font* police, int Scree
 	sprintf(texte, "Tour = %d", grill->TourCourant);
 	NombreTour = TTF_RenderText_Blended(police, texte, Couleur_Commandes);
 
-	int Centre_Commandes=(ScreenH +(ScreenW-ScreenH)/2);
+	int16_t Centre_Commandes=(ScreenH +(ScreenW-ScreenH)/2);
 
 	Blit_Image(ecran, NombreTour, Centre_Commandes-30, ScreenH/2 - 200 );
 

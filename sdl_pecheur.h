@@ -8,7 +8,7 @@
 #include "elementpecheur.h"
 
 
-void Afficher_Pecheurs( SDL_Surface *ecran, int taille_case, ElementPecheur **pt_Pecheur, int nbrpecheur, SDL_Rect Pos_Fenetre, SDL_Surface *rouge );
+void Afficher_Pecheurs( SDL_Surface *ecran, int16_t taille_case, ElementPecheur **pt_Pecheur, int16_t nbrpecheur, SDL_Rect Pos_Fenetre, SDL_Surface *rouge );
 
 typedef struct SDLPecheur
 {
@@ -17,7 +17,7 @@ typedef struct SDLPecheur
 
 }SDLPecheur;
 
-void Selected_Pecheur(SDL_Surface *ecran, int taille_case, ElementPecheur *pt_Pecheur, SDL_Rect Pos_Fenetre, SDL_Surface *blanc );
-void Commandes_Pecheur(SDL_Surface *ecran, SDL_Surface *Avancer, SDL_Surface *Construire, SDL_Surface *PecherCanne,  SDL_Surface *PecherFilet, TTF_Font* police, TTF_Font *police_underline, int Commande_Selected, int ScreenH, int ScreenW);
-void Sac_Pecheur( SDL_Surface *ecran, TTF_Font* police, ElementPecheur *pt_Pecheur, int ScreenH, int ScreenW );
+void Selected_Pecheur(SDL_Surface *ecran, int16_t taille_case, ElementPecheur *pt_Pecheur, SDL_Rect Pos_Fenetre, SDL_Surface *blanc );
+void Commandes_Pecheur(SDL_Surface *ecran, SDL_Surface *Avancer, SDL_Surface *Construire, SDL_Surface *PecherCanne,  SDL_Surface *PecherFilet, TTF_Font* police, TTF_Font *police_underline, int16_t Commande_Selected, int16_t ScreenH, int16_t ScreenW);
+void Sac_Pecheur( SDL_Surface *ecran, TTF_Font* police, ElementPecheur *pt_Pecheur, int16_t ScreenH, int16_t ScreenW );
 #endif // SDL_PECHEUR_H

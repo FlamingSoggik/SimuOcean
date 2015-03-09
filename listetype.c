@@ -35,7 +35,7 @@ void ListeType_Clear(ListeType *This){
 	}
 }
 
-int ListeType_Push(ListeType* This, Type t){
+int16_t ListeType_Push(ListeType* This, Type t){
 	MaillonListeType *il = malloc(sizeof(MaillonListeType));
 	if (!il) return ERROR_MALLOC_ITEM;
 	il->next=This->Top;
@@ -56,7 +56,7 @@ Type ListeType_Pop(ListeType* This){
 	return t;
 }
 
-int ListeType_Taille(ListeType* This){
+int16_t ListeType_Taille(ListeType* This){
 	return This->taille;
 }
 

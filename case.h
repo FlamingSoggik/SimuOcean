@@ -3,14 +3,15 @@
 
 #include "listeelem.h"
 #include "grille.h"
+#include <stdint.h>
 
 struct Grille;
 
 
 typedef struct Case {
 	struct Grille* g;
-    unsigned int posX;
-	unsigned int posY;
+	uint16_t posX;
+	uint16_t posY;
     struct ListeElem *liste;
 	void(*Free)(struct Case*);
 	void(*Clear)(struct Case*);
@@ -24,7 +25,7 @@ typedef struct Case {
 /// \param posY Position y dans la grille parente
 /// \return Case Initialisée
 ///
-struct Case Case_Create(struct Grille * g, unsigned int posX, unsigned int posY);
+struct Case Case_Create(struct Grille * g, uint16_t posX, uint16_t posY);
 
 ///
 /// \brief Case_Free Libère la case pointée par This en la nettoyant. Pas de free réellement appelé puisque la création de case se fait uniquement de manière statique

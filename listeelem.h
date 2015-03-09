@@ -3,6 +3,7 @@
 
 #include "element.h"
 #include "Bool.h"
+#include <stdint.h>
 
 #define ERROR_MALLOC_ITEM -1
 #define ERROR_LISTE_VIDE -2
@@ -18,14 +19,14 @@ typedef struct MaillonListeElem{
 }MaillonListeElem;
 
 typedef struct ListeElem {
-	unsigned int taille;
+	uint16_t taille;
     struct MaillonListeElem *Top;
 	void(*Free)(struct ListeElem*);
-	int(*Push)(struct ListeElem*, struct Element*);
+	int16_t(*Push)(struct ListeElem*, struct Element*);
 	struct Element* (*Pop)(struct ListeElem*);
 	void(*Clear)(struct ListeElem*);
 	void(*Vider)(struct ListeElem*);
-	unsigned int(*Taille)(struct ListeElem*);
+	uint16_t(*Taille)(struct ListeElem*);
 	char (*HasAPont)(struct ListeElem*);
 	char (*HasDirt)(struct ListeElem*);
 	char (*HasAPecheur)(struct ListeElem*);
@@ -37,14 +38,14 @@ typedef struct ListeElem {
 	Bool (*remove)(struct ListeElem*, struct Element*);
 	Bool (*deleteElement)(struct ListeElem*, struct Element*);
 	void (*Print)(struct ListeElem*);
-	struct Element* (*getNieme)(struct ListeElem*, unsigned int);
+	struct Element* (*getNieme)(struct ListeElem*, uint16_t);
 }ListeElem;
 
-unsigned int ListeElem_Taille(ListeElem* This);
+uint16_t ListeElem_Taille(ListeElem* This);
 void ListeElem_Clear(ListeElem *This);
 void ListeElem_Vider(ListeElem *This);
 void ListeElem_New_Free(ListeElem *This);
-int ListeElem_Push(ListeElem* This, struct Element *e);
+int16_t ListeElem_Push(ListeElem* This, struct Element *e);
 struct Element* ListeElem_Pop(ListeElem* This);
 ListeElem* New_ListeElem();
 void ListeElem_Init(ListeElem* This);
@@ -114,6 +115,6 @@ void ListeElem_Print(ListeElem*);
 /// \param number
 /// \return
 ///
-struct Element *ListeElem_getNieme(ListeElem *This, unsigned int number);
+struct Element *ListeElem_getNieme(ListeElem *This, uint16_t number);
 
 #endif // LISTEELEM_H

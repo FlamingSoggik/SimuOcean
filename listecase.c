@@ -35,7 +35,7 @@ void ListeCase_Clear(ListeCase *This){
 	}
 }
 
-int ListeCase_Push(ListeCase* This, Case *c){
+int16_t ListeCase_Push(ListeCase* This, Case *c){
     MaillonListeCase *il = malloc(sizeof(MaillonListeCase));
     if (!il) return ERROR_MALLOC_ITEM;
     il->next=This->Top;
@@ -56,12 +56,12 @@ Case* ListeCase_Pop(ListeCase* This){
     return c;
 }
 
-int ListeCase_Taille(ListeCase* This){
+int16_t ListeCase_Taille(ListeCase* This){
     return This->taille;
 }
 
 
-Case *ListeCase_getNieme(ListeCase *This, unsigned int number)
+Case *ListeCase_getNieme(ListeCase *This, uint16_t number)
 {
 	if (number > This->taille-1){
 		return NULL;

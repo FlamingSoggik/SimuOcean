@@ -240,11 +240,11 @@ char ElementAnimal_Init(Case *c, ElementAnimal* This, Type t){
 	return ret;
 }
 
-unsigned int ElementAnimal_getDernierRepas(struct ElementAnimal *This){
+uint16_t ElementAnimal_getDernierRepas(struct ElementAnimal *This){
 	return This->dernierRepas;
 }
 
-void ElementAnimal_setDernierRepas(struct ElementAnimal *This, unsigned int toset){
+void ElementAnimal_setDernierRepas(struct ElementAnimal *This, uint16_t toset){
 	This->dernierRepas=toset;
 }
 
@@ -253,19 +253,19 @@ void ElementAnimal_Free(struct ElementAnimal *This){
 	puts("Destruction de l'Animal statique.\n");
 }
 
-int ElementAnimal_getSasiete(struct ElementAnimal *This){
+int16_t ElementAnimal_getSasiete(struct ElementAnimal *This){
 	return This->sasiete;
 }
 
-void ElementAnimal_setSasiete(struct ElementAnimal *This, int toset){
+void ElementAnimal_setSasiete(struct ElementAnimal *This, int16_t toset){
 	This->sasiete=toset;
 }
 
-unsigned int ElementAnimal_getderniereReproduction(struct ElementAnimal *This){
+uint16_t ElementAnimal_getderniereReproduction(struct ElementAnimal *This){
 	return This->derniereReproduction;
 }
 
-void ElementAnimal_setderniereReproduction(struct ElementAnimal *This, unsigned int toset){
+void ElementAnimal_setderniereReproduction(struct ElementAnimal *This, uint16_t toset){
 	This->derniereReproduction=toset;
 }
 
@@ -282,7 +282,7 @@ void ElementAnimal_tour(struct ElementAnimal *This){
 void ElementAnimal_predation(ElementAnimal *This)
 {
 	Case***MatriceAccessiblePredation = NULL;
-	int i, j;
+	int16_t i, j;
 	MatriceAccessiblePredation=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX, This->caseParent->posY, 1);
 	ListeElem *l_elementBouffable = New_ListeElem();
 	char flag = 0;
@@ -397,11 +397,11 @@ void ElementAnimal_predation(ElementAnimal *This)
 }
 
 void ElementAnimal_deplacement(ElementAnimal *This){
-	int flag;
+	int16_t flag;
 	Case*** MatriceAccessibleDeplacement = NULL;
 	MatriceAccessibleDeplacement=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX, This->caseParent->posY, This->constantes->sautMax);
-	int deplX, deplY, isNeg, deplXpositif, deplYpositif;
-	int i, j;
+	int16_t deplX, deplY, isNeg, deplXpositif, deplYpositif;
+	int16_t i, j;
 	flag=0;
 	for(i=0;i<2*This->constantes->sautMax+1.0 && flag == 0;++i){
 		for(j=0;j<2*This->constantes->sautMax+1.0 && flag == 0;++j){
@@ -469,10 +469,10 @@ void ElementAnimal_reproduction(ElementAnimal *This){
 	if (This->derniereReproduction + This->constantes->frequenceReproduction >= This->caseParent->g->TourCourant){
 		return;
 	}
-	int flag;
+	int16_t flag;
 	Case*** MatriceAccessibleReproduction= NULL;
 	MatriceAccessibleReproduction=This->caseParent->g->getMatriceVoisins(This->caseParent->g, This->caseParent->posX, This->caseParent->posY, 1);
-	int i, j;
+	int16_t i, j;
 	flag=0;
 	Case *caseNaissance = NULL;
 	ListeCase *lcaseNaissance = New_ListeCase();

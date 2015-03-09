@@ -20,15 +20,15 @@ typedef struct Grille
 	///
 	/// \brief Taille du tableau de Case
 	///
-	unsigned int Taille;
+	uint16_t Taille;
 	///
 	/// \brief TailleMaxSousPont Taille maximal des animaux sous un pont
 	///
-	unsigned int TailleMaxSousPont;
+	uint16_t TailleMaxSousPont;
 	///
 	/// \brief TourCourant Numero du tour actuel
 	///
-	unsigned int TourCourant;
+	uint16_t TourCourant;
 	///
 	/// \brief listePredationInitialise Permet de dire si les liste de predations sont initialisées ou non
 	///
@@ -44,22 +44,22 @@ typedef struct Grille
 	void (*Free)(struct Grille *This);
 	void (*Clear)(struct Grille *This);
 	void (*Print)(struct Grille *This);
-	struct Case*** (*getMatriceVoisins)(struct Grille*, unsigned int, unsigned int, unsigned int);
-	void (*moveFromTo)(struct Grille*, struct Element*, unsigned int, unsigned int);
+	struct Case*** (*getMatriceVoisins)(struct Grille*, uint16_t, uint16_t, uint16_t);
+	void (*moveFromTo)(struct Grille*, struct Element*, uint16_t, uint16_t);
 	void (*reinitPecheur)(struct Grille*, struct Element*);
 	void (*faireTour)(struct Grille*, char isSDL);
 	void (*detruirePont)(struct Grille*, struct Case*);
 } Grille;
 
 
-//Grille Grille_Create(int Taille);
+//Grille Grille_Create(int16_t Taille);
 ///
 /// \brief New_Grille Créé la grille et l'initialise
 /// \param Taille Taille de la grille
 /// \param nbPecheurs Nombre de pecheurs sur la grille
 /// \return Pointeur sur la grille nouvellement créé
 ///
-Grille* New_Grille(int Taille, unsigned char nbPecheurs);
+Grille* New_Grille(int16_t Taille, unsigned char nbPecheurs);
 
 ///
 /// \brief Grille_Init Initialise la grille
@@ -67,7 +67,7 @@ Grille* New_Grille(int Taille, unsigned char nbPecheurs);
 /// \param Taille Taille de la grille à initialiser
 /// \param nbPecheurs Nombre de pecheurs sur la grille
 ///
-void Grille_Init(Grille *This, unsigned int Taille, unsigned char nbPecheurs);
+void Grille_Init(Grille *This, uint16_t Taille, unsigned char nbPecheurs);
 ///
 /// \brief Grille_Clear Nettoie la grille (free ous les éléments internes
 /// \param This
@@ -87,11 +87,11 @@ void Grille_Print(struct Grille *This);
 /// \param nbSauts nombre de voisins de chaque coté de la ligne annoncée par posx, posy
 /// \return
 ///
-struct Case*** Grille_getMatriceVoisins(struct Grille *This, unsigned int posX, unsigned int posY, unsigned int nbSauts);
+struct Case*** Grille_getMatriceVoisins(struct Grille *This, uint16_t posX, uint16_t posY, uint16_t nbSauts);
 ///
 /// \brief Grille_moveFromTo Deplace un element de la grille d'une case à une autre
 ///
-void Grille_moveFromTo(struct Grille*, struct Element*, unsigned int, unsigned int);
+void Grille_moveFromTo(struct Grille*, struct Element*, uint16_t, uint16_t);
 ///
 /// \brief Grille_reinitPecheur Fait respawn le pecheur
 /// \param This Pointeur sur la grille

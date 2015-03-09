@@ -11,13 +11,13 @@ extern "C" {
 #endif
 
 typedef struct ElementAnimal_Constantes{
-		unsigned int dureeSurvie;
-		unsigned int taille;
-		unsigned int tailleDuBide;
-		unsigned int sautMax;
-		int metabolisme;
-		int gestation;
-		int frequenceReproduction;
+		uint16_t dureeSurvie;
+		uint16_t taille;
+		uint16_t tailleDuBide;
+		uint16_t sautMax;
+		int16_t metabolisme;
+		int16_t gestation;
+		int16_t frequenceReproduction;
 		struct ListeType* listePredation;
 }ElementAnimal_Constantes;
 
@@ -85,30 +85,30 @@ typedef struct ElementAnimal
 		///
 		/// \brief dernierRepas Numero du tour du dernier repas de l'animal
 		///
-		unsigned int dernierRepas;
+		uint16_t dernierRepas;
 
 		///
 		/// \brief Pointeur sur fonction getteur de dernierRepas
 		///
-		unsigned int (*GetDernierRepas)(struct ElementAnimal*);
+		uint16_t (*GetDernierRepas)(struct ElementAnimal*);
 		///
 		/// \brief Pointeur sur fonction setteur de dernierRepas
 		///
-		void (*SetDernierRepas)(struct ElementAnimal* , unsigned int);
+		void (*SetDernierRepas)(struct ElementAnimal* , uint16_t);
 
 		///
 		/// \brief sasiete Sasiete de l'animal
 		///
-		int sasiete;
-		int (*GetSasiete)(struct ElementAnimal*);
-		void (*SetSasiete)(struct ElementAnimal* , int);
+		int16_t sasiete;
+		int16_t (*GetSasiete)(struct ElementAnimal*);
+		void (*SetSasiete)(struct ElementAnimal* , int16_t);
 
 		///
 		/// \brief derniereReproduction Numero du tour de la dernière reproduction de l'animal
 		///
-        unsigned int derniereReproduction;
-		unsigned int (*GetDerniereReproduction)(struct ElementAnimal*);
-		void (*SetDerniereReproduction)(struct ElementAnimal* , unsigned int);
+		uint16_t derniereReproduction;
+		uint16_t (*GetDerniereReproduction)(struct ElementAnimal*);
+		void (*SetDerniereReproduction)(struct ElementAnimal* , uint16_t);
 
 		///
 		/// \brief constantes Pointeur vers structure constante correspondant au type de l'ElementAnimal actuel
@@ -145,7 +145,7 @@ typedef struct ElementAnimal
 ElementAnimal* New_ElementAnimal(Case *c, Type t);
 //ElementAnimal ElementAnimalCreate(Type t);
 
-//ElementAnimal* New_ElementAnimal_v12(int v12);
+//ElementAnimal* New_ElementAnimal_v12(int16_t v12);
 
 //Initialisateur
 char ElementAnimal_Init(Case *c, ElementAnimal* This, Type t);
@@ -153,12 +153,12 @@ char ElementAnimal_Init(Case *c, ElementAnimal* This, Type t);
 //Destructeurs
 
 //Others
-unsigned int ElementAnimal_getDernierRepas(struct ElementAnimal *This);
-void ElementAnimal_setDernierRepas(struct ElementAnimal *This, unsigned int toset);
-int ElementAnimal_getSasiete(struct ElementAnimal *This);
-void ElementAnimal_setSasiete(struct ElementAnimal *This, int toset);
-unsigned int ElementAnimal_getderniereReproduction(struct ElementAnimal *This);
-void ElementAnimal_setderniereReproduction(struct ElementAnimal *This, unsigned int toset);
+uint16_t ElementAnimal_getDernierRepas(struct ElementAnimal *This);
+void ElementAnimal_setDernierRepas(struct ElementAnimal *This, uint16_t toset);
+int16_t ElementAnimal_getSasiete(struct ElementAnimal *This);
+void ElementAnimal_setSasiete(struct ElementAnimal *This, int16_t toset);
+uint16_t ElementAnimal_getderniereReproduction(struct ElementAnimal *This);
+void ElementAnimal_setderniereReproduction(struct ElementAnimal *This, uint16_t toset);
 
 Bool ElementAnimal_survie(ElementAnimal *This);
 void ElementAnimal_tour(ElementAnimal *This);

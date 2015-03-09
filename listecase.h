@@ -2,6 +2,7 @@
 #define LISTECASE_H
 
 #include "case.h"
+#include <stdint.h>
 
 #define ERROR_MALLOC_ITEM -1
 #define ERROR_LISTE_VIDE -2
@@ -16,17 +17,17 @@ typedef struct MaillonListeCase{
 }MaillonListeCase;
 
 typedef struct ListeCase {
-	unsigned int taille;
+	uint16_t taille;
     struct MaillonListeCase *Top;
     void(*Free)();
-    int(*Push)(struct ListeCase*, struct Case*);
+	int16_t(*Push)(struct ListeCase*, struct Case*);
 	struct Case*(*Pop)(struct ListeCase*);
     void(*Clear)(struct ListeCase*);
-    int(*Taille)(struct ListeCase*);
-	struct Case*(*getNieme)(struct ListeCase*, unsigned int);
+	int16_t(*Taille)(struct ListeCase*);
+	struct Case*(*getNieme)(struct ListeCase*, uint16_t);
 }ListeCase;
 
-int ListeCase_Taille(ListeCase* This);
+int16_t ListeCase_Taille(ListeCase* This);
 void ListeCase_Clear(ListeCase *This);
 void ListeCase_New_Free(ListeCase *This);
 ///
@@ -35,14 +36,14 @@ void ListeCase_New_Free(ListeCase *This);
 /// \param c Pointeur sur la Case à ajouter à la liste
 /// \return
 ///
-int ListeCase_Push(ListeCase* This, struct Case *c);
+int16_t ListeCase_Push(ListeCase* This, struct Case *c);
 ///
 /// \brief ListeCase_getNieme renvoie le N ieme element de la liste
 /// \param This Pointeur sur la liste de case
 /// \param number Numero de l'élément à retourner
 /// \return
 ///
-struct Case* ListeCase_getNieme(ListeCase* This, unsigned int number);
+struct Case* ListeCase_getNieme(ListeCase* This, uint16_t number);
 ///
 /// \brief ListeCase_Pop Renvoie le premier element de la liste
 /// \param This Pointeur sur la liste

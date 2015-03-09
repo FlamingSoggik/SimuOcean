@@ -4,9 +4,9 @@
 
 
 
-void Afficher_Pecheurs( SDL_Surface *ecran, int taille_case, ElementPecheur **pt_Pecheur, int nbrpecheur, SDL_Rect Pos_Fenetre, SDL_Surface *rouge )
+void Afficher_Pecheurs( SDL_Surface *ecran, int16_t taille_case, ElementPecheur **pt_Pecheur, int16_t nbrpecheur, SDL_Rect Pos_Fenetre, SDL_Surface *rouge )
 {
-     int i=0;
+	 int16_t i=0;
      SDL_Rect Pos_Pecheur;
      for (; i<nbrpecheur; i++)
      {
@@ -24,7 +24,7 @@ void Afficher_Pecheurs( SDL_Surface *ecran, int taille_case, ElementPecheur **pt
 
 }
 
-void Selected_Pecheur(SDL_Surface *ecran, int taille_case, ElementPecheur *pt_Pecheur, SDL_Rect Pos_Fenetre, SDL_Surface *blanc )
+void Selected_Pecheur(SDL_Surface *ecran, int16_t taille_case, ElementPecheur *pt_Pecheur, SDL_Rect Pos_Fenetre, SDL_Surface *blanc )
 {
     SDL_Rect Pos_Pecheur;
 
@@ -42,11 +42,11 @@ void Selected_Pecheur(SDL_Surface *ecran, int taille_case, ElementPecheur *pt_Pe
 
 
 
-void Commandes_Pecheur(SDL_Surface *ecran, SDL_Surface *Avancer, SDL_Surface *Construire, SDL_Surface *PecherCanne,  SDL_Surface *PecherFilet, TTF_Font* police, TTF_Font *police_underline, int Commande_Selected, int ScreenH, int ScreenW)
+void Commandes_Pecheur(SDL_Surface *ecran, SDL_Surface *Avancer, SDL_Surface *Construire, SDL_Surface *PecherCanne,  SDL_Surface *PecherFilet, TTF_Font* police, TTF_Font *police_underline, int16_t Commande_Selected, int16_t ScreenH, int16_t ScreenW)
 {
 
 
-//static int premierPassage = 1;
+//static int16_t premierPassage = 1;
 
 //if (premierPassage == 1){
 //	premierPassage=0;
@@ -96,7 +96,7 @@ PecherCanne = TTF_RenderText_Blended(police, "Pecher (Canne)", Couleur_Commandes
 PecherFilet = TTF_RenderText_Blended(police_underline, "Pecher (Filet)", Couleur_Commandes);
 }
 
-int Centre_Commandes=(ScreenH +(ScreenW-ScreenH)/2);
+int16_t Centre_Commandes=(ScreenH +(ScreenW-ScreenH)/2);
 Blit_Image(ecran, Avancer, Centre_Commandes - 40, ScreenH/2 - 50);
 Blit_Image(ecran, Construire, Centre_Commandes - 40, ScreenH/2);
 Blit_Image(ecran, PecherCanne, Centre_Commandes - 40, ScreenH/2 + 50);
@@ -111,7 +111,7 @@ SDL_FreeSurface(PecherFilet);
 }
 
 
-void Sac_Pecheur( SDL_Surface *ecran, TTF_Font* police, ElementPecheur *pt_Pecheur, int ScreenH, int ScreenW )
+void Sac_Pecheur( SDL_Surface *ecran, TTF_Font* police, ElementPecheur *pt_Pecheur, int16_t ScreenH, int16_t ScreenW )
 {
     SDL_Surface *Sac_du_Pecheur=NULL;
     SDL_Color Couleur_Commandes = {193, 205, 193,0};
@@ -120,7 +120,7 @@ void Sac_Pecheur( SDL_Surface *ecran, TTF_Font* police, ElementPecheur *pt_Peche
     sprintf(texte, "Sac = %d", pt_Pecheur->sac);
     Sac_du_Pecheur = TTF_RenderText_Blended(police, texte, Couleur_Commandes);
 
-    int Centre_Commandes=(ScreenH +(ScreenW-ScreenH)/2);
+	int16_t Centre_Commandes=(ScreenH +(ScreenW-ScreenH)/2);
 
     Blit_Image(ecran, Sac_du_Pecheur, Centre_Commandes-30, ScreenH/2 - 150 );
 

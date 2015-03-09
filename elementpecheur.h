@@ -27,18 +27,18 @@ typedef struct ElementPecheur
 		///
 		/// \brief sac Alias besace : masse de poisson disponible pour la consruction du pont
 		///
-		unsigned int sac;
-		unsigned int longueurCanne;
-		unsigned int tailleFilet;
-		unsigned int distanceDeplacement;
+		uint16_t sac;
+		uint16_t longueurCanne;
+		uint16_t tailleFilet;
+		uint16_t distanceDeplacement;
 		struct ListeType* listeDePeche;
-		unsigned int PositionInitialeX;
-		unsigned int PositionInitialeY;
+		uint16_t PositionInitialeX;
+		uint16_t PositionInitialeY;
 		char estSelectionne;
 		void (*pecheParCanne)(struct ElementPecheur*, char*);
-		void (*pecheParCanneSDL)(struct ElementPecheur*, int, int);
+		void (*pecheParCanneSDL)(struct ElementPecheur*, int16_t, int16_t);
 		void (*pecheParFilet)(struct ElementPecheur*, char*);
-		void (*pecheParFiletSDL)(struct ElementPecheur*, int, int);
+		void (*pecheParFiletSDL)(struct ElementPecheur*, int16_t, int16_t);
 		Bool (*deplacement)(struct ElementPecheur*, char);
 		Bool (*construirePont)(struct ElementPecheur*, char);
 		void (*mourir)(struct ElementPecheur*); // --> fait
@@ -79,7 +79,7 @@ char ElementPecheur_Init(Case *c, ElementPecheur* This);
 /// \param buffer Chaine de caractere : enchainement de direction à appliquer à partir du pecheur pour trouver la case de lancé
 ///
 void ElementPecheur_pecheParCanne(ElementPecheur* This, char *buffer);
-void ElementPecheur_pecheParCanneSDL(ElementPecheur *This, int x, int y);
+void ElementPecheur_pecheParCanneSDL(ElementPecheur *This, int16_t x, int16_t y);
 
 ///
 /// \brief ElementPecheur_pecheParFilet Peche du pecheur avec un filet
@@ -87,7 +87,7 @@ void ElementPecheur_pecheParCanneSDL(ElementPecheur *This, int x, int y);
 /// \param buffer Chaine de caractere : enchainement de direction à appliquer à partir du pecheur pour trouver la case de lancé
 ///
 void ElementPecheur_pecheParFilet(ElementPecheur* This, char *buffer);
-void ElementPecheur_pecheParFiletSDL(ElementPecheur *This, int x, int y);
+void ElementPecheur_pecheParFiletSDL(ElementPecheur *This, int16_t x, int16_t y);
 ///
 /// \brief ElementPecheur_deplacement Deplacement du pecheur
 /// \param This Pointeur sur le pecheur

@@ -30,23 +30,23 @@
 #define SELECTIONE "\033[48;5;231m"	//BLANC
 #define PGRAS "\033[01m"
 
-Grille Grille_Create(int Taille, unsigned char nbPecheur){
+Grille Grille_Create(int16_t Taille, unsigned char nbPecheur){
 	Grille g;
 	Grille_Init(&g, Taille, nbPecheur);
 	g.Free=Grille_Free;
 	return g;
 }
 
-void Grille_Init(Grille *This, unsigned int Taille, unsigned char nbPecheurs){
+void Grille_Init(Grille *This, uint16_t Taille, unsigned char nbPecheurs){
 	if (nbPecheurs > 2* Taille)
 		nbPecheurs = 0;
-	static int premierpassage = 1;
+	static int16_t premierpassage = 1;
 	if (premierpassage == 1){
 		srand(time(NULL));
 		defineConstant();
 		premierpassage = 0;
 	}
-	unsigned int i,j, parcours;
+	uint16_t i,j, parcours;
 	This->Clear = Grille_Clear;
 	This->Print = Grille_Print;
 	This->Taille=Taille;
@@ -81,7 +81,7 @@ void Grille_Init(Grille *This, unsigned int Taille, unsigned char nbPecheurs){
 			// Pecheur paire --> pop à gauche
 			j=0;
 		}
-		int flag = 0;
+		int16_t flag = 0;
 
 		while (flag == 0){
 			i=rand()%This->Taille;
@@ -93,9 +93,9 @@ void Grille_Init(Grille *This, unsigned int Taille, unsigned char nbPecheurs){
 	}
 
 	remplirListePredation(This);
-	int nbrCase = Taille*Taille;
-	int nbrEspece = 0;
-	int comptelemespece = 0;
+	int16_t nbrCase = Taille*Taille;
+	int16_t nbrEspece = 0;
+	int16_t comptelemespece = 0;
 	Type compteurTypeEspece = TYPEMIN;
 
 
@@ -143,7 +143,7 @@ void Grille_Init(Grille *This, unsigned int Taille, unsigned char nbPecheurs){
 }
 
 void Grille_Clear(struct Grille *This){
-	unsigned int i, j;
+	uint16_t i, j;
 
 	free(This->tabPecheur);
 	for(i=0;i<This->Taille;++i){
@@ -160,7 +160,7 @@ void Grille_Clear(struct Grille *This){
 
 void Grille_Print(struct Grille *This){
 	printf(EAU "EAU" NORMAL " " PVOID "RIEN(erreur)" NORMAL " " PPLANCTON "PLANCTON" NORMAL " " PCORAIL "CORAIL" NORMAL " " PBAR "BAR" NORMAL " " PTHON "THON" NORMAL " " PPOLLUTION "POLLUTION" NORMAL " " PPYRANHA "PYRANHA" NORMAL " " PREQUIN "PREQUIN" NORMAL " " PORQUE "ORQUE" NORMAL " " PBALEINE "BALEINE" NORMAL "\n");
-	unsigned int i, j;
+	uint16_t i, j;
 	for(i=0;i<This->Taille;++i)
 		printf("=====" NORMAL);
 	printf("=\n");
@@ -256,25 +256,25 @@ void Grille_New_Free(struct Grille *This){
 	free(This);
 }
 
-Case*** Grille_getMatriceVoisins(Grille *This, unsigned int posX, unsigned int posY, unsigned int nbSauts)
+Case*** Grille_getMatriceVoisins(Grille *This, uint16_t posX, uint16_t posY, uint16_t nbSauts)
 {
 //printf("Taille de la grille : %d\n", This->Taille);
-	unsigned int taille=2*nbSauts+1;
+	uint16_t taille=2*nbSauts+1;
 //printf("Taille du nouveau tableau : %d\n", taille);
 	//Coordonnées de la case du milieu du nouveau tableau
-	unsigned int cMNT = nbSauts;
+	uint16_t cMNT = nbSauts;
 //printf("Centre de la Matrice à renvoyer : %d\n", cMNT);
 	Case* **tableau = malloc(sizeof(Case**)*taille);
 	if (tableau == NULL){
 		puts("ERROR creating matrice in detMatriceVoicins");
 		return NULL;
 	}
-	unsigned int i;
+	uint16_t i;
 	for(i=0;i<taille;++i){
 		tableau[i] = malloc(sizeof(Case*)*taille);
 	}
 	tableau[cMNT][cMNT]=NULL;
-	int j, k;
+	int16_t j, k;
 	for(i=nbSauts;i>0;--i){
 //printf("Nous somme dans la boucle pour le saut de %d cases\n", i);
 		for(j=posX-i,k=0;j<(double)posX+i+1;++j,++k){
@@ -320,7 +320,7 @@ Case*** Grille_getMatriceVoisins(Grille *This, unsigned int posX, unsigned int p
 	return tableau;
 }
 
-void Grille_moveFromTo(Grille *This, Element *elem, unsigned int posX, unsigned int posY)
+void Grille_moveFromTo(Grille *This, Element *elem, uint16_t posX, uint16_t posY)
 {
 	This->tab[elem->caseParent->posX][elem->caseParent->posY].liste->remove(This->tab[elem->caseParent->posX][elem->caseParent->posY].liste, elem);
 	This->tab[posX][posY].liste->Push(This->tab[posX][posY].liste, elem);
@@ -332,7 +332,7 @@ void Grille_reinitPecheur(Grille *This, Element *elem)
 	ElementPecheur* pecheur = (ElementPecheur*)elem;
 	This->tab[pecheur->caseParent->posX][pecheur->caseParent->posY].liste->remove(This->tab[pecheur->caseParent->posX][pecheur->caseParent->posY].liste, (Element*)pecheur);
 	char sensDeTest = 'b';
-	int depl = 1;
+	int16_t depl = 1;
 	Case *caseInitiale = &This->tab[pecheur->PositionInitialeX][pecheur->PositionInitialeY];
 	recommencer:
 	if (caseInitiale->liste->HasAPecheur(caseInitiale->liste) == 1){
@@ -364,7 +364,7 @@ void Grille_reinitPecheur(Grille *This, Element *elem)
 }
 
 void Grille_faireTour(Grille *This, char isSdl){
-	unsigned int i, j;
+	uint16_t i, j;
 	ElementAnimal *e;
 	ElementPecheur *p;
 	for (i=0; i<This->Taille; ++i){
@@ -423,7 +423,7 @@ void Grille_faireTour(Grille *This, char isSdl){
 						if (fgets(buff, sizeof(buff), stdin) == NULL){
 							break;
 						}
-						unsigned int longueurChaine=strlen(buff);
+						uint16_t longueurChaine=strlen(buff);
 						if (longueurChaine == 0)
 							break;
 						buff[longueurChaine-1]='\0';
@@ -434,7 +434,7 @@ void Grille_faireTour(Grille *This, char isSdl){
 						if (fgets(buff, sizeof(buff), stdin) == NULL){
 							break;
 						}
-						unsigned int longueurChaine=strlen(buff);
+						uint16_t longueurChaine=strlen(buff);
 						if (longueurChaine == 0)
 							break;
 						buff[longueurChaine-1]='\0';
@@ -458,7 +458,7 @@ void Grille_faireTour(Grille *This, char isSdl){
 	++This->TourCourant;
 }
 
-Grille *New_Grille(int Taille, unsigned char nbPecheurs)
+Grille *New_Grille(int16_t Taille, unsigned char nbPecheurs)
 {
 	Grille* This = malloc(sizeof(Grille));
 	if(!This) return NULL;

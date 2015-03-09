@@ -50,7 +50,7 @@ void ListeElem_Clear(ListeElem *This){
 	This->taille = 0;
 }
 
-int ListeElem_Push(ListeElem* This, Element *e){
+int16_t ListeElem_Push(ListeElem* This, Element *e){
 	if (e == NULL){
 		return ERROR_ELEMENT_PASSED_NULL;
 	}
@@ -83,7 +83,7 @@ Element* ListeElem_Pop(ListeElem* This){
 	return e;
 }
 
-unsigned int ListeElem_Taille(ListeElem* This){
+uint16_t ListeElem_Taille(ListeElem* This){
 	return This->taille;
 }
 
@@ -244,7 +244,7 @@ void ListeElem_Vider(ListeElem *This){
 	This->taille = 0;
 }
 
-Element *ListeElem_getNieme(ListeElem *This, unsigned int number)
+Element *ListeElem_getNieme(ListeElem *This, uint16_t number)
 {
 	if (number > This->taille-1){
 		return NULL;
